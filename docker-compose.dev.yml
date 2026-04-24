@@ -1,0 +1,66 @@
+# Dev compose — runs IronClaw with live reload inside Docker.
+#
+# Edit Rust source or frontend assets on the host; cargo-watch detects
+# changes, rebuilds, and restarts the binary automatically.
+#
+# Usage:
+#   cp .env.example .env   # configure LLM backend, DB, etc.
+#   docker compose -f docker-compose.dev.yml up --build
+#
+# First build is slow (compiling all deps). Subsequent rebuilds are
+# incremental thanks to the cached target-docker volume.
+#
+# To wipe the build cache:
+#   docker compose -f docker-compose.dev.yml down -v
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ironclaw
+      POSTGRES_PASSWORD: ironclaw
+      POSTGRES_DB: ironclaw
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ironclaw"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  ironclaw:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /workspace
+    volumes:
+      # Bind-mount source — edits on host are visible immediately
+      - .:/workspace
+      # Persist compiled deps across restarts (big speedup)
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - target-docker:/workspace/target-docker
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      CARGO_TARGET_DIR: /workspace/target-docker
+      CARGO_TERM_COLOR: always
+      RUST_LOG: ironclaw=debug
+      # Override DATABASE_URL to point at the postgres service
+      DATABASE_URL: postgres://ironclaw:ironclaw@postgres:5432/ironclaw
+      # Bind to 0.0.0.0 so the port forward works
+      HTTP_HOST: 0.0.0.0
+      GATEWAY_HOST: 0.0.0.0
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pg-data:
+  cargo-registry:
+  cargo-git:
+  target-docker:

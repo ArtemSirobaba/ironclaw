@@ -129,6 +129,43 @@ pub const THEME_INIT_JS: &str = include_str!("../static/theme-init.js");
 /// Favicon.
 pub const FAVICON_ICO: &[u8] = include_bytes!("../static/favicon.ico");
 
+// ==================== V2 Frontend Prototype ====================
+
+include!(concat!(env!("OUT_DIR"), "/v2_assets.rs"));
+
+/// Resolve a v2 asset path to `(content_type, body)`.
+///
+/// `build.rs` generates the embedded file table from `static/v2/`, so adding
+/// v2 modules or assets does not require touching Rust. `path` is still an
+/// exact lookup, not a filesystem path, so traversal strings never escape the
+/// generated table.
+pub fn v2_asset(path: &str) -> Option<(&'static str, &'static [u8])> {
+    let path = match path {
+        "" => "index.html",
+        other => other,
+    };
+    v2_asset_bytes(path).map(|body| (content_type_for_path(path), body))
+}
+
+fn content_type_for_path(path: &str) -> &'static str {
+    match path.rsplit('.').next().unwrap_or_default() {
+        "css" => "text/css; charset=utf-8",
+        "html" => "text/html; charset=utf-8",
+        "js" | "mjs" => "application/javascript; charset=utf-8",
+        "json" | "map" => "application/json; charset=utf-8",
+        "svg" => "image/svg+xml",
+        "png" => "image/png",
+        "jpg" | "jpeg" => "image/jpeg",
+        "gif" => "image/gif",
+        "webp" => "image/webp",
+        "ico" => "image/x-icon",
+        "wasm" => "application/wasm",
+        "woff" => "font/woff",
+        "woff2" => "font/woff2",
+        _ => "application/octet-stream",
+    }
+}
+
 // ==================== Internationalization ====================
 
 /// i18n core library.

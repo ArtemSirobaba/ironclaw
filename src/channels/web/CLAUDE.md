@@ -30,7 +30,7 @@ Browser-facing HTTP API and SSE/WebSocket real-time streaming. Axum-based, singl
 | `openai_compat.rs` | OpenAI-compatible proxy (`/v1/chat/completions`, `/v1/models`) |
 | `util.rs` | Shared helpers (`web_incoming_message`, `build_turns_from_db_messages`, `images_to_attachments`, `truncate_preview`) |
 | `test_helpers.rs` | Always-compiled test utilities. `TestGatewayBuilder` (public) — the `tests/` crate's entry point for spinning up a `GatewayState` + optional Axum server on a random port. Plus seven `pub(crate)` `#[cfg(test)]`-gated cross-slice fixtures — `test_gateway_state(ext_mgr)`, `test_gateway_state_with_dependencies(ext_mgr, store, db_auth, pairing_store)`, `test_gateway_state_with_store_and_session_manager(store, session_manager)`, `insert_test_user`, `test_secrets_store`, `test_ext_mgr`, `test_ext_mgr_with_db` — landed in ironclaw#2599 stages 6a+6 so the chat / extensions / oauth / pairing / users slice test modules can share construction helpers without a central mega-tests block. |
-| `static/` | Single-page app (HTML/CSS/JS) — embedded at compile time via `include_str!`/`include_bytes!` |
+| `static/` | Single-page app assets — embedded at compile time via `include_str!`/`include_bytes!`. The legacy app is split into compile-time-concatenated JS/CSS modules; `static/v2/` is a browser-native ES module prototype served at `/v2`. |
 
 ## Platform vs. feature layering (ironclaw#2599)
 

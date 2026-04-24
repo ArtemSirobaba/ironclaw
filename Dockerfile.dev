@@ -1,0 +1,42 @@
+# Dev Dockerfile — builds and runs IronClaw with live reload via cargo-watch.
+#
+# Source is bind-mounted from the host, so edits are picked up automatically.
+# cargo-watch rebuilds and restarts the binary on any Rust/asset change.
+#
+# Usage: docker compose -f docker-compose.dev.yml up --build
+
+FROM rust:1.92-bookworm
+
+# Build tools needed by build.rs (Telegram WASM channel)
+RUN rustup target add wasm32-wasip2 \
+    && cargo install --locked cargo-watch@8.5.3 wasm-tools@1.246.1
+
+# System deps for runtime (libssl for HTTPS, ca-certs, pkg-config)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates pkg-config libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+ENV CARGO_TARGET_DIR=/workspace/target-docker \
+    CARGO_TERM_COLOR=always
+
+EXPOSE 3000
+
+# cargo-watch: rebuild + restart on source changes
+# -x "run" builds and runs the default binary
+# -w watches only relevant directories (avoids rebuilding on target/ changes)
+CMD ["cargo", "watch", \
+     "--why", \
+     "-w", "src", \
+     "-w", "crates", \
+     "-w", "Cargo.toml", \
+     "-w", "Cargo.lock", \
+     "-w", "build.rs", \
+     "-w", "migrations", \
+     "-w", "channels-src", \
+     "-w", "wit", \
+     "-w", "profiles", \
+     "-w", "providers.json", \
+     "-x", "run --bin ironclaw"]

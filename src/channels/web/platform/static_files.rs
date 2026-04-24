@@ -60,8 +60,9 @@ const SCRIPT_SRC_EXTRAS: &str =
     "https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://esm.sh";
 const STYLE_SRC: &str = "'self' 'unsafe-inline' https://fonts.googleapis.com";
 const FONT_SRC: &str = "https://fonts.gstatic.com data:";
-const CONNECT_SRC: &str =
-    "'self' https://esm.sh https://rpc.mainnet.near.org https://rpc.testnet.near.org";
+const CONNECT_SRC: &str = "'self' https://esm.sh https://cdn.jsdelivr.net \
+                           https://cdnjs.cloudflare.com https://rpc.mainnet.near.org \
+                           https://rpc.testnet.near.org";
 const IMG_SRC: &str =
     "'self' data: blob: https://*.googleusercontent.com https://avatars.githubusercontent.com";
 const FRAME_SRC: &str = "https://accounts.google.com https://appleid.apple.com";
@@ -747,6 +748,54 @@ pub(crate) async fn favicon_handler() -> impl IntoResponse {
     )
 }
 
+fn v2_index_response() -> Response {
+    let nonce = generate_csp_nonce();
+    let html = stamp_nonce_into_html(assets::V2_INDEX_HTML, &nonce);
+    let csp = build_csp_with_nonce(&nonce);
+
+    (
+        [
+            (header::CONTENT_TYPE, "text/html; charset=utf-8".to_string()),
+            (header::CACHE_CONTROL, "no-cache".to_string()),
+            (
+                header::HeaderName::from_static("content-security-policy"),
+                csp,
+            ),
+        ],
+        html,
+    )
+        .into_response()
+}
+
+pub(crate) async fn v2_index_handler() -> Response {
+    v2_index_response()
+}
+
+fn is_v2_spa_route(path: &str) -> bool {
+    !path.contains('.')
+        && path
+            .split('/')
+            .all(|segment| !segment.is_empty() && segment != "." && segment != "..")
+}
+
+pub(crate) async fn v2_asset_handler(Path(path): Path<String>) -> Response {
+    if path == "index.html" || is_v2_spa_route(&path) {
+        return v2_index_response();
+    }
+
+    match assets::v2_asset(&path) {
+        Some((content_type, body)) => (
+            [
+                (header::CONTENT_TYPE, content_type),
+                (header::CACHE_CONTROL, "no-cache"),
+            ],
+            body,
+        )
+            .into_response(),
+        None => (StatusCode::NOT_FOUND, "Not found").into_response(),
+    }
+}
+
 pub(crate) async fn i18n_index_handler() -> impl IntoResponse {
     (
         [
@@ -971,7 +1020,7 @@ mod tests {
     use crate::channels::web::platform::state::WorkspacePool;
     use crate::channels::web::platform::static_files::{
         BASE_CSP_HEADER, build_csp, build_csp_with_nonce, build_frontend_html, css_etag,
-        css_handler, generate_csp_nonce, stamp_nonce_into_html,
+        css_handler, generate_csp_nonce, stamp_nonce_into_html, v2_asset_handler,
     };
 
     use crate::channels::web::test_helpers::test_gateway_state;
@@ -980,6 +1029,24 @@ mod tests {
 
     use crate::workspace::Workspace;
     use ironclaw_gateway::{NONCE_PLACEHOLDER, assets};
+
+    #[tokio::test]
+    async fn test_v2_spa_routes_fall_back_to_index() {
+        let response = v2_asset_handler(axum::extract::Path("chat".to_string())).await;
+
+        assert_eq!(response.status(), StatusCode::OK);
+        assert_eq!(
+            response.headers().get(header::CONTENT_TYPE),
+            Some(&header::HeaderValue::from_static("text/html; charset=utf-8"))
+        );
+    }
+
+    #[tokio::test]
+    async fn test_v2_missing_assets_still_404() {
+        let response = v2_asset_handler(axum::extract::Path("js/missing.js".to_string())).await;
+
+        assert_eq!(response.status(), StatusCode::NOT_FOUND);
+    }
 
     #[tokio::test]
     async fn test_csp_header_present_on_responses() {

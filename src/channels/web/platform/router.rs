@@ -62,7 +62,8 @@ use crate::channels::web::platform::static_files::{
     debug_init_handler, debug_panel_css_handler, debug_panel_js_handler, favicon_handler,
     health_handler, i18n_app_handler, i18n_en_handler, i18n_index_handler, i18n_ko_handler,
     i18n_zh_handler, index_handler, js_handler, project_file_handler, project_index_handler,
-    project_redirect_handler, theme_css_handler, theme_init_handler,
+    project_redirect_handler, theme_css_handler, theme_init_handler, v2_asset_handler,
+    v2_index_handler,
 };
 
 // Feature slices under `features/<slice>/`. As of ironclaw#2599 stage 4d,
@@ -462,6 +463,9 @@ pub async fn start_server(
         .route("/debug-panel.js", get(debug_panel_js_handler))
         .route("/debug-panel.css", get(debug_panel_css_handler))
         .route("/favicon.ico", get(favicon_handler))
+        .route("/v2", get(v2_index_handler))
+        .route("/v2/", get(v2_index_handler))
+        .route("/v2/{*path}", get(v2_asset_handler))
         .route("/i18n/index.js", get(i18n_index_handler))
         .route("/i18n/en.js", get(i18n_en_handler))
         .route("/i18n/zh-CN.js", get(i18n_zh_handler))

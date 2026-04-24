@@ -93,3 +93,4 @@ Start with these deeper docs as needed:
 - Run the most targeted tests/checks that cover the change.
 - Re-check security-sensitive paths when touching auth, secrets, network listeners, sandboxing, or approvals.
 - Keep the final diff scoped to the task.
+Prefer components under 150 lines. If a component exceeds this, evaluate whether it contains distinct concers (Data fetching, sub-UI sections, reusable logic) and split at those natural boundaries. Always extract stateful logic into custom hooks. Never split purely to meet a line count.

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>IronClaw v2</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://esm.sh">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="importmap" nonce="__IRONCLAW_CSP_NONCE__">
+    {
+      "imports": {
+        "@tanstack/react-query": "https://esm.sh/@tanstack/react-query@5.87.4?external=react,react-dom",
+        "htm": "https://esm.sh/htm@3.1.1",
+        "react": "https://esm.sh/react@19.1.0",
+        "react/jsx-runtime": "https://esm.sh/react@19.1.0/jsx-runtime",
+        "react-dom": "https://esm.sh/react-dom@19.1.0?external=react",
+        "react-dom/client": "https://esm.sh/react-dom@19.1.0/client?external=react",
+        "react-router": "https://esm.sh/react-router@7?external=react,react-dom",
+        "react-hook-form": "https://esm.sh/react-hook-form@7.62.0?external=react,react-dom"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+      --color-iron-950: #111416;
+      --color-iron-900: #171b1e;
+      --color-iron-800: #20262a;
+      --color-iron-700: #384247;
+      --color-iron-300: #aebac0;
+      --color-iron-200: #d8e0e4;
+      --color-iron-100: #f2f6f7;
+      --color-signal: #7ccfbe;
+      --color-copper: #d3a85c;
+      --color-mint: #8ccfb0;
+    }
+  </style>
+  <link rel="stylesheet" href="/v2/styles/app.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.3/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@17.0.2/lib/marked.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+</head>
+<body class="min-h-[100dvh] bg-iron-950 text-iron-100 antialiased">
+  <div id="v2-root"></div>
+  <script type="module" src="/v2/js/main.js"></script>
+</body>
+</html>
