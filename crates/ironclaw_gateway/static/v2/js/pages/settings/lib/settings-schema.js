@@ -1,113 +1,114 @@
 export const SETTINGS_TABS = [
-  { id: "inference", label: "Inference", icon: "spark" },
-  { id: "agent", label: "Agent", icon: "bolt" },
-  { id: "channels", label: "Channels", icon: "send" },
-  { id: "networking", label: "Networking", icon: "pulse" },
-  { id: "tools", label: "Tools", icon: "tool" },
-  { id: "skills", label: "Skills", icon: "file" },
-  { id: "users", label: "Users", icon: "lock" },
+  { id: "inference", labelKey: "settings.inference", icon: "spark" },
+  { id: "agent", labelKey: "settings.agent", icon: "bolt" },
+  { id: "channels", labelKey: "settings.channels", icon: "send" },
+  { id: "networking", labelKey: "settings.networking", icon: "pulse" },
+  { id: "tools", labelKey: "settings.tools", icon: "tool" },
+  { id: "skills", labelKey: "settings.skills", icon: "file" },
+  { id: "users", labelKey: "settings.users", icon: "lock" },
+  { id: "language", labelKey: "settings.language", icon: "globe" },
 ];
 
 export const INFERENCE_FIELDS = [
   {
-    group: "Embeddings",
+    groupKey: "settings.group.embeddings",
     fields: [
-      { key: "embeddings.enabled", label: "Enable embeddings", description: "Semantic search over workspace memory", type: "boolean" },
-      { key: "embeddings.provider", label: "Provider", description: "Embedding model provider", type: "select", options: ["openai", "nearai"] },
-      { key: "embeddings.model", label: "Model", description: "Embedding model identifier", type: "text" },
+      { key: "embeddings.enabled", labelKey: "settings.field.embeddingsEnabled", descKey: "settings.field.embeddingsEnabledDesc", type: "boolean" },
+      { key: "embeddings.provider", labelKey: "settings.field.embeddingsProvider", descKey: "settings.field.embeddingsProviderDesc", type: "select", options: ["openai", "nearai"] },
+      { key: "embeddings.model", labelKey: "settings.field.embeddingsModel", descKey: "settings.field.embeddingsModelDesc", type: "text" },
     ],
   },
   {
-    group: "Sampling",
+    groupKey: "settings.group.sampling",
     fields: [
-      { key: "temperature", label: "Temperature", description: "Default sampling temperature (0.0–2.0)", type: "float", min: 0, max: 2, step: 0.1 },
+      { key: "temperature", labelKey: "settings.field.temperature", descKey: "settings.field.temperatureDesc", type: "float", min: 0, max: 2, step: 0.1 },
     ],
   },
 ];
 
 export const AGENT_FIELDS = [
   {
-    group: "Core",
+    groupKey: "settings.group.core",
     fields: [
-      { key: "agent.name", label: "Agent name", description: "Display name for the assistant", type: "text" },
-      { key: "agent.max_parallel_jobs", label: "Max parallel jobs", description: "Concurrent background job limit", type: "number" },
-      { key: "agent.job_timeout_secs", label: "Job timeout", description: "Seconds before a job is marked stuck", type: "number" },
-      { key: "agent.max_tool_iterations", label: "Max tool iterations", description: "Tool call limit per turn", type: "number" },
-      { key: "agent.use_planning", label: "Planning", description: "Enable multi-step planning before execution", type: "boolean" },
-      { key: "agent.auto_approve_tools", label: "Auto-approve tools", description: "Skip approval for all tool calls", type: "boolean" },
-      { key: "agent.default_timezone", label: "Timezone", description: "IANA timezone for scheduled work", type: "text" },
-      { key: "agent.session_idle_timeout_secs", label: "Session idle timeout", description: "Seconds of inactivity before session ends", type: "number" },
-      { key: "agent.stuck_threshold_secs", label: "Stuck threshold", description: "Seconds before a job is considered stuck", type: "number" },
-      { key: "agent.max_repair_attempts", label: "Max repair attempts", description: "Retry limit for stuck job recovery", type: "number" },
-      { key: "agent.max_cost_per_day_cents", label: "Daily cost limit (cents)", description: "Maximum spend per day in cents", type: "number", min: 0 },
-      { key: "agent.max_actions_per_hour", label: "Actions per hour limit", description: "Hourly action rate cap", type: "number", min: 0 },
-      { key: "agent.allow_local_tools", label: "Allow local tools", description: "Enable filesystem and shell access", type: "boolean" },
+      { key: "agent.name", labelKey: "settings.field.agentName", descKey: "settings.field.agentNameDesc", type: "text" },
+      { key: "agent.max_parallel_jobs", labelKey: "settings.field.maxParallelJobs", descKey: "settings.field.maxParallelJobsDesc", type: "number" },
+      { key: "agent.job_timeout_secs", labelKey: "settings.field.jobTimeout", descKey: "settings.field.jobTimeoutDesc", type: "number" },
+      { key: "agent.max_tool_iterations", labelKey: "settings.field.maxToolIterations", descKey: "settings.field.maxToolIterationsDesc", type: "number" },
+      { key: "agent.use_planning", labelKey: "settings.field.planning", descKey: "settings.field.planningDesc", type: "boolean" },
+      { key: "agent.auto_approve_tools", labelKey: "settings.field.autoApproveTools", descKey: "settings.field.autoApproveToolsDesc", type: "boolean" },
+      { key: "agent.default_timezone", labelKey: "settings.field.timezone", descKey: "settings.field.timezoneDesc", type: "text" },
+      { key: "agent.session_idle_timeout_secs", labelKey: "settings.field.sessionIdleTimeout", descKey: "settings.field.sessionIdleTimeoutDesc", type: "number" },
+      { key: "agent.stuck_threshold_secs", labelKey: "settings.field.stuckThreshold", descKey: "settings.field.stuckThresholdDesc", type: "number" },
+      { key: "agent.max_repair_attempts", labelKey: "settings.field.maxRepairAttempts", descKey: "settings.field.maxRepairAttemptsDesc", type: "number" },
+      { key: "agent.max_cost_per_day_cents", labelKey: "settings.field.dailyCostLimit", descKey: "settings.field.dailyCostLimitDesc", type: "number", min: 0 },
+      { key: "agent.max_actions_per_hour", labelKey: "settings.field.actionsPerHour", descKey: "settings.field.actionsPerHourDesc", type: "number", min: 0 },
+      { key: "agent.allow_local_tools", labelKey: "settings.field.allowLocalTools", descKey: "settings.field.allowLocalToolsDesc", type: "boolean" },
     ],
   },
   {
-    group: "Heartbeat",
+    groupKey: "settings.group.heartbeat",
     fields: [
-      { key: "heartbeat.enabled", label: "Enable heartbeat", description: "Periodic proactive execution", type: "boolean" },
-      { key: "heartbeat.interval_secs", label: "Interval", description: "Seconds between heartbeat runs", type: "number" },
-      { key: "heartbeat.notify_channel", label: "Notify channel", description: "Channel to send heartbeat notifications", type: "text" },
-      { key: "heartbeat.notify_user", label: "Notify user", description: "User ID to notify on findings", type: "text" },
-      { key: "heartbeat.quiet_hours_start", label: "Quiet hours start", description: "Hour (0–23) to begin suppression", type: "number", min: 0, max: 23 },
-      { key: "heartbeat.quiet_hours_end", label: "Quiet hours end", description: "Hour (0–23) to end suppression", type: "number", min: 0, max: 23 },
-      { key: "heartbeat.timezone", label: "Timezone", description: "IANA timezone for quiet hours", type: "text" },
+      { key: "heartbeat.enabled", labelKey: "settings.field.heartbeatEnabled", descKey: "settings.field.heartbeatEnabledDesc", type: "boolean" },
+      { key: "heartbeat.interval_secs", labelKey: "settings.field.heartbeatInterval", descKey: "settings.field.heartbeatIntervalDesc", type: "number" },
+      { key: "heartbeat.notify_channel", labelKey: "settings.field.heartbeatNotifyChannel", descKey: "settings.field.heartbeatNotifyChannelDesc", type: "text" },
+      { key: "heartbeat.notify_user", labelKey: "settings.field.heartbeatNotifyUser", descKey: "settings.field.heartbeatNotifyUserDesc", type: "text" },
+      { key: "heartbeat.quiet_hours_start", labelKey: "settings.field.quietHoursStart", descKey: "settings.field.quietHoursStartDesc", type: "number", min: 0, max: 23 },
+      { key: "heartbeat.quiet_hours_end", labelKey: "settings.field.quietHoursEnd", descKey: "settings.field.quietHoursEndDesc", type: "number", min: 0, max: 23 },
+      { key: "heartbeat.timezone", labelKey: "settings.field.heartbeatTimezone", descKey: "settings.field.heartbeatTimezoneDesc", type: "text" },
     ],
   },
   {
-    group: "Sandbox",
+    groupKey: "settings.group.sandbox",
     fields: [
-      { key: "sandbox.enabled", label: "Enable sandbox", description: "Docker-based tool execution", type: "boolean" },
-      { key: "sandbox.policy", label: "Policy", description: "Container filesystem access level", type: "select", options: ["readonly", "workspace_write", "full_access"] },
-      { key: "sandbox.timeout_secs", label: "Timeout", description: "Container execution time limit", type: "number", min: 0 },
-      { key: "sandbox.memory_limit_mb", label: "Memory limit (MB)", description: "Container memory ceiling", type: "number", min: 0 },
-      { key: "sandbox.image", label: "Docker image", description: "Container image for sandbox runs", type: "text" },
+      { key: "sandbox.enabled", labelKey: "settings.field.sandboxEnabled", descKey: "settings.field.sandboxEnabledDesc", type: "boolean" },
+      { key: "sandbox.policy", labelKey: "settings.field.sandboxPolicy", descKey: "settings.field.sandboxPolicyDesc", type: "select", options: ["readonly", "workspace_write", "full_access"] },
+      { key: "sandbox.timeout_secs", labelKey: "settings.field.sandboxTimeout", descKey: "settings.field.sandboxTimeoutDesc", type: "number", min: 0 },
+      { key: "sandbox.memory_limit_mb", labelKey: "settings.field.sandboxMemoryLimit", descKey: "settings.field.sandboxMemoryLimitDesc", type: "number", min: 0 },
+      { key: "sandbox.image", labelKey: "settings.field.sandboxImage", descKey: "settings.field.sandboxImageDesc", type: "text" },
     ],
   },
   {
-    group: "Routines",
+    groupKey: "settings.group.routines",
     fields: [
-      { key: "routines.max_concurrent", label: "Max concurrent", description: "Parallel routine execution limit", type: "number", min: 0 },
-      { key: "routines.default_cooldown_secs", label: "Default cooldown", description: "Seconds between routine runs", type: "number", min: 0 },
+      { key: "routines.max_concurrent", labelKey: "settings.field.routinesMaxConcurrent", descKey: "settings.field.routinesMaxConcurrentDesc", type: "number", min: 0 },
+      { key: "routines.default_cooldown_secs", labelKey: "settings.field.routinesDefaultCooldown", descKey: "settings.field.routinesDefaultCooldownDesc", type: "number", min: 0 },
     ],
   },
   {
-    group: "Safety",
+    groupKey: "settings.group.safety",
     fields: [
-      { key: "safety.max_output_length", label: "Max output length", description: "Character limit on tool output", type: "number", min: 0 },
-      { key: "safety.injection_check_enabled", label: "Injection detection", description: "Scan tool outputs for prompt injection", type: "boolean" },
+      { key: "safety.max_output_length", labelKey: "settings.field.safetyMaxOutput", descKey: "settings.field.safetyMaxOutputDesc", type: "number", min: 0 },
+      { key: "safety.injection_check_enabled", labelKey: "settings.field.safetyInjectionCheck", descKey: "settings.field.safetyInjectionCheckDesc", type: "boolean" },
     ],
   },
   {
-    group: "Skills",
+    groupKey: "settings.group.skills",
     fields: [
-      { key: "skills.max_active", label: "Max active skills", description: "Concurrent skill attachment limit", type: "number", min: 0 },
-      { key: "skills.max_context_tokens", label: "Max context tokens", description: "Token budget for injected skill prompts", type: "number", min: 0 },
+      { key: "skills.max_active", labelKey: "settings.field.skillsMaxActive", descKey: "settings.field.skillsMaxActiveDesc", type: "number", min: 0 },
+      { key: "skills.max_context_tokens", labelKey: "settings.field.skillsMaxContextTokens", descKey: "settings.field.skillsMaxContextTokensDesc", type: "number", min: 0 },
     ],
   },
   {
-    group: "Search",
+    groupKey: "settings.group.search",
     fields: [
-      { key: "search.fusion_strategy", label: "Fusion strategy", description: "Result merging method for hybrid search", type: "select", options: ["rrf", "weighted"] },
+      { key: "search.fusion_strategy", labelKey: "settings.field.fusionStrategy", descKey: "settings.field.fusionStrategyDesc", type: "select", options: ["rrf", "weighted"] },
     ],
   },
 ];
 
 export const NETWORKING_FIELDS = [
   {
-    group: "Gateway",
+    groupKey: "settings.group.gateway",
     fields: [
-      { key: "channels.gateway_host", label: "Host", description: "Gateway bind address", type: "text" },
-      { key: "channels.gateway_port", label: "Port", description: "Gateway listen port", type: "number" },
+      { key: "channels.gateway_host", labelKey: "settings.field.gatewayHost", descKey: "settings.field.gatewayHostDesc", type: "text" },
+      { key: "channels.gateway_port", labelKey: "settings.field.gatewayPort", descKey: "settings.field.gatewayPortDesc", type: "number" },
     ],
   },
   {
-    group: "Tunnel",
+    groupKey: "settings.group.tunnel",
     fields: [
-      { key: "tunnel.provider", label: "Provider", description: "Public tunnel service", type: "select", options: ["ngrok", "cloudflare", "tailscale", "custom"] },
-      { key: "tunnel.public_url", label: "Public URL", description: "Static tunnel endpoint", type: "text" },
+      { key: "tunnel.provider", labelKey: "settings.field.tunnelProvider", descKey: "settings.field.tunnelProviderDesc", type: "select", options: ["ngrok", "cloudflare", "tailscale", "custom"] },
+      { key: "tunnel.public_url", labelKey: "settings.field.tunnelPublicUrl", descKey: "settings.field.tunnelPublicUrlDesc", type: "text" },
     ],
   },
 ];

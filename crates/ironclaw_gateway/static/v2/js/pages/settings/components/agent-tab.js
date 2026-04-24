@@ -13,8 +13,8 @@ export function AgentTab({ settings, onSave, savedKeys, isLoading }) {
         (section) =>
           html`
             <${SettingsGroup}
-              key=${section.group}
-              group=${section.group}
+              key=${section.groupKey}
+              groupKey=${section.groupKey}
               fields=${section.fields}
               settings=${settings}
               onSave=${onSave}

@@ -1,9 +1,18 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Button } from "../../../design-system/button.js";
 import { EmptyPanel, Panel, StatusPill } from "../../../design-system/primitives.js";
 import { formatMissionDate, missionTone } from "../lib/missions-presenters.js";
 
-const statusOptions = ["all", "Active", "Paused", "Failed", "Completed"];
+function buildStatusOptions(t) {
+  return [
+    { value: "all", label: t("missions.filter.allStatuses") },
+    { value: "Active", label: t("missions.status.active") },
+    { value: "Paused", label: t("missions.status.paused") },
+    { value: "Failed", label: t("missions.status.failed") },
+    { value: "Completed", label: t("missions.status.completed") },
+  ];
+}
 
 function FilterSelect({ value, onChange, children, label }) {
   return html`
@@ -21,6 +30,7 @@ function FilterSelect({ value, onChange, children, label }) {
 }
 
 function MissionRow({ mission, selectedMissionId, onSelectMission, onOpenProject }) {
+  const t = useT();
   const selected = selectedMissionId === mission.id;
 
   return html`
@@ -39,18 +49,18 @@ function MissionRow({ mission, selectedMissionId, onSelectMission, onOpenProject
               <div className="min-w-0 truncate text-lg font-semibold text-white">${mission.name}</div>
               <${StatusPill} tone=${missionTone(mission.status)} label=${mission.status} />
             </div>
-            <p className="mt-2 line-clamp-2 text-sm leading-6 text-iron-300">${mission.goal || "No mission goal set."}</p>
+            <p className="mt-2 line-clamp-2 text-sm leading-6 text-iron-300">${mission.goal || t("missions.noGoal")}</p>
           </div>
           <div className="shrink-0 text-right font-mono text-[11px] uppercase tracking-[0.14em] text-iron-400">
             <div>${mission.cadence_description || mission.cadence_type || "manual"}</div>
-            <div className="mt-1">${mission.thread_count || 0} threads</div>
+            <div className="mt-1">${t("missions.threadCount", { count: mission.thread_count || 0 })}</div>
           </div>
         </div>
       </button>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-3">
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-iron-400">
-          Updated ${formatMissionDate(mission.updated_at)}
+          ${t("missions.updated", { value: formatMissionDate(mission.updated_at) })}
         </span>
         <${Button}
           variant="ghost"
@@ -80,14 +90,16 @@ export function MissionsList({
   onSelectMission,
   onOpenProject,
 }) {
+  const t = useT();
+  const statusOptions = buildStatusOptions(t);
   return html`
     <${Panel} className="p-4 sm:p-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Missions</div>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">Execution loops</h1>
+          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.title")}</div>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">${t("missions.subtitle")}</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-iron-300">
-            ${totalMissions} missions across ${projectOptions.length} project workspaces.
+            ${t("missions.summary", { missions: totalMissions, projects: projectOptions.length })}
           </p>
         </div>
       </div>
@@ -96,14 +108,14 @@ export function MissionsList({
         <input
           value=${search}
           onChange=${(event) => onSearchChange(event.target.value)}
-          placeholder="Search missions"
+          placeholder=${t("missions.searchPlaceholder")}
           className="h-11 min-w-[220px] flex-1 rounded-md border border-white/10 bg-white/[0.035] px-3 text-sm text-white outline-none transition placeholder:text-iron-400 focus:border-signal/40"
         />
-        <${FilterSelect} value=${statusFilter} onChange=${onStatusFilterChange} label="Status">
-          ${statusOptions.map((status) => html`<option key=${status} value=${status}>${status === "all" ? "All statuses" : status}<//>`)}
+        <${FilterSelect} value=${statusFilter} onChange=${onStatusFilterChange} label=${t("missions.filter.status")}>
+          ${statusOptions.map((status) => html`<option key=${status.value} value=${status.value}>${status.label}<//>`)}
         <//>
-        <${FilterSelect} value=${projectFilter} onChange=${onProjectFilterChange} label="Project">
-          <option value="all">All projects</option>
+        <${FilterSelect} value=${projectFilter} onChange=${onProjectFilterChange} label=${t("missions.filter.project")}>
+          <option value="all">${t("missions.filter.allProjects")}</option>
           ${projectOptions.map((project) => html`<option key=${project.id} value=${project.id}>${project.name}<//>`)}
         <//>
       </div>
@@ -121,8 +133,8 @@ export function MissionsList({
             `)
           : html`
               <${EmptyPanel}
-                title="No missions match"
-                description="Adjust the search or filters to find a mission loop."
+                title=${t("missions.emptyTitle")}
+                description=${t("missions.emptyDesc")}
               />
             `}
       </div>

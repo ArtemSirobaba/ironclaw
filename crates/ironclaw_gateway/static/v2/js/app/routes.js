@@ -1,56 +1,24 @@
 export const defaultRoute = "/chat";
 
 export const primaryRoutes = [
-  {
-    id: "chat",
-    path: "/chat",
-    label: "Chat",
-  },
-  {
-    id: "workspace",
-    path: "/workspace",
-    label: "Workspace",
-  },
-  {
-    id: "projects",
-    path: "/projects",
-    label: "Projects",
-  },
-  {
-    id: "jobs",
-    path: "/jobs",
-    label: "Jobs",
-  },
-  {
-    id: "missions",
-    path: "/missions",
-    label: "Missions",
-  },
-  {
-    id: "extensions",
-    path: "/extensions",
-    label: "Extensions",
-  },
-  {
-    id: "settings",
-    path: "/settings",
-    label: "Settings",
-  },
-  {
-    id: "admin",
-    path: "/admin",
-    label: "Admin",
-  },
+  { id: "chat", path: "/chat", labelKey: "nav.chat" },
+  { id: "workspace", path: "/workspace", labelKey: "nav.workspace" },
+  { id: "projects", path: "/projects", labelKey: "nav.projects" },
+  { id: "jobs", path: "/jobs", labelKey: "nav.jobs" },
+  { id: "missions", path: "/missions", labelKey: "nav.missions" },
+  { id: "extensions", path: "/extensions", labelKey: "nav.extensions" },
+  { id: "settings", path: "/settings", labelKey: "nav.settings" },
+  { id: "admin", path: "/admin", labelKey: "nav.admin" },
 ];
 
-export const routeSections = [
+export const routeSectionDefs = [
   {
-    label: "Work",
-    routes: primaryRoutes.filter((route) => ["chat", "workspace", "projects", "jobs", "missions"].includes(route.id)),
+    labelKey: "nav.sectionWork",
+    ids: ["chat", "workspace", "projects", "jobs", "missions"],
   },
   {
-    label: "System",
-    routes: primaryRoutes.filter((route) => ["extensions", "settings", "admin"].includes(route.id)),
+    labelKey: "nav.sectionSystem",
+    ids: ["extensions", "settings", "admin"],
   },
 ];
 

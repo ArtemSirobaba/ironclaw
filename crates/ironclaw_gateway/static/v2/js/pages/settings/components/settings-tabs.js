@@ -1,8 +1,10 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Icon } from "../../../design-system/icons.js";
 import { SETTINGS_TABS } from "../lib/settings-schema.js";
 
 export function SettingsTabs({ activeTab, onTabChange }) {
+  const t = useT();
   return html`
     <div className="flex flex-col gap-1">
       ${SETTINGS_TABS.map(
@@ -27,7 +29,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
             >
               <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
             </span>
-            <span className="min-w-0 truncate">${tab.label}</span>
+            <span className="min-w-0 truncate">${t(tab.labelKey)}</span>
           </button>
         `
       )}
@@ -36,6 +38,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
 }
 
 export function SettingsTabsMobile({ activeTab, onTabChange }) {
+  const t = useT();
   return html`
     <div className="flex gap-1.5 overflow-x-auto pb-1">
       ${SETTINGS_TABS.map(
@@ -51,7 +54,7 @@ export function SettingsTabsMobile({ activeTab, onTabChange }) {
             ].join(" ")}
           >
             <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
-            ${tab.label}
+            ${t(tab.labelKey)}
           </button>
         `
       )}

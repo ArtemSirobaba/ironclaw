@@ -1,17 +1,19 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { StatusPill } from "../../../design-system/primitives.js";
 import { Icon } from "../../../design-system/icons.js";
 import { useTools } from "../hooks/useTools.js";
 
-const PERMISSION_STATES = [
-  { value: "always_allow", label: "Always allow", tone: "success" },
-  { value: "ask", label: "Ask each time", tone: "warning" },
-  { value: "disabled", label: "Disabled", tone: "danger" },
-];
-
 function ToolRow({ tool, onPermissionChange, isSaved }) {
+  const t = useT();
+  const permissionStates = [
+    { value: "always_allow", label: t("tools.alwaysAllow"), tone: "success" },
+    { value: "ask", label: t("tools.askEachTime"), tone: "warning" },
+    { value: "disabled", label: t("tools.disabled"), tone: "danger" },
+  ];
+
   const isLocked = tool.locked;
-  const current = PERMISSION_STATES.find((p) => p.value === tool.state) || PERMISSION_STATES[1];
+  const current = permissionStates.find((p) => p.value === tool.state) || permissionStates[1];
   const isDefault = tool.state === tool.default_state;
 
   return html`
@@ -23,7 +25,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
             <span className="truncate font-mono text-sm text-iron-200">${tool.name}</span>
             ${isDefault && html`
               <span className="rounded border border-white/[0.06] bg-white/[0.03] px-1.5 py-0.5 font-mono text-[10px] text-iron-700">
-                default
+                ${t("tools.default")}
               </span>
             `}
           </div>
@@ -40,16 +42,16 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
               <select
                 value=${tool.state}
                 onChange=${(e) => onPermissionChange(tool.name, e.target.value)}
-                aria-label=${"Permission for " + tool.name}
+                aria-label=${t("tools.permissionFor", { name: tool.name })}
                 className="h-8 rounded-md border border-white/12 bg-white/[0.04] px-2.5 font-mono text-xs text-iron-100 outline-none transition focus:border-signal/45"
               >
-                ${PERMISSION_STATES.map(
+                ${permissionStates.map(
                   (p) => html`<option key=${p.value} value=${p.value}>${p.label}</option>`
                 )}
               </select>
             `}
         ${isSaved && html`
-          <span className="font-mono text-[11px] text-mint">saved</span>
+          <span className="font-mono text-[11px] text-mint">${t("tools.saved")}</span>
         `}
       </div>
     </div>
@@ -57,6 +59,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
 }
 
 export function ToolsTab() {
+  const t = useT();
   const { tools, query, setPermission, savedTools } = useTools();
   const [filter, setFilter] = React.useState("");
 
@@ -77,7 +80,7 @@ export function ToolsTab() {
   if (query.error) {
     return html`
       <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <p className="text-sm text-red-200">Failed to load tools: ${query.error.message}</p>
+        <p className="text-sm text-red-200">${t("tools.failedLoad", { message: query.error.message })}</p>
       </div>
     `;
   }
@@ -93,7 +96,7 @@ export function ToolsTab() {
           type="text"
           value=${filter}
           onChange=${(e) => setFilter(e.target.value)}
-          placeholder="Filter tools…"
+          placeholder=${t("tools.filterPlaceholder")}
           className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
         />
         <span className="font-mono text-[11px] text-iron-700">
@@ -103,10 +106,10 @@ export function ToolsTab() {
 
       <div className="v2-panel rounded-[18px] p-5 sm:p-6">
         <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
-          Tool permissions
+          ${t("tools.permissions")}
         </h3>
         ${filtered.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">No tools match the filter.</p>`
+          ? html`<p className="py-4 text-sm text-iron-300">${t("tools.noMatch")}</p>`
           : filtered.map(
               (tool) =>
                 html`

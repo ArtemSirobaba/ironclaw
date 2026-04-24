@@ -1,4 +1,5 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Button } from "../../../design-system/button.js";
 import { EmptyPanel, Panel, StatusPill } from "../../../design-system/primitives.js";
 import { MarkdownRenderer } from "../../chat/components/markdown-renderer.js";
@@ -11,12 +12,13 @@ import {
 } from "../lib/workspace-presenters.js";
 
 function Breadcrumb({ path, onNavigate }) {
+  const t = useT();
   const parts = pathSegments(path);
   let current = "";
 
   return html`
     <div className="flex min-w-0 flex-wrap items-center gap-2 font-mono text-sm">
-      <button type="button" onClick=${() => onNavigate("/workspace")} className="text-signal hover:underline">workspace</button>
+      <button type="button" onClick=${() => onNavigate("/workspace")} className="text-signal hover:underline">${t("workspace.breadcrumbRoot")}</button>
       ${parts.map((part) => {
         current = current ? `${current}/${part}` : part;
         const target = current;
@@ -49,6 +51,7 @@ export function WorkspaceViewer({
   isSaving,
   onNavigate,
 }) {
+  const t = useT();
   if (isLoading) {
     return html`
       <div className="space-y-4">
@@ -61,8 +64,8 @@ export function WorkspaceViewer({
   if (!file) {
     return html`
       <${EmptyPanel}
-        title="Pick a workspace file"
-        description="Choose a memory document from the tree or search results to inspect and edit it."
+        title=${t("workspace.pickFileTitle")}
+        description=${t("workspace.pickFileDesc")}
       />
     `;
   }
@@ -75,10 +78,10 @@ export function WorkspaceViewer({
           <${StatusPill} tone="muted" label=${formatWorkspaceDate(file.updated_at)} />
           ${editing
             ? html`
-                <${Button} variant="ghost" onClick=${onCancelEdit} disabled=${isSaving}>Cancel<//>
-                <${Button} onClick=${onSave} disabled=${isSaving}>${isSaving ? "Saving" : "Save"}<//>
+                <${Button} variant="ghost" onClick=${onCancelEdit} disabled=${isSaving}>${t("workspace.cancel")}<//>
+                <${Button} onClick=${onSave} disabled=${isSaving}>${isSaving ? t("workspace.saving") : t("workspace.save")}<//>
               `
-            : html`<${Button} variant="secondary" onClick=${onStartEdit}>Edit<//>`}
+            : html`<${Button} variant="secondary" onClick=${onStartEdit}>${t("workspace.edit")}<//>`}
         </div>
       </div>
 
@@ -103,7 +106,7 @@ export function WorkspaceViewer({
 
       ${parentPath(path) && html`
         <div className="border-t border-white/10 px-4 py-3 text-xs text-iron-400">
-          Parent: ${parentPath(path)}
+          ${t("workspace.parent", { path: parentPath(path) })}
         </div>
       `}
     <//>

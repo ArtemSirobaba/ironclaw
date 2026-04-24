@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { StatusPill } from "../../../design-system/primitives.js";
 import { listWorkspace } from "../lib/workspace-api.js";
 import { formatWorkspaceDate, snippetFor } from "../lib/workspace-presenters.js";
 
 function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory, onSelectFile }) {
+  const t = useT();
   const isExpanded = expandedPaths.has(entry.path);
   const childQuery = useQuery({
     queryKey: ["workspace-list", entry.path],
@@ -28,7 +30,7 @@ function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory
         ${isExpanded && html`
           <div className="space-y-1">
             ${childQuery.isLoading
-              ? html`<div className="px-4 py-2 text-xs text-iron-400">Loading...</div>`
+              ? html`<div className="px-4 py-2 text-xs text-iron-400">${t("workspace.loading")}</div>`
               : (childQuery.data?.entries || []).map((child) => html`
                   <${TreeNode}
                     key=${child.path}
@@ -69,12 +71,13 @@ export function WorkspaceTree({
   onSelectFile,
   isLoading,
 }) {
+  const t = useT();
   if (isLoading) {
     return html`<div className="space-y-2 p-3">${[1, 2, 3, 4].map((i) => html`<div key=${i} className="v2-skeleton h-8 rounded-md" />`)}</div>`;
   }
 
   if (!entries.length) {
-    return html`<div className="px-4 py-8 text-sm text-iron-300">No files in workspace.</div>`;
+    return html`<div className="px-4 py-8 text-sm text-iron-300">${t("workspace.noFiles")}</div>`;
   }
 
   return html`
@@ -95,12 +98,13 @@ export function WorkspaceTree({
 }
 
 export function WorkspaceSearchResults({ results, query, onSelectFile, isSearching }) {
+  const t = useT();
   if (isSearching) {
-    return html`<div className="p-4 text-sm text-iron-300">Searching...</div>`;
+    return html`<div className="p-4 text-sm text-iron-300">${t("workspace.searching")}</div>`;
   }
 
   if (!results.length) {
-    return html`<div className="p-4 text-sm text-iron-300">No results.</div>`;
+    return html`<div className="p-4 text-sm text-iron-300">${t("workspace.noResults")}</div>`;
   }
 
   return html`

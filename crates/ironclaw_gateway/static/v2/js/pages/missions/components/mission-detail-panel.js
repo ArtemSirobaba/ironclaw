@@ -1,4 +1,5 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Button } from "../../../design-system/button.js";
 import { EmptyPanel, Panel, StatusPill } from "../../../design-system/primitives.js";
 import { MarkdownRenderer } from "../../chat/components/markdown-renderer.js";
@@ -14,21 +15,22 @@ function MetaCard({ label, value }) {
 }
 
 function ActionButtons({ mission, isBusy, onFire, onPause, onResume }) {
+  const t = useT();
   if (mission.status === "Active") {
     return html`
-      <${Button} onClick=${() => onFire(mission.id)} disabled=${isBusy}>Fire now<//>
-      <${Button} variant="secondary" onClick=${() => onPause(mission.id)} disabled=${isBusy}>Pause<//>
+      <${Button} onClick=${() => onFire(mission.id)} disabled=${isBusy}>${t("missions.action.fireNow")}<//>
+      <${Button} variant="secondary" onClick=${() => onPause(mission.id)} disabled=${isBusy}>${t("missions.action.pause")}<//>
     `;
   }
 
   if (mission.status === "Paused") {
     return html`
-      <${Button} onClick=${() => onResume(mission.id)} disabled=${isBusy}>Resume<//>
-      <${Button} variant="secondary" onClick=${() => onFire(mission.id)} disabled=${isBusy}>Run once<//>
+      <${Button} onClick=${() => onResume(mission.id)} disabled=${isBusy}>${t("missions.action.resume")}<//>
+      <${Button} variant="secondary" onClick=${() => onFire(mission.id)} disabled=${isBusy}>${t("missions.action.runOnce")}<//>
     `;
   }
 
-  return html`<${Button} onClick=${() => onFire(mission.id)} disabled=${isBusy}>Run again<//>`;
+  return html`<${Button} onClick=${() => onFire(mission.id)} disabled=${isBusy}>${t("missions.action.runAgain")}<//>`;
 }
 
 export function MissionDetailPanel({
@@ -42,6 +44,7 @@ export function MissionDetailPanel({
   onOpenProject,
   onOpenThread,
 }) {
+  const t = useT();
   if (isLoading) {
     return html`
       <div className="space-y-4">
@@ -53,8 +56,8 @@ export function MissionDetailPanel({
   if (error || !mission) {
     return html`
       <${EmptyPanel}
-        title="Mission unavailable"
-        description=${error?.message || "This mission no longer exists or is outside your access scope."}
+        title=${t("missions.unavailable")}
+        description=${error?.message || t("missions.unavailableDesc")}
       />
     `;
   }
@@ -64,7 +67,7 @@ export function MissionDetailPanel({
       <${Panel} className="p-4 sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Mission dossier</div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.dossier")}</div>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">${mission.name}</h2>
             ${mission.project && html`
               <button
@@ -80,10 +83,10 @@ export function MissionDetailPanel({
         </div>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <${MetaCard} label="Cadence" value=${mission.cadence_description || mission.cadence_type || "manual"} />
-          <${MetaCard} label="Threads today" value=${`${mission.threads_today || 0} / ${mission.max_threads_per_day || "unlimited"}`} />
-          <${MetaCard} label="Next fire" value=${formatMissionDate(mission.next_fire_at)} />
-          <${MetaCard} label="Updated" value=${formatMissionDate(mission.updated_at)} />
+          <${MetaCard} label=${t("missions.meta.cadence")} value=${mission.cadence_description || mission.cadence_type || t("missions.meta.manual")} />
+          <${MetaCard} label=${t("missions.meta.threadsToday")} value=${`${mission.threads_today || 0} / ${mission.max_threads_per_day || t("missions.meta.unlimited")}`} />
+          <${MetaCard} label=${t("missions.meta.nextFire")} value=${formatMissionDate(mission.next_fire_at)} />
+          <${MetaCard} label=${t("missions.meta.updated")} value=${formatMissionDate(mission.updated_at)} />
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
@@ -98,15 +101,15 @@ export function MissionDetailPanel({
       <//>
 
       <${Panel} className="p-4 sm:p-5">
-        <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Brief</div>
+        <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.brief")}</div>
         <div className="mt-4 text-sm leading-6 text-iron-200">
-          <${MarkdownRenderer} content=${mission.goal || "No mission goal set."} />
+          <${MarkdownRenderer} content=${mission.goal || t("missions.noGoal")} />
         </div>
       <//>
 
       ${mission.current_focus && html`
         <${Panel} className="p-4 sm:p-5">
-          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Current focus</div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.currentFocus")}</div>
           <div className="mt-4 text-sm leading-6 text-iron-200">
             <${MarkdownRenderer} content=${mission.current_focus} />
           </div>
@@ -115,7 +118,7 @@ export function MissionDetailPanel({
 
       ${mission.success_criteria && html`
         <${Panel} className="p-4 sm:p-5">
-          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Success criteria</div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.successCriteria")}</div>
           <div className="mt-4 text-sm leading-6 text-iron-200">
             <${MarkdownRenderer} content=${mission.success_criteria} />
           </div>
@@ -124,7 +127,7 @@ export function MissionDetailPanel({
 
       ${mission.threads?.length ? html`
         <${Panel} className="p-4 sm:p-5">
-          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Spawned threads</div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.spawnedThreads")}</div>
           <div className="mt-4 space-y-3">
             ${mission.threads.map((thread) => html`
               <button

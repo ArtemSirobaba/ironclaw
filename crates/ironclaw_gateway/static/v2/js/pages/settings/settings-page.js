@@ -10,8 +10,11 @@ import { NetworkingTab } from "./components/networking-tab.js";
 import { ToolsTab } from "./components/tools-tab.js";
 import { SkillsTab } from "./components/skills-tab.js";
 import { UsersTab } from "./components/users-tab.js";
+import { LanguageTab } from "./components/language-tab.js";
+import { useT } from "../../lib/i18n.js";
 
 export function SettingsPage() {
+  const t = useT();
   const { gatewayStatus } = useOutletContext();
   const [activeTab, setActiveTab] = React.useState("inference");
   const { settings, query, save, savedKeys, needsRestart, saveError } = useSettings();
@@ -42,6 +45,7 @@ export function SettingsPage() {
     tools: html`<${ToolsTab} />`,
     skills: html`<${SkillsTab} />`,
     users: html`<${UsersTab} />`,
+    language: html`<${LanguageTab} />`,
   };
 
   return html`
@@ -64,7 +68,7 @@ export function SettingsPage() {
             ${saveError &&
             html`
               <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-                Save failed: ${saveError.message}
+                ${t("error.saveFailed", { message: saveError.message })}
               </div>
             `}
 

@@ -1,14 +1,19 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Panel, StatusPill } from "../../../design-system/primitives.js";
 
-const cards = [
-  { key: "total", label: "Total missions", tone: "muted" },
-  { key: "active", label: "Active", tone: "signal" },
-  { key: "paused", label: "Paused", tone: "warning" },
-  { key: "threads", label: "Spawned threads", tone: "success" },
-];
+function buildCards(t) {
+  return [
+    { key: "total", label: t("missions.summary.totalMissions"), tone: "muted" },
+    { key: "active", label: t("missions.summary.active"), tone: "signal" },
+    { key: "paused", label: t("missions.summary.paused"), tone: "warning" },
+    { key: "threads", label: t("missions.summary.spawnedThreads"), tone: "success" },
+  ];
+}
 
 export function MissionsSummaryStrip({ summary }) {
+  const t = useT();
+  const cards = buildCards(t);
   return html`
     <${Panel} className="p-4 sm:p-5">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -21,8 +26,8 @@ export function MissionsSummaryStrip({ summary }) {
             <div className="mt-4 text-3xl font-semibold tracking-tight text-white">${summary[card.key] || 0}</div>
             <p className="mt-2 text-sm leading-6 text-iron-300">
               ${card.key === "total"
-                ? `${summary.completed || 0} completed / ${summary.failed || 0} failed`
-                : "Across every project workspace"}
+                ? t("missions.summary.completedFailed", { completed: summary.completed || 0, failed: summary.failed || 0 })
+                : t("missions.summary.acrossProjects")}
             </p>
           </div>
         `)}

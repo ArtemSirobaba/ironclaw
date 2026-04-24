@@ -1,10 +1,12 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { StatusPill } from "../../../design-system/primitives.js";
 import { Button } from "../../../design-system/button.js";
 import { Icon } from "../../../design-system/icons.js";
 import { useUsers } from "../hooks/useUsers.js";
 
 function CreateUserForm({ onCreate, isCreating, error }) {
+  const t = useT();
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [role, setRole] = React.useState("member");
@@ -23,18 +25,18 @@ function CreateUserForm({ onCreate, isCreating, error }) {
     return html`
       <${Button} variant="secondary" onClick=${() => setIsOpen(true)}>
         <${Icon} name="plus" className="mr-2 h-4 w-4" />
-        Add user
+        ${t("users.addUser")}
       <//>
     `;
   }
 
   return html`
     <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">New user</h3>
+      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("users.newUser")}</h3>
       <form onSubmit=${handleSubmit} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Display name</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("users.displayName")}</label>
             <input
               type="text"
               value=${name}
@@ -44,7 +46,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Email</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("users.email")}</label>
             <input
               type="email"
               value=${email}
@@ -54,14 +56,14 @@ function CreateUserForm({ onCreate, isCreating, error }) {
           </div>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-iron-300">Role</label>
+          <label className="mb-1 block text-xs text-iron-300">${t("users.role")}</label>
           <select
             value=${role}
             onChange=${(e) => setRole(e.target.value)}
             className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
           >
-            <option value="member">Member</option>
-            <option value="admin">Admin</option>
+            <option value="member">${t("users.member")}</option>
+            <option value="admin">${t("users.admin")}</option>
           </select>
         </div>
         ${error && html`
@@ -69,9 +71,9 @@ function CreateUserForm({ onCreate, isCreating, error }) {
         `}
         <div className="flex gap-2">
           <${Button} type="submit" disabled=${isCreating}>
-            ${isCreating ? "Creating…" : "Create user"}
+            ${isCreating ? t("users.creating") : t("users.createUser")}
           <//>
-          <${Button} variant="ghost" type="button" onClick=${() => setIsOpen(false)}>Cancel<//>
+          <${Button} variant="ghost" type="button" onClick=${() => setIsOpen(false)}>${t("users.cancel")}<//>
         </div>
       </form>
     </div>
@@ -79,6 +81,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
 }
 
 function UserRow({ user }) {
+  const t = useT();
   const statusTone = user.status === "active" ? "success" : "danger";
   const roleTone = user.role === "admin" ? "signal" : "muted";
 
@@ -87,7 +90,7 @@ function UserRow({ user }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-iron-200">${user.display_name || user.id}</span>
-          <${StatusPill} tone=${roleTone} label=${user.role || "member"} />
+          <${StatusPill} tone=${roleTone} label=${user.role === "admin" ? t("users.admin") : t("users.member")} />
           <${StatusPill} tone=${statusTone} label=${user.status || "active"} />
         </div>
         ${user.email && html`
@@ -102,6 +105,7 @@ function UserRow({ user }) {
 }
 
 export function UsersTab() {
+  const t = useT();
   const { users, query, isForbidden, createUser, createError, isCreating } = useUsers();
 
   if (query.isLoading) {
@@ -123,10 +127,10 @@ export function UsersTab() {
       <div className="v2-panel rounded-[18px] p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <${Icon} name="lock" className="h-5 w-5 text-iron-700" />
-          <h3 className="text-lg font-semibold text-white">Admin access required</h3>
+          <h3 className="text-lg font-semibold text-white">${t("users.adminRequired")}</h3>
         </div>
         <p className="mt-2 max-w-md text-sm leading-6 text-iron-300">
-          User management is only available to accounts with admin privileges.
+          ${t("users.adminRequiredDesc")}
         </p>
       </div>
     `;
@@ -135,7 +139,7 @@ export function UsersTab() {
   if (query.error) {
     return html`
       <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <p className="text-sm text-red-200">Failed to load users: ${query.error.message}</p>
+        <p className="text-sm text-red-200">${t("users.failedLoad", { message: query.error.message })}</p>
       </div>
     `;
   }
@@ -146,10 +150,10 @@ export function UsersTab() {
 
       <div className="v2-panel rounded-[18px] p-5 sm:p-6">
         <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
-          Users (${users.length})
+          ${t("users.title", { count: users.length })}
         </h3>
         ${users.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">No users registered.</p>`
+          ? html`<p className="py-4 text-sm text-iron-300">${t("users.noUsers")}</p>`
           : users.map(
               (user) => html`<${UserRow} key=${user.id} user=${user} />`
             )}

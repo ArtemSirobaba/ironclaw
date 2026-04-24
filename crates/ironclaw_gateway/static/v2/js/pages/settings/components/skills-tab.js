@@ -1,8 +1,10 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { StatusPill } from "../../../design-system/primitives.js";
 import { useSkills } from "../hooks/useSkills.js";
 
 export function SkillsTab() {
+  const t = useT();
   const { skills, query } = useSkills();
 
   if (query.isLoading) {
@@ -25,7 +27,7 @@ export function SkillsTab() {
   if (query.error) {
     return html`
       <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <p className="text-sm text-red-200">Failed to load skills: ${query.error.message}</p>
+        <p className="text-sm text-red-200">${t("skills.failedLoad", { message: query.error.message })}</p>
       </div>
     `;
   }
@@ -33,10 +35,9 @@ export function SkillsTab() {
   if (skills.length === 0) {
     return html`
       <div className="v2-panel rounded-[18px] p-6 sm:p-8">
-        <h3 className="text-lg font-semibold text-white">No skills installed</h3>
+        <h3 className="text-lg font-semibold text-white">${t("skills.noInstalled")}</h3>
         <p className="mt-2 max-w-md text-sm leading-6 text-iron-300">
-          Skills extend the agent with domain-specific instructions. Install them from the ClawHub registry
-          or place SKILL.md files in your workspace.
+          ${t("skills.noInstalledDesc")}
         </p>
       </div>
     `;
@@ -45,7 +46,7 @@ export function SkillsTab() {
   return html`
     <div className="v2-panel rounded-[18px] p-5 sm:p-6">
       <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
-        Installed skills
+        ${t("skills.installed")}
       </h3>
       ${skills.map(
         (skill) => html`

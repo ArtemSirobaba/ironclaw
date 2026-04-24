@@ -1,4 +1,5 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Panel, StatusPill, EmptyPanel } from "../../../design-system/primitives.js";
 import { Button } from "../../../design-system/button.js";
 import { Icon } from "../../../design-system/icons.js";
@@ -12,14 +13,17 @@ import {
   filterUsers,
 } from "../lib/admin-presenters.js";
 
-const FILTERS = [
-  { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "suspended", label: "Suspended" },
-  { value: "admin", label: "Admins" },
-];
+function buildFilters(t) {
+  return [
+    { value: "all", label: t("admin.users.filter.all") },
+    { value: "active", label: t("admin.users.filter.active") },
+    { value: "suspended", label: t("admin.users.filter.suspended") },
+    { value: "admin", label: t("admin.users.filter.admins") },
+  ];
+}
 
 function TokenBanner({ token, onDismiss }) {
+  const t = useT();
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = () => {
@@ -34,14 +38,14 @@ function TokenBanner({ token, onDismiss }) {
     <div className="rounded-xl border border-signal/30 bg-signal/10 p-4 sm:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-white">Token created</p>
-          <p className="mt-1 text-xs text-iron-300">Copy this now — it will not be shown again.</p>
+          <p className="text-sm font-semibold text-white">${t("admin.users.tokenCreated")}</p>
+          <p className="mt-1 text-xs text-iron-300">${t("admin.users.tokenCreatedDesc")}</p>
           <div className="mt-3 flex items-center gap-2">
             <code className="min-w-0 flex-1 truncate rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-xs text-iron-100">
               ${token}
             </code>
             <${Button} variant="secondary" onClick=${handleCopy}>
-              ${copied ? "Copied" : "Copy"}
+              ${copied ? t("admin.users.copied") : t("admin.users.copy")}
             <//>
           </div>
         </div>
@@ -54,6 +58,7 @@ function TokenBanner({ token, onDismiss }) {
 }
 
 function CreateUserForm({ onCreate, isCreating, error }) {
+  const t = useT();
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [role, setRole] = React.useState("member");
@@ -72,55 +77,55 @@ function CreateUserForm({ onCreate, isCreating, error }) {
     return html`
       <${Button} variant="secondary" onClick=${() => setIsOpen(true)}>
         <${Icon} name="plus" className="mr-2 h-4 w-4" />
-        New user
+        ${t("admin.users.newUser")}
       <//>
     `;
   }
 
   return html`
     <${Panel} className="p-5 sm:p-6">
-      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Create user</h3>
+      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.users.createUser")}</h3>
       <form onSubmit=${handleSubmit} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-3">
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Display name</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("admin.users.displayName")}</label>
             <input
               type="text"
               value=${name}
               onChange=${(e) => setName(e.target.value)}
               required
               className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
-              placeholder="Jane Doe"
+              placeholder=${t("admin.users.displayNamePlaceholder")}
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Email</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("admin.users.email")}</label>
             <input
               type="email"
               value=${email}
               onChange=${(e) => setEmail(e.target.value)}
               className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
-              placeholder="jane@example.com"
+              placeholder=${t("admin.users.emailPlaceholder")}
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Role</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("admin.users.role")}</label>
             <select
               value=${role}
               onChange=${(e) => setRole(e.target.value)}
               className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
             >
-              <option value="member">Member</option>
-              <option value="admin">Admin</option>
+              <option value="member">${t("admin.users.member")}</option>
+              <option value="admin">${t("admin.users.admin")}</option>
             </select>
           </div>
         </div>
         ${error && html`<p className="text-sm text-red-200">${error.message}</p>`}
         <div className="flex gap-2">
           <${Button} type="submit" disabled=${isCreating}>
-            ${isCreating ? "Creating…" : "Create user"}
+            ${isCreating ? t("admin.users.creating") : t("admin.users.createUser")}
           <//>
-          <${Button} variant="ghost" type="button" onClick=${() => setIsOpen(false)}>Cancel<//>
+          <${Button} variant="ghost" type="button" onClick=${() => setIsOpen(false)}>${t("admin.users.cancel")}<//>
         </div>
       </form>
     <//>
@@ -128,13 +133,14 @@ function CreateUserForm({ onCreate, isCreating, error }) {
 }
 
 function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }) {
+  const t = useT();
   return html`
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick=${onCancel}>
       <div className="w-full max-w-md rounded-xl border border-white/10 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold text-white">${title}</h3>
         <p className="mt-2 text-sm text-iron-300">${message}</p>
         <div className="mt-5 flex justify-end gap-2">
-          <${Button} variant="ghost" onClick=${onCancel}>Cancel<//>
+          <${Button} variant="ghost" onClick=${onCancel}>${t("admin.users.cancel")}<//>
           <button
             onClick=${onConfirm}
             className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-red-500/20 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/30"
@@ -148,6 +154,7 @@ function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }) {
 }
 
 function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreateToken }) {
+  const t = useT();
   return html`
     <div className="flex items-center justify-between gap-4 border-t border-white/[0.06] py-3.5 first:border-0 first:pt-0">
       <div className="min-w-0 flex-1">
@@ -168,25 +175,25 @@ function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreate
       </div>
       <div className="flex shrink-0 flex-wrap items-center gap-2">
         <span className="hidden font-mono text-xs text-iron-300 sm:inline">
-          ${user.job_count != null ? `${user.job_count} jobs` : ""}
+          ${user.job_count != null ? t("admin.users.jobsCount", { count: user.job_count }) : ""}
           ${user.total_cost != null ? ` · ${formatCost(user.total_cost)}` : ""}
         </span>
         <span className="hidden text-xs text-iron-700 lg:inline">${formatRelativeTime(user.last_active_at)}</span>
         <div className="flex gap-1">
           ${user.status === "active"
-            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-red-400/30 hover:text-red-200">Suspend</button>`
-            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal">Activate</button>`}
+            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-red-400/30 hover:text-red-200">${t("admin.users.suspend")}</button>`
+            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal">${t("admin.users.activate")}</button>`}
           <button
             onClick=${() => onChangeRole(user.id, user.role === "admin" ? "member" : "admin")}
             className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-white/20 hover:text-white"
           >
-            ${user.role === "admin" ? "Demote" : "Promote"}
+            ${user.role === "admin" ? t("admin.users.demote") : t("admin.users.promote")}
           </button>
           <button
             onClick=${() => onCreateToken(user.id, user.display_name)}
             className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal"
           >
-            Token
+            ${t("admin.users.token")}
           </button>
         </div>
       </div>
@@ -195,6 +202,7 @@ function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreate
 }
 
 export function AdminUsersTab({ selectedUserId, onSelectUser }) {
+  const t = useT();
   const {
     users, query, isForbidden, createUser, isCreating, createError,
     updateUser, deleteUser, suspendUser, activateUser, createToken,
@@ -206,18 +214,19 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
   const [confirm, setConfirm] = React.useState(null);
 
   const filtered = filterUsers(users, { search, filter });
+  const FILTERS = buildFilters(t);
 
   const handleSuspend = (id) => {
     setConfirm({
-      title: "Suspend user",
-      message: "This will prevent the user from authenticating. Continue?",
-      confirmLabel: "Suspend",
+      title: t("admin.users.suspendTitle"),
+      message: t("admin.users.suspendDesc"),
+      confirmLabel: t("admin.users.suspend"),
       onConfirm: () => { suspendUser(id); setConfirm(null); },
     });
   };
 
   const handleCreateToken = async (userId, displayName) => {
-    const name = window.prompt(`Token name for ${displayName || "user"}:`);
+    const name = window.prompt(t("admin.users.tokenNamePrompt", { name: displayName || t("admin.users.userFallback") }));
     if (!name) return;
     await createToken(userId, name);
   };
@@ -241,10 +250,10 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
       <${Panel} className="p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <${Icon} name="lock" className="h-5 w-5 text-iron-700" />
-          <h3 className="text-lg font-semibold text-white">Admin access required</h3>
+          <h3 className="text-lg font-semibold text-white">${t("users.adminRequired")}</h3>
         </div>
         <p className="mt-2 max-w-md text-sm leading-6 text-iron-300">
-          User management is only available to accounts with admin privileges.
+          ${t("users.adminRequiredDesc")}
         </p>
       <//>
     `;
@@ -264,12 +273,12 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
       <${Panel} className="p-5 sm:p-6">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
-            Users (${filtered.length}${filtered.length !== users.length ? ` / ${users.length}` : ""})
+            ${t("admin.users.title", { count: filtered.length, total: users.length })}
           </h3>
           <div className="flex items-center gap-2">
             <input
               type="text"
-              placeholder="Search…"
+              placeholder=${t("admin.users.searchPlaceholder")}
               value=${search}
               onChange=${(e) => setSearch(e.target.value)}
               className="h-8 w-48 rounded-md border border-white/12 bg-white/[0.04] px-3 text-xs text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
@@ -296,7 +305,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
         </div>
 
         ${filtered.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">No users match the current filters.</p>`
+          ? html`<p className="py-4 text-sm text-iron-300">${t("admin.users.noMatch")}</p>`
           : filtered.map(
               (user) => html`
                 <${UserRow}

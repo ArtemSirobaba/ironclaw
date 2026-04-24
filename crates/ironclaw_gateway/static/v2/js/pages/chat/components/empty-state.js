@@ -1,11 +1,13 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Icon } from "../../../design-system/icons.js";
 
 export function EmptyState({ onSuggestion }) {
+  const t = useT();
   const suggestions = [
-    "Map the current gateway state",
-    "Review recent thread activity",
-    "Draft an extension readiness check",
+    t("chat.suggestion1"),
+    t("chat.suggestion2"),
+    t("chat.suggestion3"),
   ];
 
   return html`
@@ -15,10 +17,10 @@ export function EmptyState({ onSuggestion }) {
           <${Icon} name="spark" className="h-6 w-6" />
         </div>
         <h2 className="font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.04em] text-white md:text-7xl">
-          Start with a concrete operator task.
+          ${t("chat.emptyTitle")}
         </h2>
         <p className="mt-5 max-w-[58ch] text-base leading-relaxed text-iron-300">
-          Send a message, attach files, or ask for a gateway check. The workspace keeps approvals and runtime activity visible as the turn progresses.
+          ${t("chat.emptyDesc")}
         </p>
       </div>
       <div className="mt-10 grid max-w-4xl gap-3 sm:grid-cols-[1fr_1.15fr]">

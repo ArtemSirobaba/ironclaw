@@ -1,4 +1,5 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 
 const STYLES = {
   connected: "bg-mint/20 text-mint border-mint/30",
@@ -8,15 +9,13 @@ const STYLES = {
   idle: "hidden",
 };
 
-const LABELS = {
-  connected: "Connected",
-  reconnecting: "Reconnecting...",
-  disconnected: "Disconnected",
-  connecting: "Connecting...",
-};
-
 export function ConnectionStatus({ status }) {
+  const t = useT();
   if (status === "idle" || status === "connected" || !status) return null;
+
+  const labelKey = "connection." + status;
+  const label = t(labelKey);
+
   return html`
     <div
       className=${[
@@ -24,7 +23,7 @@ export function ConnectionStatus({ status }) {
         STYLES[status] || STYLES.connecting,
       ].join(" ")}
     >
-      ${LABELS[status] || status}
+      ${label !== labelKey ? label : status}
     </div>
   `;
 }

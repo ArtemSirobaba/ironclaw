@@ -1,9 +1,11 @@
 import { React, html } from "../../../lib/html.js";
 import { StatusPill } from "../../../design-system/primitives.js";
 import { Button } from "../../../design-system/button.js";
+import { useT } from "../../../lib/i18n.js";
 import { usePairing } from "../hooks/useExtensions.js";
 
 export function PairingSection({ channel }) {
+  const t = useT();
   const { requests, isLoading, approve, isApproving } = usePairing(channel);
   const [manualCode, setManualCode] = React.useState("");
 
@@ -31,7 +33,7 @@ export function PairingSection({ channel }) {
   return html`
     <div className="mt-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
       <h4 className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
-        Pairing
+        ${t("pairing.title")}
       </h4>
 
       <div className="mb-4 flex items-center gap-2">
@@ -40,7 +42,7 @@ export function PairingSection({ channel }) {
           value=${manualCode}
           onChange=${(e) => setManualCode(e.target.value)}
           onKeyDown=${(e) => e.key === "Enter" && handleManualSubmit()}
-          placeholder="Enter pairing code…"
+          placeholder=${t("pairing.placeholder")}
           className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 font-mono text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
         />
         <${Button}
@@ -49,7 +51,7 @@ export function PairingSection({ channel }) {
           onClick=${handleManualSubmit}
           disabled=${isApproving || !manualCode.trim()}
         >
-          Approve
+          ${t("pairing.approve")}
         <//>
       </div>
 
@@ -73,13 +75,13 @@ export function PairingSection({ channel }) {
                     onClick=${() => handleApprove(req.code || req.id)}
                     disabled=${isApproving}
                   >
-                    Approve
+                    ${t("pairing.approve")}
                   <//>
                 </div>
               `)}
             </div>
           `
-        : html`<p className="text-xs text-iron-300">No pending pairing requests.</p>`}
+        : html`<p className="text-xs text-iron-300">${t("pairing.none")}</p>`}
     </div>
   `;
 }

@@ -1,6 +1,8 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 
 function SavedIndicator({ visible }) {
+  const t = useT();
   return html`
     <span
       className=${[
@@ -9,7 +11,7 @@ function SavedIndicator({ visible }) {
       ].join(" ")}
       role="status"
     >
-      saved
+      ${t("tools.saved")}
     </span>
   `;
 }
@@ -42,7 +44,10 @@ function Toggle({ checked, onChange, label }) {
 }
 
 export function SettingsField({ field, value, onSave, isSaved }) {
+  const t = useT();
   const [localValue, setLocalValue] = React.useState("");
+  const label = field.labelKey ? t(field.labelKey) : field.label || "";
+  const description = field.descKey ? t(field.descKey) : field.description || "";
 
   React.useEffect(() => {
     if (field.type !== "boolean") {
@@ -70,9 +75,9 @@ export function SettingsField({ field, value, onSave, isSaved }) {
   return html`
     <div className="flex items-start justify-between gap-6 border-t border-white/[0.06] py-4 first:border-0 first:pt-0">
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium text-iron-200">${field.label}</div>
-        ${field.description &&
-        html`<div className="mt-1 text-xs leading-5 text-iron-300">${field.description}</div>`}
+        <div className="text-sm font-medium text-iron-200">${label}</div>
+        ${description &&
+        html`<div className="mt-1 text-xs leading-5 text-iron-300">${description}</div>`}
       </div>
 
       <div className="flex shrink-0 items-center gap-3">
@@ -81,7 +86,7 @@ export function SettingsField({ field, value, onSave, isSaved }) {
               <${Toggle}
                 checked=${value === true || value === "true"}
                 onChange=${(v) => onSave(field.key, v ? "true" : "false")}
-                label=${field.label}
+                label=${label}
               />
             `
           : field.type === "select"
@@ -92,10 +97,10 @@ export function SettingsField({ field, value, onSave, isSaved }) {
                   setLocalValue(e.target.value);
                   handleCommit(e.target.value);
                 }}
-                aria-label=${field.label}
+                aria-label=${label}
                 className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
               >
-                <option value="">default</option>
+                <option value="">${t("tools.default")}</option>
                 ${field.options.map(
                   (opt) => html`<option key=${opt} value=${opt}>${opt}</option>`
                 )}
@@ -111,8 +116,8 @@ export function SettingsField({ field, value, onSave, isSaved }) {
                 step=${field.step !== undefined ? String(field.step) : field.type === "float" ? "any" : "1"}
                 min=${field.min !== undefined ? String(field.min) : undefined}
                 max=${field.max !== undefined ? String(field.max) : undefined}
-                placeholder="default"
-                aria-label=${field.label}
+                placeholder=${t("tools.default")}
+                aria-label=${label}
                 className="h-9 w-36 rounded-md border border-white/12 bg-white/[0.04] px-3 text-right font-mono text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
               />
             `}
@@ -122,10 +127,12 @@ export function SettingsField({ field, value, onSave, isSaved }) {
   `;
 }
 
-export function SettingsGroup({ group, fields, settings, onSave, savedKeys }) {
+export function SettingsGroup({ group, groupKey, fields, settings, onSave, savedKeys }) {
+  const t = useT();
+  const groupLabel = groupKey ? t(groupKey) : group || "";
   return html`
     <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${group}</h3>
+      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${groupLabel}</h3>
       <div>
         ${fields.map(
           (field) =>

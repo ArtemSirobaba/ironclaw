@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router";
 import { React, html } from "../../lib/html.js";
 import { Button } from "../../design-system/button.js";
 import { EmptyPanel } from "../../design-system/primitives.js";
+import { useT } from "../../lib/i18n.js";
 import { useJobs } from "./hooks/useJobs.js";
 import { useJobDetail } from "./hooks/useJobDetail.js";
 import { useJobFiles } from "./hooks/useJobFiles.js";
@@ -13,6 +14,7 @@ import { JobActivityTab } from "./components/job-activity-tab.js";
 import { JobFilesTab } from "./components/job-files-tab.js";
 
 function FeedbackBanner({ result, onDismiss }) {
+  const t = useT();
   if (!result) return null;
 
   const tone = {
@@ -24,12 +26,13 @@ function FeedbackBanner({ result, onDismiss }) {
   return html`
     <div className=${["flex items-center gap-3 rounded-xl border px-4 py-3 text-sm", tone[result.type] || tone.info].join(" ")}>
       <span className="min-w-0 flex-1">${result.message}</span>
-      <button onClick=${onDismiss} className="shrink-0 opacity-70 transition hover:opacity-100">Dismiss</button>
+      <button onClick=${onDismiss} className="shrink-0 opacity-70 transition hover:opacity-100">${t("jobs.dismiss")}</button>
     </div>
   `;
 }
 
 export function JobsPage() {
+  const t = useT();
   const navigate = useNavigate();
   const { jobId = null } = useParams();
   const [search, setSearch] = React.useState("");
@@ -75,9 +78,9 @@ export function JobsPage() {
   }, [jobsState, navigate]);
 
   const headerActions = html`
-    ${jobId && html`<${Button} variant="ghost" onClick=${() => navigate("/jobs")}>All jobs<//>`}
+    ${jobId && html`<${Button} variant="ghost" onClick=${() => navigate("/jobs")}>${t("jobs.allJobs")}<//>`}
     <${Button} variant="secondary" onClick=${jobsState.invalidate}>
-      ${jobsState.isRefreshing || detailState.isRefreshing ? "Refreshing" : "Refresh"}
+      ${jobsState.isRefreshing || detailState.isRefreshing ? t("jobs.refreshing") : t("jobs.refresh")}
     <//>
   `;
 
@@ -93,10 +96,10 @@ export function JobsPage() {
     } else if (detailState.error || !detailState.job) {
       detailContent = html`
         <${EmptyPanel}
-          title="Job unavailable"
-          description=${detailState.error?.message || "This job no longer exists or is outside your access scope."}
+          title=${t("jobs.unavailable")}
+          description=${detailState.error?.message || t("jobs.unavailableDesc")}
         >
-          <${Button} variant="secondary" onClick=${() => navigate("/jobs")}>Return to jobs<//>
+          <${Button} variant="secondary" onClick=${() => navigate("/jobs")}>${t("jobs.returnToJobs")}<//>
         <//>
       `;
     } else {

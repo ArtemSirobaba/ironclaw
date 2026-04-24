@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router";
 import { React, html } from "../lib/html.js";
+import { useT } from "../lib/i18n.js";
 import { primaryRoutes } from "../app/routes.js";
 import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
 import { useThreads } from "../pages/chat/hooks/useThreads.js";
@@ -45,35 +46,40 @@ function RouteGlyph({ label }) {
 }
 
 function HeaderTabs() {
+  const t = useT();
   return html`
     <nav className="v2-header-tabs flex min-w-max items-center gap-2 xl:gap-3">
-      ${primaryRoutes.map((route) => html`
-        <${NavLink}
-          key=${route.id}
-          to=${route.path}
-          className=${({ isActive }) =>
-            [
-              "group flex items-center gap-3 rounded-md border px-2.5 py-2 text-sm transition xl:px-3",
-              isActive
-                ? "v2-nav-active border-signal/30 text-white"
-                : "border-white/10 bg-white/[0.02] text-iron-300 hover:border-white/15 hover:bg-white/[0.045] hover:text-white",
-            ].join(" ")}
-        >
-          <${RouteGlyph} label=${route.label} />
-          <span className="min-w-0 truncate whitespace-nowrap">${route.label}</span>
-        <//>
-      `)}
+      ${primaryRoutes.map((route) => {
+        const label = t(route.labelKey);
+        return html`
+          <${NavLink}
+            key=${route.id}
+            to=${route.path}
+            className=${({ isActive }) =>
+              [
+                "group flex items-center gap-3 rounded-md border px-2.5 py-2 text-sm transition xl:px-3",
+                isActive
+                  ? "v2-nav-active border-signal/30 text-white"
+                  : "border-white/10 bg-white/[0.02] text-iron-300 hover:border-white/15 hover:bg-white/[0.045] hover:text-white",
+              ].join(" ")}
+          >
+            <${RouteGlyph} label=${label} />
+            <span className="min-w-0 truncate whitespace-nowrap">${label}</span>
+          <//>
+        `;
+      })}
     </nav>
   `;
 }
 
 export function GatewayLayout({ token, onSignOut }) {
+  const t = useT();
   const { theme, toggleTheme } = useInterfaceTheme();
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
   const status = statusQuery.data;
   const statusTone = statusQuery.error ? "danger" : statusQuery.isLoading ? "muted" : "success";
-  const statusLabel = statusQuery.error ? "offline" : statusQuery.isLoading ? "checking" : status?.status || "online";
+  const statusLabel = statusQuery.error ? t("status.offline") : statusQuery.isLoading ? t("status.checking") : status?.status || t("status.online");
 
   return html`
     <div className="v2-app-bg min-h-[100dvh] overflow-hidden">
@@ -101,12 +107,12 @@ export function GatewayLayout({ token, onSignOut }) {
               type="button"
               onClick=${toggleTheme}
               className="v2-button grid h-10 w-10 place-items-center rounded-md border border-white/10 bg-white/[0.035] text-iron-300 hover:text-white"
-              aria-label=${theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-              title=${theme === "dark" ? "Light theme" : "Dark theme"}
+              aria-label=${theme === "dark" ? t("theme.switchToLight") : t("theme.switchToDark")}
+              title=${theme === "dark" ? t("theme.light") : t("theme.dark")}
             >
               <${Icon} name=${theme === "dark" ? "sun" : "moon"} className="h-4 w-4" />
             </button>
-            <${Button} variant="ghost" onClick=${onSignOut}>Sign out<//>
+            <${Button} variant="ghost" onClick=${onSignOut}>${t("header.signOut")}<//>
           </div>
         </div>
 
@@ -124,7 +130,7 @@ export function GatewayLayout({ token, onSignOut }) {
         <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
           ${statusQuery.error
             ? html`<div className="mb-4 rounded-md border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-                ${statusQuery.error.message || "Unable to connect to the gateway"}
+                ${statusQuery.error.message || t("error.gatewayConnection")}
               </div>`
             : null}
           <${Outlet}

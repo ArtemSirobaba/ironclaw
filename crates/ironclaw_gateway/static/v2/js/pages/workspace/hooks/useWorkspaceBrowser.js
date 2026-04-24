@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { React } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import {
   listWorkspace,
   readWorkspaceFile,
@@ -8,6 +9,7 @@ import {
 } from "../lib/workspace-api.js";
 
 export function useWorkspaceBrowser(selectedPath) {
+  const t = useT();
   const queryClient = useQueryClient();
   const [expandedPaths, setExpandedPaths] = React.useState(new Set());
   const [search, setSearch] = React.useState("");
@@ -63,7 +65,7 @@ export function useWorkspaceBrowser(selectedPath) {
     try {
       await loadDirectory(path);
     } catch (error) {
-      setResult({ type: "error", message: error.message || "Unable to open directory" });
+      setResult({ type: "error", message: error.message || t("workspace.unableOpenDirectory") });
     }
   }, [expandedPaths, loadDirectory]);
 
@@ -71,12 +73,12 @@ export function useWorkspaceBrowser(selectedPath) {
     mutationFn: () => writeWorkspaceFile({ path: selectedPath, content: draft }),
     onSuccess: () => {
       setEditing(false);
-      setResult({ type: "success", message: `Saved ${selectedPath}` });
+      setResult({ type: "success", message: t("workspace.savedPath", { path: selectedPath }) });
       queryClient.invalidateQueries({ queryKey: ["workspace-file", selectedPath] });
       queryClient.invalidateQueries({ queryKey: ["workspace-list"] });
     },
     onError: (error) => {
-      setResult({ type: "error", message: error.message || "Unable to save file" });
+      setResult({ type: "error", message: error.message || t("workspace.unableSaveFile") });
     },
   });
 

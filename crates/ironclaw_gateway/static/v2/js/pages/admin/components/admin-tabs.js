@@ -1,15 +1,17 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Icon } from "../../../design-system/icons.js";
 
 const ADMIN_TABS = [
-  { id: "dashboard", label: "Dashboard", icon: "pulse" },
-  { id: "users", label: "Users", icon: "lock" },
-  { id: "usage", label: "Usage", icon: "spark" },
+  { id: "dashboard", labelKey: "admin.tab.dashboard", icon: "pulse" },
+  { id: "users", labelKey: "admin.tab.users", icon: "lock" },
+  { id: "usage", labelKey: "admin.tab.usage", icon: "spark" },
 ];
 
 export { ADMIN_TABS };
 
 export function AdminTabs({ activeTab, onTabChange }) {
+  const t = useT();
   return html`
     <div className="flex flex-col gap-1">
       ${ADMIN_TABS.map(
@@ -34,7 +36,7 @@ export function AdminTabs({ activeTab, onTabChange }) {
             >
               <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
             </span>
-            <span className="min-w-0 truncate">${tab.label}</span>
+            <span className="min-w-0 truncate">${t(tab.labelKey)}</span>
           </button>
         `
       )}
@@ -43,6 +45,7 @@ export function AdminTabs({ activeTab, onTabChange }) {
 }
 
 export function AdminTabsMobile({ activeTab, onTabChange }) {
+  const t = useT();
   return html`
     <div className="flex gap-1.5 overflow-x-auto pb-1">
       ${ADMIN_TABS.map(
@@ -58,7 +61,7 @@ export function AdminTabsMobile({ activeTab, onTabChange }) {
             ].join(" ")}
           >
             <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
-            ${tab.label}
+            ${t(tab.labelKey)}
           </button>
         `
       )}

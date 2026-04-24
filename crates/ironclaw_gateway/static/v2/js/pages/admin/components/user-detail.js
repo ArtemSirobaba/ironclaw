@@ -1,4 +1,5 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Panel, StatCard, StatusPill } from "../../../design-system/primitives.js";
 import { Button } from "../../../design-system/button.js";
 import { Icon } from "../../../design-system/icons.js";
@@ -23,6 +24,7 @@ function DetailRow({ label, children }) {
 }
 
 export function UserDetail({ userId, onBack }) {
+  const t = useT();
   const userQuery = useAdminUserDetail(userId);
   const usageQuery = useUsage("month", userId);
   const { suspendUser, activateUser, updateUser, deleteUser, createToken, newToken, clearToken } = useAdminUsers();
@@ -51,7 +53,7 @@ export function UserDetail({ userId, onBack }) {
   if (userQuery.error) {
     return html`
       <${Panel} className="p-5 sm:p-6">
-        <p className="text-sm text-red-200">Failed to load user: ${userQuery.error.message}</p>
+        <p className="text-sm text-red-200">${t("error.loadFailed", { what: t("admin.users.user"), message: userQuery.error.message })}</p>
       <//>
     `;
   }
@@ -70,7 +72,7 @@ export function UserDetail({ userId, onBack }) {
   };
 
   const handleCreateToken = async () => {
-    const name = window.prompt(`Token name for ${user.display_name || "user"}:`);
+    const name = window.prompt(t("admin.users.tokenNamePrompt", { name: user.display_name || t("admin.users.userFallback") }));
     if (!name) return;
     await createToken(user.id, name);
   };
@@ -82,7 +84,7 @@ export function UserDetail({ userId, onBack }) {
         className="flex items-center gap-1.5 text-xs text-iron-300 transition hover:text-white"
       >
         <span>←</span>
-        <span>Back to users</span>
+        <span>${t("admin.users.backToUsers")}</span>
       </button>
 
       <${Panel} className="p-5 sm:p-6">
@@ -96,14 +98,14 @@ export function UserDetail({ userId, onBack }) {
           </div>
           <div className="flex flex-wrap gap-2">
             ${user.status === "active"
-              ? html`<${Button} variant="secondary" onClick=${() => suspendUser(user.id)}>Suspend<//>`
-              : html`<${Button} variant="secondary" onClick=${() => activateUser(user.id)}>Activate<//>`}
-            <${Button} variant="secondary" onClick=${handleCreateToken}>Create token<//>
+              ? html`<${Button} variant="secondary" onClick=${() => suspendUser(user.id)}>${t("admin.users.suspend")}<//>`
+              : html`<${Button} variant="secondary" onClick=${() => activateUser(user.id)}>${t("admin.users.activate")}<//>`}
+            <${Button} variant="secondary" onClick=${handleCreateToken}>${t("admin.users.createToken")}<//>
             <button
               onClick=${() => setConfirmDelete(true)}
               className="v2-button inline-flex h-10 items-center justify-center rounded-md border border-red-400/30 bg-red-500/10 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/20"
             >
-              Delete
+              ${t("admin.users.delete")}
             </button>
           </div>
         </div>
@@ -113,8 +115,8 @@ export function UserDetail({ userId, onBack }) {
         <div className="rounded-xl border border-signal/30 bg-signal/10 p-4 sm:p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-white">Token created</p>
-              <p className="mt-1 text-xs text-iron-300">Copy this now — it will not be shown again.</p>
+              <p className="text-sm font-semibold text-white">${t("admin.users.tokenCreated")}</p>
+              <p className="mt-1 text-xs text-iron-300">${t("admin.users.tokenCreatedDesc")}</p>
               <code className="mt-2 block truncate rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-xs text-iron-100">
                 ${newToken.token || newToken.plaintext_token}
               </code>
@@ -128,62 +130,62 @@ export function UserDetail({ userId, onBack }) {
 
       <div className="grid gap-5 lg:grid-cols-2">
         <${Panel} className="p-5 sm:p-6">
-          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Profile</h3>
-          <${DetailRow} label="ID">
+          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.user.profile")}</h3>
+          <${DetailRow} label=${t("admin.user.id")}>
             <span className="font-mono text-xs">${user.id}</span>
           <//>
-          <${DetailRow} label="Email">${user.email || "Not set"}<//>
-          <${DetailRow} label="Created">${formatRelativeTime(user.created_at)}<//>
-          <${DetailRow} label="Last login">${formatRelativeTime(user.last_login_at)}<//>
+          <${DetailRow} label=${t("admin.user.email")}>${user.email || t("admin.user.notSet")}<//>
+          <${DetailRow} label=${t("admin.user.created")}>${formatRelativeTime(user.created_at)}<//>
+          <${DetailRow} label=${t("admin.user.lastLogin")}>${formatRelativeTime(user.last_login_at)}<//>
           ${user.created_by && html`
-            <${DetailRow} label="Created by">
+            <${DetailRow} label=${t("admin.user.createdBy")}>
               <span className="font-mono text-xs">${truncateId(user.created_by)}</span>
             <//>
           `}
         <//>
 
         <${Panel} className="p-5 sm:p-6">
-          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Summary</h3>
-          <${DetailRow} label="Jobs">${user.job_count ?? 0}<//>
-          <${DetailRow} label="Total cost">${formatCost(user.total_cost)}<//>
-          <${DetailRow} label="Last active">${formatRelativeTime(user.last_active_at)}<//>
+          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.user.summary")}</h3>
+          <${DetailRow} label=${t("admin.user.jobs")}>${user.job_count ?? 0}<//>
+          <${DetailRow} label=${t("admin.user.totalCost")}>${formatCost(user.total_cost)}<//>
+          <${DetailRow} label=${t("admin.user.lastActive")}>${formatRelativeTime(user.last_active_at)}<//>
         <//>
       </div>
 
       <${Panel} className="p-5 sm:p-6">
-        <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Role management</h3>
+        <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.user.roleManagement")}</h3>
         <div className="flex items-end gap-3">
           <div>
-            <label className="mb-1 block text-xs text-iron-300">Current role</label>
+            <label className="mb-1 block text-xs text-iron-300">${t("admin.user.currentRole")}</label>
             <select
               value=${role || user.role}
               onChange=${(e) => setRole(e.target.value)}
               className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
             >
-              <option value="member">Member</option>
-              <option value="admin">Admin</option>
+              <option value="member">${t("admin.users.member")}</option>
+              <option value="admin">${t("admin.users.admin")}</option>
             </select>
           </div>
           <${Button} onClick=${handleSaveRole} disabled=${!role || role === user.role}>
-            Save role
+            ${t("admin.user.saveRole")}
           <//>
         </div>
       <//>
 
       <${Panel} className="p-5 sm:p-6">
-        <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Usage (last 30 days)</h3>
+        <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.user.usage30Days")}</h3>
         ${usageEntries.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">No usage data.</p>`
+          ? html`<p className="py-4 text-sm text-iron-300">${t("admin.user.noUsage")}</p>`
           : html`
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-white/10 text-left">
-                      <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Model</th>
-                      <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Calls</th>
-                      <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Input</th>
-                      <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Output</th>
-                      <th className="pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Cost</th>
+                      <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.model")}</th>
+                      <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.calls")}</th>
+                      <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.input")}</th>
+                      <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.output")}</th>
+                      <th className="pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.cost")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -207,17 +209,17 @@ export function UserDetail({ userId, onBack }) {
       ${confirmDelete && html`
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick=${() => setConfirmDelete(false)}>
           <div className="w-full max-w-md rounded-xl border border-white/10 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-semibold text-white">Delete user</h3>
+            <h3 className="text-lg font-semibold text-white">${t("admin.users.deleteUserTitle")}</h3>
             <p className="mt-2 text-sm text-iron-300">
-              Are you sure you want to delete "${user.display_name}"? This action cannot be undone.
+              ${t("admin.users.deleteUserDesc", { name: user.display_name })}
             </p>
             <div className="mt-5 flex justify-end gap-2">
-              <${Button} variant="ghost" onClick=${() => setConfirmDelete(false)}>Cancel<//>
+              <${Button} variant="ghost" onClick=${() => setConfirmDelete(false)}>${t("admin.users.cancel")}<//>
               <button
                 onClick=${handleDelete}
                 className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-red-500/20 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/30"
               >
-                Delete
+                ${t("admin.users.delete")}
               </button>
             </div>
           </div>

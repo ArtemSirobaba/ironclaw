@@ -1,8 +1,10 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { formatSize, useComposerAttachments } from "../hooks/useComposerAttachments.js";
 import { Icon } from "../../../design-system/icons.js";
 
 export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" }) {
+  const t = useT();
   const [text, setText] = React.useState("");
   const textareaRef = React.useRef(null);
   const {
@@ -95,7 +97,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
               <button
                 onClick=${() => removeImage(i)}
                 className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 transition group-hover:opacity-100"
-                aria-label="Remove image"
+                aria-label=${t("chat.removeImage")}
               >
                 <${Icon} name="close" className="h-3 w-3" />
               </button>
@@ -106,7 +108,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
               <${Icon} name="file" className="h-3.5 w-3.5 text-signal" />
               <span className="truncate">${att.filename}</span>
               <span className="text-iron-200">${formatSize(att.size)}</span>
-              <button onClick=${() => removeAttachment(i)} className="ml-1 text-iron-200 hover:text-white" aria-label="Remove attachment">
+              <button onClick=${() => removeAttachment(i)} className="ml-1 text-iron-200 hover:text-white" aria-label=${t("chat.removeAttachment")}>
                 <${Icon} name="close" className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -126,7 +128,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
           onChange=${(e) => setText(e.target.value)}
           onKeyDown=${onKeyDown}
           onPaste=${onPaste}
-          placeholder="Message IronClaw..."
+          placeholder=${t("chat.placeholder")}
           rows=${1}
           disabled=${disabled}
           className="max-h-[200px] min-h-[44px] flex-1 resize-none rounded-md border border-white/10 bg-iron-900/86 px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-iron-700 focus:border-signal/70 disabled:opacity-50"
@@ -136,7 +138,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
           onClick=${handleSend}
           disabled=${disabled || (!text.trim() && images.length === 0 && attachments.length === 0)}
           className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-md disabled:opacity-50"
-          aria-label="Send message"
+          aria-label=${t("chat.send")}
         >
           <${Icon} name="send" className="h-5 w-5" />
         </button>

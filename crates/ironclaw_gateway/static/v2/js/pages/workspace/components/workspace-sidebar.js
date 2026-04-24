@@ -1,4 +1,5 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Panel } from "../../../design-system/primitives.js";
 import { WorkspaceSearchResults, WorkspaceTree } from "./workspace-tree.js";
 
@@ -14,6 +15,7 @@ export function WorkspaceSidebar({
   onToggleDirectory,
   onSelectFile,
 }) {
+  const t = useT();
   const hasSearch = search.trim().length > 0;
 
   return html`
@@ -22,7 +24,7 @@ export function WorkspaceSidebar({
         <input
           value=${search}
           onInput=${(event) => onSearchChange(event.target.value)}
-          placeholder="Search memory..."
+          placeholder=${t("workspace.searchPlaceholder")}
           className="h-11 w-full rounded-md border border-white/10 bg-iron-950/80 px-3 text-sm text-white outline-none transition placeholder:text-iron-400 focus:border-signal/45"
         />
       </div>

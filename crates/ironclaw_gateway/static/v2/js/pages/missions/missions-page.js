@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router";
 import { React, html } from "../../lib/html.js";
 import { Button } from "../../design-system/button.js";
 import { FeedbackBanner } from "../projects/components/feedback-banner.js";
+import { useT } from "../../lib/i18n.js";
 import { useMissions } from "./hooks/useMissions.js";
 import { useMissionDetail } from "./hooks/useMissionDetail.js";
 import { sortMissions } from "./lib/missions-presenters.js";
@@ -10,6 +11,7 @@ import { MissionsList } from "./components/missions-list.js";
 import { MissionDetailPanel } from "./components/mission-detail-panel.js";
 
 export function MissionsPage() {
+  const t = useT();
   const navigate = useNavigate();
   const { missionId = null } = useParams();
   const [search, setSearch] = React.useState("");
@@ -108,9 +110,9 @@ export function MissionsPage() {
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="space-y-5">
           <div className="flex flex-wrap justify-end gap-2">
-            ${missionId && html`<${Button} variant="ghost" onClick=${() => navigate("/missions")}>All missions<//>`}
+            ${missionId && html`<${Button} variant="ghost" onClick=${() => navigate("/missions")}>${t("missions.allMissions")}<//>`}
             <${Button} variant="secondary" onClick=${missionsState.invalidate}>
-              ${missionsState.isRefreshing || detailState.isRefreshing ? "Refreshing" : "Refresh"}
+              ${missionsState.isRefreshing || detailState.isRefreshing ? t("missions.refreshing") : t("missions.refresh")}
             <//>
           </div>
 

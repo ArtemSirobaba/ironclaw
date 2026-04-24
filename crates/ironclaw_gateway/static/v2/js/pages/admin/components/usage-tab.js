@@ -1,4 +1,5 @@
 import { React, html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Panel, StatCard } from "../../../design-system/primitives.js";
 import { useUsage } from "../hooks/useAdminUsage.js";
 import {
@@ -29,6 +30,7 @@ function UsageBar({ value, max }) {
 }
 
 export function UsageTab({ onSelectUser }) {
+  const t = useT();
   const [period, setPeriod] = React.useState("day");
   const usageQuery = useUsage(period);
   const entries = usageQuery.data?.usage || [];
@@ -53,7 +55,7 @@ export function UsageTab({ onSelectUser }) {
     <div className="space-y-5">
       <${Panel} className="p-5 sm:p-6">
         <div className="mb-5 flex items-center justify-between">
-          <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Usage overview</h3>
+          <h3 className="font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.usage.overview")}</h3>
           <div className="flex gap-1">
             ${PERIODS.map(
               (p) => html`
@@ -75,29 +77,29 @@ export function UsageTab({ onSelectUser }) {
         </div>
 
         ${entries.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">No usage data for this period.</p>`
+          ? html`<p className="py-4 text-sm text-iron-300">${t("admin.usage.noData")}</p>`
           : html`
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <${StatCard} label="Total calls" value=${totals.calls.toLocaleString()} tone="muted" />
-                <${StatCard} label="Input tokens" value=${formatTokenCount(totals.input_tokens)} tone="muted" />
-                <${StatCard} label="Output tokens" value=${formatTokenCount(totals.output_tokens)} tone="muted" />
-                <${StatCard} label="Total cost" value=${formatCost(totals.cost.toFixed(2))} tone="signal" />
+                <${StatCard} label=${t("admin.usage.totalCalls")} value=${totals.calls.toLocaleString()} tone="muted" />
+                <${StatCard} label=${t("admin.usage.inputTokens")} value=${formatTokenCount(totals.input_tokens)} tone="muted" />
+                <${StatCard} label=${t("admin.usage.outputTokens")} value=${formatTokenCount(totals.output_tokens)} tone="muted" />
+                <${StatCard} label=${t("admin.usage.totalCost")} value=${formatCost(totals.cost.toFixed(2))} tone="signal" />
               </div>
             `}
       <//>
 
       ${byUser.length > 0 && html`
         <${Panel} className="p-5 sm:p-6">
-          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Per-user breakdown</h3>
+          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.usage.perUser")}</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left">
-                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">User</th>
-                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Calls</th>
-                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Input</th>
-                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Output</th>
-                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Cost</th>
+                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.user")}</th>
+                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.calls")}</th>
+                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.input")}</th>
+                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.output")}</th>
+                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.cost")}</th>
                   <th className="hidden pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 md:table-cell" />
                 </tr>
               </thead>
@@ -131,16 +133,16 @@ export function UsageTab({ onSelectUser }) {
 
       ${byModel.length > 0 && html`
         <${Panel} className="p-5 sm:p-6">
-          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">Per-model breakdown</h3>
+          <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${t("admin.usage.perModel")}</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left">
-                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Model</th>
-                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Calls</th>
-                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Input</th>
-                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">Output</th>
-                  <th className="pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">Cost</th>
+                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.model")}</th>
+                  <th className="pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.calls")}</th>
+                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.input")}</th>
+                  <th className="hidden pb-3 pr-4 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300 sm:table-cell">${t("admin.usage.output")}</th>
+                  <th className="pb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">${t("admin.usage.cost")}</th>
                 </tr>
               </thead>
               <tbody>
