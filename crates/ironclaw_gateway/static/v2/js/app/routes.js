@@ -2,12 +2,6 @@ export const defaultRoute = "/chat";
 
 export const primaryRoutes = [
   {
-    id: "dashboard",
-    path: "/dashboard",
-    label: "Dashboard",
-    description: "Gateway health, runtime load, and the current agent operating picture.",
-  },
-  {
     id: "chat",
     path: "/chat",
     label: "Chat",
@@ -42,7 +36,7 @@ export const primaryRoutes = [
 export const routeSections = [
   {
     label: "Work",
-    routes: primaryRoutes.filter((route) => ["dashboard", "chat", "projects", "jobs"].includes(route.id)),
+    routes: primaryRoutes.filter((route) => ["chat", "projects", "jobs"].includes(route.id)),
   },
   {
     label: "System",

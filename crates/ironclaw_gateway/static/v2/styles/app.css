@@ -63,19 +63,20 @@ body::before {
     0 18px 48px rgba(4, 8, 10, 0.24);
 }
 
-.v2-nav-rail {
-  background:
-    linear-gradient(180deg, rgba(124, 207, 190, 0.075), transparent 36%),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 1px),
-    var(--v2-rail);
+.v2-header-tabs {
+  scrollbar-width: none;
+}
+
+.v2-header-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .v2-nav-active {
   background:
-    linear-gradient(90deg, rgba(124, 207, 190, 0.18), rgba(255, 255, 255, 0.07));
+    linear-gradient(135deg, rgba(124, 207, 190, 0.2), rgba(255, 255, 255, 0.08));
   box-shadow:
-    inset 2px 0 0 rgba(124, 207, 190, 0.92),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 28px rgba(6, 10, 12, 0.24);
 }
 
 .v2-workspace-surface {

@@ -30,7 +30,6 @@ Keep route modules thin. Put workflow composition in the page file, local UI in 
 
 ## Current Pages
 
-- `pages/dashboard/dashboard-page.js`
 - `pages/chat/chat-page.js`
 - `pages/projects/projects-page.js`
 - `pages/jobs/jobs-page.js`

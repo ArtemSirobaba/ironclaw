@@ -5,7 +5,6 @@ import { defaultRoute } from "./routes.js";
 import { GatewayLayout } from "../layout/gateway-layout.js";
 import { LoginPage as LoginView } from "../pages/login/login-page.js";
 import { ChatPage } from "../pages/chat/chat-page.js";
-import { DashboardPage } from "../pages/dashboard/dashboard-page.js";
 import { ProjectsPage } from "../pages/projects/projects-page.js";
 import { JobsPage } from "../pages/jobs/jobs-page.js";
 import { ExtensionsPage } from "../pages/extensions/extensions-page.js";
@@ -58,8 +57,7 @@ export function App() {
         <${Route} path="/login" element=${html`<${LoginPage} auth=${auth} />`} />
         <${Route} path="/" element=${html`<${AuthenticatedLayout} auth=${auth} />`}>
           <${Route} index element=${html`<${Navigate} to=${defaultRoute} replace />`} />
-          <${Route} path="overview" element=${html`<${Navigate} to="/dashboard" replace />`} />
-          <${Route} path="dashboard" element=${html`<${DashboardPage} />`} />
+          <${Route} path="overview" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
           <${Route} path="chat" element=${html`<${ChatPage} />`} />
           <${Route} path="projects" element=${html`<${ProjectsPage} />`} />
           <${Route} path="projects/:projectId" element=${html`<${ProjectsPage} />`} />
