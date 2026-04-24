@@ -1,5 +1,6 @@
 import { useNavigate, useOutletContext, useParams } from "react-router";
 import { React, html } from "../../lib/html.js";
+import { useT } from "../../lib/i18n.js";
 import { Button } from "../../design-system/button.js";
 import { EmptyPanel } from "../../design-system/primitives.js";
 import { useProjectsOverview } from "./hooks/useProjectsOverview.js";
@@ -11,9 +12,8 @@ import { ProjectsAttentionStrip } from "./components/projects-attention-strip.js
 import { ProjectsGrid } from "./components/projects-grid.js";
 import { ProjectWorkspaceShell } from "./components/project-workspace-shell.js";
 
-const PROJECT_CREATION_DRAFT = "Create a new project for me. I want to set up an autonomous workspace for: ";
-
 export function ProjectsPage() {
+  const t = useT();
   const navigate = useNavigate();
   const { threadsState } = useOutletContext();
   const { projectId = null, missionId = null, threadId = null } = useParams();
@@ -62,13 +62,13 @@ export function ProjectsPage() {
     } catch (error) {
       setChatFlowError({
         type: "error",
-        message: error.message || "Unable to prepare chat automatically. Opening chat anyway.",
+        message: error.message || t("projects.chatAutoFail"),
       });
     }
 
     navigate("/chat", {
       state: {
-        composerDraft: PROJECT_CREATION_DRAFT,
+        composerDraft: t("projects.creationDraft"),
         threadId: nextThreadId,
       },
     });
@@ -87,12 +87,12 @@ export function ProjectsPage() {
   }, [navigate, projectId]);
 
   const headerActions = html`
-    ${projectId && html`<${Button} variant="ghost" onClick=${() => navigate("/projects")}>All projects<//>`}
+    ${projectId && html`<${Button} variant="ghost" onClick=${() => navigate("/projects")}>${t("projects.allProjects")}<//>`}
     <${Button} variant="secondary" onClick=${handleRefresh}>
-      ${overviewState.isRefreshing || workspaceState.isRefreshing ? "Refreshing" : "Refresh"}
+      ${overviewState.isRefreshing || workspaceState.isRefreshing ? t("projects.refreshing") : t("projects.refresh")}
     <//>
     <${Button} onClick=${handleCreateProject}>
-      ${threadsState.isCreating ? "Preparing chat..." : "New project"}
+      ${threadsState.isCreating ? t("projects.preparingChat") : t("projects.newProject")}
     <//>
   `;
 
@@ -108,10 +108,10 @@ export function ProjectsPage() {
     } else if (workspaceState.error || (!workspaceState.project && !selectedOverviewProject)) {
       content = html`
         <${EmptyPanel}
-          title="Project unavailable"
-          description=${workspaceState.error?.message || "This project no longer exists or is outside your access scope."}
+          title=${t("projects.unavailable")}
+          description=${workspaceState.error?.message || t("projects.unavailableDesc")}
         >
-          <${Button} variant="secondary" onClick=${() => navigate("/projects")}>Return to projects<//>
+          <${Button} variant="secondary" onClick=${() => navigate("/projects")}>${t("projects.returnToProjects")}<//>
         <//>
       `;
     } else {

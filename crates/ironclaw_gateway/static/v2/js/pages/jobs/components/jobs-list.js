@@ -1,4 +1,5 @@
 import { html } from "../../../lib/html.js";
+import { useT } from "../../../lib/i18n.js";
 import { Button } from "../../../design-system/button.js";
 import { EmptyPanel, Panel, StatusPill } from "../../../design-system/primitives.js";
 import {
@@ -8,15 +9,6 @@ import {
   statusToneForState,
   truncateJobId,
 } from "../lib/jobs-presenters.js";
-
-const FILTERS = [
-  { value: "all", label: "All states" },
-  { value: "pending", label: "Pending" },
-  { value: "in_progress", label: "In progress" },
-  { value: "completed", label: "Completed" },
-  { value: "failed", label: "Failed" },
-  { value: "stuck", label: "Stuck" },
-];
 
 export function JobsList({
   jobs,
@@ -31,14 +23,24 @@ export function JobsList({
   isBusy,
   isRefreshing,
 }) {
+  const t = useT();
+  const FILTERS = [
+    { value: "all", label: t("jobs.list.filter.all") },
+    { value: "pending", label: t("jobs.list.filter.pending") },
+    { value: "in_progress", label: t("jobs.list.filter.inProgress") },
+    { value: "completed", label: t("jobs.list.filter.completed") },
+    { value: "failed", label: t("jobs.list.filter.failed") },
+    { value: "stuck", label: t("jobs.list.filter.stuck") },
+  ];
+
   if (!jobs.length) {
     const hasFilters = Boolean(search.trim()) || stateFilter !== "all";
     return html`
       <${EmptyPanel}
-        title=${totalJobs && hasFilters ? "No jobs match the current filters" : "No jobs yet"}
+        title=${totalJobs && hasFilters ? t("jobs.list.empty.noMatchTitle") : t("jobs.list.empty.noJobsTitle")}
         description=${totalJobs && hasFilters
-          ? "Try a broader search term or reset the state filter to see the rest of the queue."
-          : "Background work, sandbox runs, and operator interventions will appear here once the gateway starts creating jobs."}
+          ? t("jobs.list.empty.noMatchDesc")
+          : t("jobs.list.empty.noJobsDesc")}
       />
     `;
   }
@@ -48,16 +50,16 @@ export function JobsList({
       <${Panel} className="p-4 sm:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Explorer</div>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">Job queue</h2>
+            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("jobs.list.explorer")}</div>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">${t("jobs.list.queueTitle")}</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-iron-300">
-              Search by title or ID, jump into a run, and stop active work without leaving the page.
+              ${t("jobs.list.queueDesc")}
             </p>
           </div>
           <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">
-            <span>${jobs.length} visible</span>
+            <span>${t("jobs.list.visible", { count: jobs.length })}</span>
             <span>/</span>
-            <span>${isRefreshing ? "refreshing" : "live"}</span>
+            <span>${isRefreshing ? t("jobs.list.state.refreshing") : t("jobs.list.state.live")}</span>
           </div>
         </div>
 
@@ -65,7 +67,7 @@ export function JobsList({
           <input
             value=${search}
             onInput=${(event) => onSearchChange(event.target.value)}
-            placeholder="Search job title or UUID"
+            placeholder=${t("jobs.list.searchPlaceholder")}
             className="h-11 rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none transition focus:border-signal/45"
           />
           <select
@@ -92,13 +94,13 @@ export function JobsList({
             <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <button onClick=${() => onSelectJob(job.id)} className="min-w-0 text-left">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="truncate text-lg font-semibold text-white">${job.title || "Untitled job"}</h3>
+                  <h3 className="truncate text-lg font-semibold text-white">${job.title || t("jobs.list.untitled")}</h3>
                   <${StatusPill} tone=${statusToneForState(job.state)} label=${stateLabel(job.state)} />
                 </div>
                 <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300">
                   <span>${truncateJobId(job.id)}</span>
-                  <span>created ${formatJobDate(job.created_at)}</span>
-                  ${job.started_at && html`<span>started ${formatJobDate(job.started_at)}</span>`}
+                  <span>${t("jobs.list.created", { value: formatJobDate(job.created_at) })}</span>
+                  ${job.started_at && html`<span>${t("jobs.list.started", { value: formatJobDate(job.started_at) })}</span>`}
                 </div>
               </button>
 
@@ -110,10 +112,10 @@ export function JobsList({
                     disabled=${isBusy}
                     onClick=${() => onCancelJob(job.id)}
                   >
-                    Cancel
+                    ${t("jobs.action.cancel")}
                   <//>
                 `}
-                <${Button} variant="ghost" className="h-9 px-3 text-xs" onClick=${() => onSelectJob(job.id)}>Open<//>
+                <${Button} variant="ghost" className="h-9 px-3 text-xs" onClick=${() => onSelectJob(job.id)}>${t("jobs.action.open")}<//>
               </div>
             </div>
           </article>
