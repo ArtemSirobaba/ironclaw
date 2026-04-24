@@ -1,10 +1,11 @@
-import { React, html } from "../../../lib/html.js";
 import { Button } from "../../../design-system/button.js";
 import { Icon } from "../../../design-system/icons.js";
+import { React, html } from "../../../lib/html.js";
 import { useExtensionSetup, useSetupSubmit } from "../hooks/useExtensions.js";
 
 export function ConfigureModal({ extensionName, onClose, onSaved }) {
-  const { secrets, fields, onboarding, isLoading, error } = useExtensionSetup(extensionName);
+  const { secrets, fields, onboarding, isLoading, error } =
+    useExtensionSetup(extensionName);
   const [values, setValues] = React.useState({});
   const [fieldValues, setFieldValues] = React.useState({});
 
@@ -28,7 +29,13 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
     return html`
       <${ModalShell} onClose=${onClose} title=${"Configure " + extensionName}>
         <div className="space-y-3">
-          ${[1, 2].map((i) => html`<div key=${i} className="v2-skeleton h-10 w-full rounded-md" />`)}
+          ${[1, 2].map(
+            (i) =>
+              html`<div
+                key=${i}
+                className="v2-skeleton h-10 w-full rounded-md"
+              />`
+          )}
         </div>
       <//>
     `;
@@ -37,7 +44,9 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
   if (error) {
     return html`
       <${ModalShell} onClose=${onClose} title=${"Configure " + extensionName}>
-        <p className="text-sm text-red-200">Failed to load setup: ${error.message}</p>
+        <p className="text-sm text-red-200">
+          Failed to load setup: ${error.message}
+        </p>
       <//>
     `;
   }
@@ -45,18 +54,23 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
   if (secrets.length === 0 && fields.length === 0) {
     return html`
       <${ModalShell} onClose=${onClose} title=${"Configure " + extensionName}>
-        <p className="text-sm text-iron-300">No configuration required for this extension.</p>
+        <p className="text-sm text-iron-300">
+          No configuration required for this extension.
+        </p>
       <//>
     `;
   }
 
   return html`
     <${ModalShell} onClose=${onClose} title=${"Configure " + extensionName}>
-      ${onboarding?.credential_instructions && html`
-        <p className="mb-4 text-sm leading-6 text-iron-300">${onboarding.credential_instructions}</p>
+      ${onboarding?.credential_instructions &&
+      html`
+        <p className="mb-4 text-sm leading-6 text-iron-300">
+          ${onboarding.credential_instructions}
+        </p>
       `}
-
-      ${onboarding?.setup_url && html`
+      ${onboarding?.setup_url &&
+      html`
         <a
           href=${onboarding.setup_url}
           target="_blank"
@@ -69,57 +83,92 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
       `}
 
       <div className="space-y-4">
-        ${secrets.map((secret) => html`
-          <div key=${secret.name}>
-            <label className="mb-1.5 flex items-center gap-2 text-sm text-iron-200">
-              ${secret.prompt || secret.name}
-              ${secret.optional && html`
-                <span className="font-mono text-[10px] text-iron-700">optional</span>
+        ${secrets.map(
+          (secret) => html`
+            <div key=${secret.name}>
+              <label
+                className="mb-1.5 flex items-center gap-2 text-sm text-iron-200"
+              >
+                ${secret.prompt || secret.name}
+                ${secret.optional &&
+                html`
+                  <span className="font-mono text-[10px] text-iron-700"
+                    >optional</span
+                  >
+                `}
+                ${secret.provided &&
+                html`
+                  <span className="font-mono text-[10px] text-mint"
+                    >configured</span
+                  >
+                `}
+              </label>
+              <input
+                type="password"
+                placeholder=${secret.provided
+                  ? "••••••• (leave blank to keep)"
+                  : ""}
+                value=${values[secret.name] || ""}
+                onChange=${(e) =>
+                  setValues((prev) => ({
+                    ...prev,
+                    [secret.name]: e.target.value,
+                  }))}
+                onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
+                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              />
+              ${secret.auto_generate &&
+              !secret.provided &&
+              html`
+                <p className="mt-1 text-xs text-iron-700">
+                  Auto-generated if left blank
+                </p>
               `}
-              ${secret.provided && html`
-                <span className="font-mono text-[10px] text-mint">configured</span>
-              `}
-            </label>
-            <input
-              type="password"
-              placeholder=${secret.provided ? "••••••• (leave blank to keep)" : ""}
-              value=${values[secret.name] || ""}
-              onChange=${(e) => setValues((prev) => ({ ...prev, [secret.name]: e.target.value }))}
-              onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
-              className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
-            />
-            ${secret.auto_generate && !secret.provided && html`
-              <p className="mt-1 text-xs text-iron-700">Auto-generated if left blank</p>
-            `}
-          </div>
-        `)}
-
-        ${fields.map((field) => html`
-          <div key=${field.name}>
-            <label className="mb-1.5 flex items-center gap-2 text-sm text-iron-200">
-              ${field.prompt || field.name}
-              ${field.optional && html`
-                <span className="font-mono text-[10px] text-iron-700">optional</span>
-              `}
-            </label>
-            <input
-              type="text"
-              placeholder=${field.placeholder || ""}
-              value=${fieldValues[field.name] || ""}
-              onChange=${(e) => setFieldValues((prev) => ({ ...prev, [field.name]: e.target.value }))}
-              onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
-              className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
-            />
-          </div>
-        `)}
+            </div>
+          `
+        )}
+        ${fields.map(
+          (field) => html`
+            <div key=${field.name}>
+              <label
+                className="mb-1.5 flex items-center gap-2 text-sm text-iron-200"
+              >
+                ${field.prompt || field.name}
+                ${field.optional &&
+                html`
+                  <span className="font-mono text-[10px] text-iron-700"
+                    >optional</span
+                  >
+                `}
+              </label>
+              <input
+                type="text"
+                placeholder=${field.placeholder || ""}
+                value=${fieldValues[field.name] || ""}
+                onChange=${(e) =>
+                  setFieldValues((prev) => ({
+                    ...prev,
+                    [field.name]: e.target.value,
+                  }))}
+                onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
+                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              />
+            </div>
+          `
+        )}
       </div>
 
-      ${onboarding?.credential_next_step && html`
-        <p className="mt-4 text-xs leading-5 text-iron-300">${onboarding.credential_next_step}</p>
+      ${onboarding?.credential_next_step &&
+      html`
+        <p className="mt-4 text-xs leading-5 text-iron-300">
+          ${onboarding.credential_next_step}
+        </p>
       `}
-
-      ${submitMutation.error && html`
-        <div className="mt-4 rounded-md border border-red-400/20 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+      ${submitMutation.error &&
+      html`
+        <div
+          className="mt-4 rounded-md border border-red-400/20 bg-red-500/10 px-3 py-2 text-xs text-red-200"
+        >
           ${submitMutation.error.message}
         </div>
       `}
@@ -140,7 +189,9 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
 
 function ModalShell({ onClose, title, children }) {
   React.useEffect(() => {
-    const handleKey = (e) => { if (e.key === "Escape") onClose(); };
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
@@ -148,7 +199,9 @@ function ModalShell({ onClose, title, children }) {
   return html`
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-      onClick=${(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick=${(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div
         className="v2-panel mx-4 w-full max-w-lg rounded-2xl p-6"

@@ -11,10 +11,10 @@ import {
 
 function ProjectCard({ project, onOpen, t }) {
   return html`
-    <article className="group rounded-xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-signal/30 hover:bg-white/[0.05]">
+    <article className="group rounded-xl border border-iron-700 bg-iron-800/60 p-5 transition hover:border-signal/30 hover:bg-iron-800/80">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="truncate font-serif text-2xl font-semibold tracking-[-0.03em] text-white">${project.name}</h3>
+          <h3 className="truncate font-serif text-2xl font-semibold tracking-[-0.03em] text-iron-100">${project.name}</h3>
           <p className="mt-2 line-clamp-3 text-sm leading-6 text-iron-300">
             ${project.description || t("projects.noDescription")}
           </p>
@@ -26,7 +26,7 @@ function ProjectCard({ project, onOpen, t }) {
         ? html`
             <div className="mt-4 flex flex-wrap gap-2">
               ${project.goals.slice(0, 3).map((goal, index) => html`
-                <span key=${index} className="rounded-full border border-white/10 px-3 py-1 text-xs text-iron-200">
+                <span key=${index} className="rounded-full border border-iron-700 px-3 py-1 text-xs text-iron-200">
                   ${goal}
                 </span>
               `)}
@@ -35,16 +35,16 @@ function ProjectCard({ project, onOpen, t }) {
         : null}
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-white/8 bg-iron-950/55 p-3">
+        <div className="rounded-2xl border border-iron-700 bg-iron-950/55 p-3">
           <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-iron-300">${t("projects.card.runtime")}</div>
-          <div className="mt-2 text-sm text-white">${compactCount(project.active_missions || 0, "mission")}</div>
+          <div className="mt-2 text-sm text-iron-100">${compactCount(project.active_missions || 0, "mission")}</div>
           <div className="mt-1 text-xs text-iron-300">
             ${t("projects.card.threadsToday", { count: compactCount(project.threads_today || 0, "thread") })}
           </div>
         </div>
-        <div className="rounded-2xl border border-white/8 bg-iron-950/55 p-3">
+        <div className="rounded-2xl border border-iron-700 bg-iron-950/55 p-3">
           <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-iron-300">${t("projects.card.risk")}</div>
-          <div className="mt-2 text-sm text-white">${compactCount(project.pending_gates || 0, "gate")}</div>
+          <div className="mt-2 text-sm text-iron-100">${compactCount(project.pending_gates || 0, "gate")}</div>
           <div className="mt-1 text-xs text-iron-300">
             ${t("projects.card.failures24h", { count: compactCount(project.failures_24h || 0, "failure") })}
           </div>
@@ -68,16 +68,16 @@ function GeneralProjectCard({ project, onOpen, t }) {
       <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
         <div className="max-w-3xl">
           <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">${t("projects.general.label")}</div>
-          <h2 className="mt-3 font-serif text-4xl font-semibold tracking-[-0.04em] text-white">${t("projects.general.title")}</h2>
+          <h2 className="mt-3 font-serif text-4xl font-semibold tracking-[-0.04em] text-iron-100">${t("projects.general.title")}</h2>
           <p className="mt-3 text-sm leading-6 text-iron-200">
             ${t("projects.general.desc")}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <div className="rounded-2xl border border-white/10 bg-iron-950/55 px-4 py-3 text-sm text-iron-200">
+          <div className="rounded-2xl border border-iron-700 bg-iron-950/55 px-4 py-3 text-sm text-iron-200">
             ${compactCount(project.active_missions || 0, "active mission")}
           </div>
-          <div className="rounded-2xl border border-white/10 bg-iron-950/55 px-4 py-3 text-sm text-iron-200">
+          <div className="rounded-2xl border border-iron-700 bg-iron-950/55 px-4 py-3 text-sm text-iron-200">
             ${compactCount(project.threads_today || 0, "thread")} today
           </div>
           <${Button} variant="secondary" onClick=${() => onOpen(project.id)}>${t("projects.openGeneralWorkspace")}<//>
@@ -128,7 +128,7 @@ export function ProjectsGrid({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("projects.explorer")}</div>
-            <h2 className="mt-2 font-serif text-3xl font-semibold tracking-[-0.04em] text-white">${t("projects.scoped.title")}</h2>
+            <h2 className="mt-2 font-serif text-3xl font-semibold tracking-[-0.04em] text-iron-100">${t("projects.scoped.title")}</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-iron-300">
               ${t("projects.scoped.desc")}
             </p>
@@ -138,7 +138,7 @@ export function ProjectsGrid({
               value=${search}
               onInput=${(event) => onSearchChange(event.target.value)}
               placeholder=${t("projects.searchPlaceholder")}
-              className="h-11 min-w-[220px] rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none transition focus:border-signal/45"
+              className="h-11 min-w-[220px] rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
             />
             <${Button} onClick=${onCreateProject}>${isPreparingChat ? t("projects.preparingChat") : t("projects.newProject")}<//>
           </div>

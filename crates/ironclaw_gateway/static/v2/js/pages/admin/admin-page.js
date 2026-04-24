@@ -1,9 +1,9 @@
 import { React, html } from "../../lib/html.js";
 import { AdminTabs, AdminTabsMobile } from "./components/admin-tabs.js";
 import { DashboardTab } from "./components/dashboard-tab.js";
-import { AdminUsersTab } from "./components/users-tab.js";
-import { UserDetail } from "./components/user-detail.js";
 import { UsageTab } from "./components/usage-tab.js";
+import { UserDetail } from "./components/user-detail.js";
+import { AdminUsersTab } from "./components/users-tab.js";
 
 export function AdminPage() {
   const [activeTab, setActiveTab] = React.useState("dashboard");
@@ -38,12 +38,24 @@ export function AdminPage() {
         <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="hidden xl:block">
             <div className="sticky top-6">
-              <${AdminTabs} activeTab=${activeTab} onTabChange=${(id) => { setActiveTab(id); setSelectedUserId(null); }} />
+              <${AdminTabs}
+                activeTab=${activeTab}
+                onTabChange=${(id) => {
+                  setActiveTab(id);
+                  setSelectedUserId(null);
+                }}
+              />
             </div>
           </aside>
 
           <div className="xl:hidden">
-            <${AdminTabsMobile} activeTab=${activeTab} onTabChange=${(id) => { setActiveTab(id); setSelectedUserId(null); }} />
+            <${AdminTabsMobile}
+              activeTab=${activeTab}
+              onTabChange=${(id) => {
+                setActiveTab(id);
+                setSelectedUserId(null);
+              }}
+            />
           </div>
 
           <div className="min-w-0 space-y-5">

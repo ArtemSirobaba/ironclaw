@@ -1,5 +1,5 @@
-import { html } from "../../../lib/html.js";
 import { Icon } from "../../../design-system/icons.js";
+import { html } from "../../../lib/html.js";
 import { EXTENSIONS_TABS } from "../lib/extensions-schema.js";
 
 export function ExtensionsTabs({ activeTab, onTabChange, counts }) {
@@ -28,8 +28,11 @@ export function ExtensionsTabs({ activeTab, onTabChange, counts }) {
               <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
             </span>
             <span className="min-w-0 truncate">${tab.label}</span>
-            ${counts[tab.id] != null && html`
-              <span className="ml-auto font-mono text-[11px] text-iron-700">${counts[tab.id]}</span>
+            ${counts[tab.id] != null &&
+            html`
+              <span className="ml-auto font-mono text-[11px] text-iron-700"
+                >${counts[tab.id]}</span
+              >
             `}
           </button>
         `
@@ -55,8 +58,11 @@ export function ExtensionsTabsMobile({ activeTab, onTabChange, counts }) {
           >
             <${Icon} name=${tab.icon} className="h-3.5 w-3.5" />
             ${tab.label}
-            ${counts[tab.id] != null && html`
-              <span className="font-mono text-[11px] text-iron-700">${counts[tab.id]}</span>
+            ${counts[tab.id] != null &&
+            html`
+              <span className="font-mono text-[11px] text-iron-700"
+                >${counts[tab.id]}</span
+              >
             `}
           </button>
         `

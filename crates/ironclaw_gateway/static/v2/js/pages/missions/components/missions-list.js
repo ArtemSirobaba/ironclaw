@@ -21,7 +21,7 @@ function FilterSelect({ value, onChange, children, label }) {
       <select
         value=${value}
         onChange=${(event) => onChange(event.target.value)}
-        className="h-11 w-full rounded-md border border-white/10 bg-white/[0.035] px-3 text-sm text-white outline-none transition focus:border-signal/40"
+        className="h-11 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/40"
       >
         ${children}
       </select>
@@ -39,14 +39,14 @@ function MissionRow({ mission, selectedMissionId, onSelectMission, onOpenProject
         "w-full rounded-xl border p-4 text-left transition",
         selected
           ? "border-signal/35 bg-signal/10"
-          : "border-white/10 bg-white/[0.025] hover:border-signal/25 hover:bg-white/[0.045]",
+          : "border-iron-700 bg-iron-800/50 hover:border-signal/25 hover:bg-iron-800/80",
       ].join(" ")}
     >
       <button type="button" onClick=${() => onSelectMission(mission.id)} className="block w-full text-left">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <div className="min-w-0 truncate text-lg font-semibold text-white">${mission.name}</div>
+              <div className="min-w-0 truncate text-lg font-semibold text-iron-100">${mission.name}</div>
               <${StatusPill} tone=${missionTone(mission.status)} label=${mission.status} />
             </div>
             <p className="mt-2 line-clamp-2 text-sm leading-6 text-iron-300">${mission.goal || t("missions.noGoal")}</p>
@@ -58,7 +58,7 @@ function MissionRow({ mission, selectedMissionId, onSelectMission, onOpenProject
         </div>
       </button>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-3">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-iron-700 pt-3">
         <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-iron-400">
           ${t("missions.updated", { value: formatMissionDate(mission.updated_at) })}
         </span>
@@ -97,7 +97,7 @@ export function MissionsList({
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">${t("missions.title")}</div>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white">${t("missions.subtitle")}</h1>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-iron-100">${t("missions.subtitle")}</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-iron-300">
             ${t("missions.summary", { missions: totalMissions, projects: projectOptions.length })}
           </p>
@@ -109,7 +109,7 @@ export function MissionsList({
           value=${search}
           onChange=${(event) => onSearchChange(event.target.value)}
           placeholder=${t("missions.searchPlaceholder")}
-          className="h-11 min-w-[220px] flex-1 rounded-md border border-white/10 bg-white/[0.035] px-3 text-sm text-white outline-none transition placeholder:text-iron-400 focus:border-signal/40"
+          className="h-11 min-w-[220px] flex-1 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/40"
         />
         <${FilterSelect} value=${statusFilter} onChange=${onStatusFilterChange} label=${t("missions.filter.status")}>
           ${statusOptions.map((status) => html`<option key=${status.value} value=${status.value}>${status.label}<//>`)}

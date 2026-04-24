@@ -6,7 +6,12 @@ const variants = {
   ghost: "v2-button-ghost",
 };
 
-export function Button({ children, className = "", variant = "primary", ...props }) {
+export function Button({
+  children,
+  className = "",
+  variant = "primary",
+  ...props
+}) {
   return html`
     <button
       className=${[

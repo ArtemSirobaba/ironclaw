@@ -38,10 +38,10 @@ function TokenBanner({ token, onDismiss }) {
     <div className="rounded-xl border border-signal/30 bg-signal/10 p-4 sm:p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-white">${t("admin.users.tokenCreated")}</p>
+          <p className="text-sm font-semibold text-iron-100">${t("admin.users.tokenCreated")}</p>
           <p className="mt-1 text-xs text-iron-300">${t("admin.users.tokenCreatedDesc")}</p>
           <div className="mt-3 flex items-center gap-2">
-            <code className="min-w-0 flex-1 truncate rounded-md border border-white/10 bg-white/[0.04] px-3 py-2 font-mono text-xs text-iron-100">
+            <code className="min-w-0 flex-1 truncate rounded-md border border-iron-700 bg-iron-800/70 px-3 py-2 font-mono text-xs text-iron-100">
               ${token}
             </code>
             <${Button} variant="secondary" onClick=${handleCopy}>
@@ -49,7 +49,7 @@ function TokenBanner({ token, onDismiss }) {
             <//>
           </div>
         </div>
-        <button onClick=${onDismiss} className="text-iron-300 hover:text-white">
+        <button onClick=${onDismiss} className="text-iron-300 hover:text-iron-100">
           <${Icon} name="close" className="h-4 w-4" />
         </button>
       </div>
@@ -94,7 +94,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               value=${name}
               onChange=${(e) => setName(e.target.value)}
               required
-              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
               placeholder=${t("admin.users.displayNamePlaceholder")}
             />
           </div>
@@ -104,7 +104,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               type="email"
               value=${email}
               onChange=${(e) => setEmail(e.target.value)}
-              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
               placeholder=${t("admin.users.emailPlaceholder")}
             />
           </div>
@@ -113,14 +113,14 @@ function CreateUserForm({ onCreate, isCreating, error }) {
             <select
               value=${role}
               onChange=${(e) => setRole(e.target.value)}
-              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
             >
               <option value="member">${t("admin.users.member")}</option>
               <option value="admin">${t("admin.users.admin")}</option>
             </select>
           </div>
         </div>
-        ${error && html`<p className="text-sm text-red-200">${error.message}</p>`}
+        ${error && html`<p className="text-sm text-[var(--v2-danger-text)]">${error.message}</p>`}
         <div className="flex gap-2">
           <${Button} type="submit" disabled=${isCreating}>
             ${isCreating ? t("admin.users.creating") : t("admin.users.createUser")}
@@ -136,14 +136,14 @@ function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }) {
   const t = useT();
   return html`
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick=${onCancel}>
-      <div className="w-full max-w-md rounded-xl border border-white/10 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
-        <h3 className="text-lg font-semibold text-white">${title}</h3>
+      <div className="w-full max-w-md rounded-xl border border-iron-700 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
+        <h3 className="text-lg font-semibold text-iron-100">${title}</h3>
         <p className="mt-2 text-sm text-iron-300">${message}</p>
         <div className="mt-5 flex justify-end gap-2">
           <${Button} variant="ghost" onClick=${onCancel}>${t("admin.users.cancel")}<//>
           <button
             onClick=${onConfirm}
-            className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-red-500/20 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/30"
+            className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-[var(--v2-danger-soft)] px-4 text-sm font-semibold text-[var(--v2-danger-text)] transition hover:bg-[color-mix(in_srgb,var(--v2-danger-soft)_65%,var(--v2-danger-text))]"
           >
             ${confirmLabel}
           </button>
@@ -156,7 +156,7 @@ function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }) {
 function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreateToken }) {
   const t = useT();
   return html`
-    <div className="flex items-center justify-between gap-4 border-t border-white/[0.06] py-3.5 first:border-0 first:pt-0">
+    <div className="flex items-center justify-between gap-4 border-t border-iron-700 py-3.5 first:border-0 first:pt-0">
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <button
@@ -181,17 +181,17 @@ function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreate
         <span className="hidden text-xs text-iron-700 lg:inline">${formatRelativeTime(user.last_active_at)}</span>
         <div className="flex gap-1">
           ${user.status === "active"
-            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-red-400/30 hover:text-red-200">${t("admin.users.suspend")}</button>`
-            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal">${t("admin.users.activate")}</button>`}
+            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-[color-mix(in_srgb,var(--v2-danger-text)_36%,var(--v2-panel-border))] hover:text-[var(--v2-danger-text)]">${t("admin.users.suspend")}</button>`
+            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal">${t("admin.users.activate")}</button>`}
           <button
             onClick=${() => onChangeRole(user.id, user.role === "admin" ? "member" : "admin")}
-            className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-white/20 hover:text-white"
+            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-iron-700 hover:text-iron-100"
           >
             ${user.role === "admin" ? t("admin.users.demote") : t("admin.users.promote")}
           </button>
           <button
             onClick=${() => onCreateToken(user.id, user.display_name)}
-            className="rounded-md border border-white/10 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal"
+            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal"
           >
             ${t("admin.users.token")}
           </button>
@@ -236,7 +236,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
       <${Panel} className="p-5 sm:p-6">
         <div className="v2-skeleton mb-4 h-3 w-24 rounded" />
         ${[1, 2, 3].map((i) => html`
-          <div key=${i} className="flex items-center justify-between border-t border-white/[0.06] py-3.5 first:border-0">
+          <div key=${i} className="flex items-center justify-between border-t border-iron-700 py-3.5 first:border-0">
             <div className="v2-skeleton h-4 w-32 rounded" />
             <div className="v2-skeleton h-6 w-20 rounded-full" />
           </div>
@@ -250,7 +250,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
       <${Panel} className="p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <${Icon} name="lock" className="h-5 w-5 text-iron-700" />
-          <h3 className="text-lg font-semibold text-white">${t("users.adminRequired")}</h3>
+          <h3 className="text-lg font-semibold text-iron-100">${t("users.adminRequired")}</h3>
         </div>
         <p className="mt-2 max-w-md text-sm leading-6 text-iron-300">
           ${t("users.adminRequiredDesc")}
@@ -281,7 +281,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
               placeholder=${t("admin.users.searchPlaceholder")}
               value=${search}
               onChange=${(e) => setSearch(e.target.value)}
-              className="h-8 w-48 rounded-md border border-white/12 bg-white/[0.04] px-3 text-xs text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              className="h-8 w-48 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-xs text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
             />
             <div className="flex gap-1">
               ${FILTERS.map(
@@ -292,8 +292,8 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
                     className=${[
                       "rounded-md px-2.5 py-1.5 text-[11px] font-medium transition",
                       filter === f.value
-                        ? "border border-signal/35 bg-signal/10 text-white"
-                        : "border border-transparent text-iron-300 hover:text-white",
+                        ? "border border-signal/35 bg-signal/10 text-iron-100"
+                        : "border border-transparent text-iron-300 hover:text-iron-100",
                     ].join(" ")}
                   >
                     ${f.label}

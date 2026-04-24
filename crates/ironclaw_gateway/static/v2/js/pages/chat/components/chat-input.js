@@ -1,9 +1,17 @@
+import { Icon } from "../../../design-system/icons.js";
 import { React, html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
-import { formatSize, useComposerAttachments } from "../hooks/useComposerAttachments.js";
-import { Icon } from "../../../design-system/icons.js";
+import {
+  formatSize,
+  useComposerAttachments,
+} from "../hooks/useComposerAttachments.js";
 
-export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" }) {
+export function ChatInput({
+  onSend,
+  disabled,
+  initialText = "",
+  resetKey = "",
+}) {
   const t = useT();
   const [text, setText] = React.useState("");
   const textareaRef = React.useRef(null);
@@ -33,13 +41,20 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
     window.requestAnimationFrame(() => {
       if (textareaRef.current) {
         textareaRef.current.focus();
-        textareaRef.current.setSelectionRange(initialText.length, initialText.length);
+        textareaRef.current.setSelectionRange(
+          initialText.length,
+          initialText.length
+        );
       }
     });
   }, [initialText, resetKey]);
 
   const handleSend = React.useCallback(() => {
-    if ((!text.trim() && images.length === 0 && attachments.length === 0) || disabled) return;
+    if (
+      (!text.trim() && images.length === 0 && attachments.length === 0) ||
+      disabled
+    )
+      return;
     onSend(text.trim(), { images, attachments });
     setText("");
     clearAttachments();
@@ -88,37 +103,66 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
   );
 
   return html`
-    <div className="border-t border-white/10 bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8">
-      ${(images.length > 0 || attachments.length > 0) && html`
+    <div
+      className="border-t border-white/10 bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8"
+    >
+      ${(images.length > 0 || attachments.length > 0) &&
+      html`
         <div className="mb-2 flex flex-wrap gap-2">
-          ${images.map((img, i) => html`
-            <div key=${i} className="group relative">
-              <img src=${img.dataUrl} className="h-16 w-16 rounded-lg border border-iron-700 object-cover" alt="" />
-              <button
-                onClick=${() => removeImage(i)}
-                className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 transition group-hover:opacity-100"
-                aria-label=${t("chat.removeImage")}
+          ${images.map(
+            (img, i) => html`
+              <div key=${i} className="group relative">
+                <img
+                  src=${img.dataUrl}
+                  className="h-16 w-16 rounded-lg border border-iron-700 object-cover"
+                  alt=""
+                />
+                <button
+                  onClick=${() => removeImage(i)}
+                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 transition group-hover:opacity-100"
+                  aria-label=${t("chat.removeImage")}
+                >
+                  <${Icon} name="close" className="h-3 w-3" />
+                </button>
+              </div>
+            `
+          )}
+          ${attachments.map(
+            (att, i) => html`
+              <div
+                key=${i}
+                className="flex items-center gap-2 rounded-md border border-iron-700 bg-iron-900 px-2 py-1 text-xs"
               >
-                <${Icon} name="close" className="h-3 w-3" />
-              </button>
-            </div>
-          `)}
-          ${attachments.map((att, i) => html`
-            <div key=${i} className="flex items-center gap-2 rounded-md border border-iron-700 bg-iron-900 px-2 py-1 text-xs">
-              <${Icon} name="file" className="h-3.5 w-3.5 text-signal" />
-              <span className="truncate">${att.filename}</span>
-              <span className="text-iron-200">${formatSize(att.size)}</span>
-              <button onClick=${() => removeAttachment(i)} className="ml-1 text-iron-200 hover:text-white" aria-label=${t("chat.removeAttachment")}>
-                <${Icon} name="close" className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          `)}
+                <${Icon} name="file" className="h-3.5 w-3.5 text-signal" />
+                <span className="truncate">${att.filename}</span>
+                <span className="text-iron-200">${formatSize(att.size)}</span>
+                <button
+                  onClick=${() => removeAttachment(i)}
+                  className="ml-1 text-iron-200 hover:text-white"
+                  aria-label=${t("chat.removeAttachment")}
+                >
+                  <${Icon} name="close" className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            `
+          )}
         </div>
       `}
 
-      <div className="mx-auto flex max-w-5xl items-end gap-2" onDrop=${onDrop} onDragOver=${onDragOver}>
-        <label className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal">
-          <input type="file" multiple className="hidden" onChange=${onFileInputChange} />
+      <div
+        className="mx-auto flex max-w-5xl items-end gap-2"
+        onDrop=${onDrop}
+        onDragOver=${onDragOver}
+      >
+        <label
+          className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal"
+        >
+          <input
+            type="file"
+            multiple
+            className="hidden"
+            onChange=${onFileInputChange}
+          />
           <${Icon} name="attach" className="h-5 w-5" />
         </label>
 
@@ -136,7 +180,8 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
 
         <button
           onClick=${handleSend}
-          disabled=${disabled || (!text.trim() && images.length === 0 && attachments.length === 0)}
+          disabled=${disabled ||
+          (!text.trim() && images.length === 0 && attachments.length === 0)}
           className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-md disabled:opacity-50"
           aria-label=${t("chat.send")}
         >

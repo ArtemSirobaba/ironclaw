@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from "react-router";
-import { React, html } from "../../lib/html.js";
 import { Button } from "../../design-system/button.js";
 import { EmptyPanel } from "../../design-system/primitives.js";
+import { React, html } from "../../lib/html.js";
 import { useT } from "../../lib/i18n.js";
-import { useJobs } from "./hooks/useJobs.js";
+import { JobActivityTab } from "./components/job-activity-tab.js";
+import { JobDetailShell } from "./components/job-detail-shell.js";
+import { JobFilesTab } from "./components/job-files-tab.js";
+import { JobOverviewTab } from "./components/job-overview-tab.js";
+import { JobsList } from "./components/jobs-list.js";
+import { JobsSummaryStrip } from "./components/jobs-summary-strip.js";
 import { useJobDetail } from "./hooks/useJobDetail.js";
 import { useJobFiles } from "./hooks/useJobFiles.js";
-import { JobsSummaryStrip } from "./components/jobs-summary-strip.js";
-import { JobsList } from "./components/jobs-list.js";
-import { JobDetailShell } from "./components/job-detail-shell.js";
-import { JobOverviewTab } from "./components/job-overview-tab.js";
-import { JobActivityTab } from "./components/job-activity-tab.js";
-import { JobFilesTab } from "./components/job-files-tab.js";
+import { useJobs } from "./hooks/useJobs.js";
 
 function FeedbackBanner({ result, onDismiss }) {
   const t = useT();
@@ -24,9 +24,19 @@ function FeedbackBanner({ result, onDismiss }) {
   };
 
   return html`
-    <div className=${["flex items-center gap-3 rounded-xl border px-4 py-3 text-sm", tone[result.type] || tone.info].join(" ")}>
+    <div
+      className=${[
+        "flex items-center gap-3 rounded-xl border px-4 py-3 text-sm",
+        tone[result.type] || tone.info,
+      ].join(" ")}
+    >
       <span className="min-w-0 flex-1">${result.message}</span>
-      <button onClick=${onDismiss} className="shrink-0 opacity-70 transition hover:opacity-100">${t("jobs.dismiss")}</button>
+      <button
+        onClick=${onDismiss}
+        className="shrink-0 opacity-70 transition hover:opacity-100"
+      >
+        ${t("jobs.dismiss")}
+      </button>
     </div>
   `;
 }
@@ -37,7 +47,9 @@ export function JobsPage() {
   const { jobId = null } = useParams();
   const [search, setSearch] = React.useState("");
   const [stateFilter, setStateFilter] = React.useState("all");
-  const [activeTab, setActiveTab] = React.useState(jobId ? "activity" : "overview");
+  const [activeTab, setActiveTab] = React.useState(
+    jobId ? "activity" : "overview"
+  );
 
   const jobsState = useJobs();
   const detailState = useJobDetail(jobId);
@@ -50,37 +62,54 @@ export function JobsPage() {
   const filteredJobs = React.useMemo(() => {
     const query = search.trim().toLowerCase();
     return jobsState.jobs.filter((job) => {
-      const matchesSearch = !query || job.title.toLowerCase().includes(query) || job.id.toLowerCase().includes(query);
+      const matchesSearch =
+        !query ||
+        job.title.toLowerCase().includes(query) ||
+        job.id.toLowerCase().includes(query);
       const matchesState = stateFilter === "all" || job.state === stateFilter;
       return matchesSearch && matchesState;
     });
   }, [jobsState.jobs, search, stateFilter]);
 
-  const handleOpenJob = React.useCallback((nextJobId) => navigate(`/jobs/${nextJobId}`), [navigate]);
+  const handleOpenJob = React.useCallback(
+    (nextJobId) => navigate(`/jobs/${nextJobId}`),
+    [navigate]
+  );
 
-  const handleCancel = React.useCallback(async (targetJobId) => {
-    try {
-      await jobsState.cancelJob({ jobId: targetJobId });
-    } catch {
-      // Result state is handled in the mutation hooks.
-    }
-  }, [jobsState]);
-
-  const handleRestart = React.useCallback(async (targetJobId) => {
-    try {
-      const response = await jobsState.restartJob({ jobId: targetJobId });
-      if (response?.new_job_id) {
-        navigate(`/jobs/${response.new_job_id}`);
+  const handleCancel = React.useCallback(
+    async (targetJobId) => {
+      try {
+        await jobsState.cancelJob({ jobId: targetJobId });
+      } catch {
+        // Result state is handled in the mutation hooks.
       }
-    } catch {
-      // Result state is handled in the mutation hooks.
-    }
-  }, [jobsState, navigate]);
+    },
+    [jobsState]
+  );
+
+  const handleRestart = React.useCallback(
+    async (targetJobId) => {
+      try {
+        const response = await jobsState.restartJob({ jobId: targetJobId });
+        if (response?.new_job_id) {
+          navigate(`/jobs/${response.new_job_id}`);
+        }
+      } catch {
+        // Result state is handled in the mutation hooks.
+      }
+    },
+    [jobsState, navigate]
+  );
 
   const headerActions = html`
-    ${jobId && html`<${Button} variant="ghost" onClick=${() => navigate("/jobs")}>${t("jobs.allJobs")}<//>`}
+    ${jobId &&
+    html`<${Button} variant="ghost" onClick=${() => navigate("/jobs")}
+      >${t("jobs.allJobs")}<//
+    >`}
     <${Button} variant="secondary" onClick=${jobsState.invalidate}>
-      ${jobsState.isRefreshing || detailState.isRefreshing ? t("jobs.refreshing") : t("jobs.refresh")}
+      ${jobsState.isRefreshing || detailState.isRefreshing
+        ? t("jobs.refreshing")
+        : t("jobs.refresh")}
     <//>
   `;
 
@@ -90,7 +119,10 @@ export function JobsPage() {
     if (detailState.isLoading) {
       detailContent = html`
         <div className="space-y-4">
-          ${[1, 2, 3].map((i) => html`<div key=${i} className="v2-skeleton h-32 rounded-[18px]" />`)}
+          ${[1, 2, 3].map(
+            (i) =>
+              html`<div key=${i} className="v2-skeleton h-32 rounded-[18px]" />`
+          )}
         </div>
       `;
     } else if (detailState.error || !detailState.job) {
@@ -99,7 +131,9 @@ export function JobsPage() {
           title=${t("jobs.unavailable")}
           description=${detailState.error?.message || t("jobs.unavailableDesc")}
         >
-          <${Button} variant="secondary" onClick=${() => navigate("/jobs")}>${t("jobs.returnToJobs")}<//>
+          <${Button} variant="secondary" onClick=${() => navigate("/jobs")}
+            >${t("jobs.returnToJobs")}<//
+          >
         <//>
       `;
     } else {
@@ -148,7 +182,13 @@ export function JobsPage() {
     detailContent = jobsState.isLoading
       ? html`
           <div className="space-y-4">
-            ${[1, 2, 3].map((i) => html`<div key=${i} className="v2-skeleton h-28 rounded-[18px]" />`)}
+            ${[1, 2, 3].map(
+              (i) =>
+                html`<div
+                  key=${i}
+                  className="v2-skeleton h-28 rounded-[18px]"
+                />`
+            )}
           </div>
         `
       : html`
@@ -175,13 +215,22 @@ export function JobsPage() {
           <div className="flex flex-wrap justify-end gap-2">
             ${headerActions}
           </div>
-          ${jobsState.error && html`
-            <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          ${jobsState.error &&
+          html`
+            <div
+              className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
               ${jobsState.error.message}
             </div>
           `}
-          <${FeedbackBanner} result=${jobsState.actionResult} onDismiss=${jobsState.clearActionResult} />
-          <${FeedbackBanner} result=${detailState.promptResult} onDismiss=${detailState.clearPromptResult} />
+          <${FeedbackBanner}
+            result=${jobsState.actionResult}
+            onDismiss=${jobsState.clearActionResult}
+          />
+          <${FeedbackBanner}
+            result=${detailState.promptResult}
+            onDismiss=${detailState.clearPromptResult}
+          />
           <${JobsSummaryStrip} summary=${jobsState.summary} />
           ${detailContent}
         </div>

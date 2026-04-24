@@ -1,14 +1,14 @@
 import { useNavigate, useParams } from "react-router";
-import { React, html } from "../../lib/html.js";
 import { Button } from "../../design-system/button.js";
-import { FeedbackBanner } from "../projects/components/feedback-banner.js";
+import { React, html } from "../../lib/html.js";
 import { useT } from "../../lib/i18n.js";
-import { useMissions } from "./hooks/useMissions.js";
-import { useMissionDetail } from "./hooks/useMissionDetail.js";
-import { sortMissions } from "./lib/missions-presenters.js";
-import { MissionsSummaryStrip } from "./components/missions-summary-strip.js";
-import { MissionsList } from "./components/missions-list.js";
+import { FeedbackBanner } from "../projects/components/feedback-banner.js";
 import { MissionDetailPanel } from "./components/mission-detail-panel.js";
+import { MissionsList } from "./components/missions-list.js";
+import { MissionsSummaryStrip } from "./components/missions-summary-strip.js";
+import { useMissionDetail } from "./hooks/useMissionDetail.js";
+import { useMissions } from "./hooks/useMissions.js";
+import { sortMissions } from "./lib/missions-presenters.js";
 
 export function MissionsPage() {
   const t = useT();
@@ -27,40 +27,58 @@ export function MissionsPage() {
       const matchesSearch =
         !query ||
         [mission.name, mission.goal, mission.project?.name].some((value) =>
-          String(value || "").toLowerCase().includes(query)
+          String(value || "")
+            .toLowerCase()
+            .includes(query)
         );
-      const matchesStatus = statusFilter === "all" || mission.status === statusFilter;
-      const matchesProject = projectFilter === "all" || mission.project?.id === projectFilter;
+      const matchesStatus =
+        statusFilter === "all" || mission.status === statusFilter;
+      const matchesProject =
+        projectFilter === "all" || mission.project?.id === projectFilter;
       return matchesSearch && matchesStatus && matchesProject;
     });
   }, [missionsState.missions, projectFilter, search, statusFilter]);
 
   const listedMission = React.useMemo(
-    () => missionsState.missions.find((mission) => mission.id === missionId) || null,
+    () =>
+      missionsState.missions.find((mission) => mission.id === missionId) ||
+      null,
     [missionId, missionsState.missions]
   );
 
   const selectedMission = detailState.mission
-    ? { ...listedMission, ...detailState.mission, project: listedMission?.project || null }
+    ? {
+        ...listedMission,
+        ...detailState.mission,
+        project: listedMission?.project || null,
+      }
     : listedMission;
 
-  const handleOpenThread = React.useCallback((thread) => {
-    if (thread.project_id) {
-      navigate(`/projects/${thread.project_id}/threads/${thread.id}`);
-    }
-  }, [navigate]);
+  const handleOpenThread = React.useCallback(
+    (thread) => {
+      if (thread.project_id) {
+        navigate(`/projects/${thread.project_id}/threads/${thread.id}`);
+      }
+    },
+    [navigate]
+  );
 
-  const handleMissionAction = React.useCallback(async (action, targetMissionId) => {
-    try {
-      await action({ missionId: targetMissionId });
-    } catch {
-      // Mutation hooks own the visible result state.
-    }
-  }, []);
+  const handleMissionAction = React.useCallback(
+    async (action, targetMissionId) => {
+      try {
+        await action({ missionId: targetMissionId });
+      } catch {
+        // Mutation hooks own the visible result state.
+      }
+    },
+    []
+  );
 
   const content = missionId
     ? html`
-        <div className="grid gap-5 xl:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)]">
+        <div
+          className="grid gap-5 xl:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)]"
+        >
           <${MissionsList}
             missions=${filteredMissions}
             totalMissions=${missionsState.missions.length}
@@ -72,7 +90,8 @@ export function MissionsPage() {
             projectFilter=${projectFilter}
             onProjectFilterChange=${setProjectFilter}
             projectOptions=${missionsState.projects}
-            onSelectMission=${(nextMissionId) => navigate(`/missions/${nextMissionId}`)}
+            onSelectMission=${(nextMissionId) =>
+              navigate(`/missions/${nextMissionId}`)}
             onOpenProject=${(projectId) => navigate(`/projects/${projectId}`)}
           />
           <${MissionDetailPanel}
@@ -80,9 +99,12 @@ export function MissionsPage() {
             isLoading=${detailState.isLoading}
             error=${detailState.error}
             isBusy=${missionsState.isBusy}
-            onFire=${(targetMissionId) => handleMissionAction(missionsState.fireMission, targetMissionId)}
-            onPause=${(targetMissionId) => handleMissionAction(missionsState.pauseMission, targetMissionId)}
-            onResume=${(targetMissionId) => handleMissionAction(missionsState.resumeMission, targetMissionId)}
+            onFire=${(targetMissionId) =>
+              handleMissionAction(missionsState.fireMission, targetMissionId)}
+            onPause=${(targetMissionId) =>
+              handleMissionAction(missionsState.pauseMission, targetMissionId)}
+            onResume=${(targetMissionId) =>
+              handleMissionAction(missionsState.resumeMission, targetMissionId)}
             onOpenProject=${(projectId) => navigate(`/projects/${projectId}`)}
             onOpenThread=${handleOpenThread}
           />
@@ -100,7 +122,8 @@ export function MissionsPage() {
           projectFilter=${projectFilter}
           onProjectFilterChange=${setProjectFilter}
           projectOptions=${missionsState.projects}
-          onSelectMission=${(nextMissionId) => navigate(`/missions/${nextMissionId}`)}
+          onSelectMission=${(nextMissionId) =>
+            navigate(`/missions/${nextMissionId}`)}
           onOpenProject=${(projectId) => navigate(`/projects/${projectId}`)}
         />
       `;
@@ -110,25 +133,44 @@ export function MissionsPage() {
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="space-y-5">
           <div className="flex flex-wrap justify-end gap-2">
-            ${missionId && html`<${Button} variant="ghost" onClick=${() => navigate("/missions")}>${t("missions.allMissions")}<//>`}
+            ${missionId &&
+            html`<${Button}
+              variant="ghost"
+              onClick=${() => navigate("/missions")}
+              >${t("missions.allMissions")}<//
+            >`}
             <${Button} variant="secondary" onClick=${missionsState.invalidate}>
-              ${missionsState.isRefreshing || detailState.isRefreshing ? t("missions.refreshing") : t("missions.refresh")}
+              ${missionsState.isRefreshing || detailState.isRefreshing
+                ? t("missions.refreshing")
+                : t("missions.refresh")}
             <//>
           </div>
 
-          ${missionsState.error && html`
-            <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          ${missionsState.error &&
+          html`
+            <div
+              className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            >
               ${missionsState.error.message}
             </div>
           `}
 
-          <${FeedbackBanner} result=${missionsState.actionResult} onDismiss=${missionsState.clearActionResult} />
+          <${FeedbackBanner}
+            result=${missionsState.actionResult}
+            onDismiss=${missionsState.clearActionResult}
+          />
           <${MissionsSummaryStrip} summary=${missionsState.summary} />
 
           ${missionsState.isLoading
             ? html`
                 <div className="space-y-4">
-                  ${[1, 2, 3].map((index) => html`<div key=${index} className="v2-skeleton h-32 rounded-xl" />`)}
+                  ${[1, 2, 3].map(
+                    (index) =>
+                      html`<div
+                        key=${index}
+                        className="v2-skeleton h-32 rounded-xl"
+                      />`
+                  )}
                 </div>
               `
             : content}

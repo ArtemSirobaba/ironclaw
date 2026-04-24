@@ -1,6 +1,6 @@
+import { Icon } from "../../../design-system/icons.js";
 import { html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
-import { Icon } from "../../../design-system/icons.js";
 
 const ADMIN_TABS = [
   { id: "dashboard", labelKey: "admin.tab.dashboard", icon: "pulse" },

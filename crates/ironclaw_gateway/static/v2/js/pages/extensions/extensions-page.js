@@ -1,13 +1,16 @@
-import { React, html } from "../../lib/html.js";
 import { useOutletContext } from "react-router";
-import { useExtensions } from "./hooks/useExtensions.js";
-import { ExtensionsTabs, ExtensionsTabsMobile } from "./components/extensions-tabs.js";
-import { InstalledTab } from "./components/installed-tab.js";
+import { React, html } from "../../lib/html.js";
+import { ActionToast } from "./components/action-toast.js";
 import { ChannelsTab } from "./components/channels-tab.js";
+import { ConfigureModal } from "./components/configure-modal.js";
+import {
+  ExtensionsTabs,
+  ExtensionsTabsMobile,
+} from "./components/extensions-tabs.js";
+import { InstalledTab } from "./components/installed-tab.js";
 import { McpTab } from "./components/mcp-tab.js";
 import { RegistryTab } from "./components/registry-tab.js";
-import { ConfigureModal } from "./components/configure-modal.js";
-import { ActionToast } from "./components/action-toast.js";
+import { useExtensions } from "./hooks/useExtensions.js";
 
 export function ExtensionsPage() {
   const { gatewayStatus } = useOutletContext();
@@ -41,7 +44,8 @@ export function ExtensionsPage() {
     installed: extensions.length || null,
     channels: channels.length || null,
     mcp: mcpServers.length || null,
-    registry: (toolRegistry.length + channelRegistry.length + mcpRegistry.length) || null,
+    registry:
+      toolRegistry.length + channelRegistry.length + mcpRegistry.length || null,
   };
 
   if (isLoading) {
@@ -51,23 +55,33 @@ export function ExtensionsPage() {
           <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
             <aside className="hidden xl:block">
               <div className="space-y-2">
-                ${[1, 2, 3, 4].map((i) => html`
-                  <div key=${i} className="v2-skeleton h-10 w-full rounded-md" />
-                `)}
+                ${[1, 2, 3, 4].map(
+                  (i) => html`
+                    <div
+                      key=${i}
+                      className="v2-skeleton h-10 w-full rounded-md"
+                    />
+                  `
+                )}
               </div>
             </aside>
             <div className="space-y-5">
               <div className="v2-panel rounded-[18px] p-5 sm:p-6">
                 <div className="v2-skeleton mb-4 h-3 w-28 rounded" />
-                ${[1, 2, 3].map((i) => html`
-                  <div key=${i} className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0">
-                    <div>
-                      <div className="v2-skeleton h-4 w-40 rounded" />
-                      <div className="v2-skeleton mt-2 h-3 w-56 rounded" />
+                ${[1, 2, 3].map(
+                  (i) => html`
+                    <div
+                      key=${i}
+                      className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0"
+                    >
+                      <div>
+                        <div className="v2-skeleton h-4 w-40 rounded" />
+                        <div className="v2-skeleton mt-2 h-3 w-56 rounded" />
+                      </div>
+                      <div className="v2-skeleton h-7 w-16 rounded-full" />
                     </div>
-                    <div className="v2-skeleton h-7 w-16 rounded-full" />
-                  </div>
-                `)}
+                  `
+                )}
               </div>
             </div>
           </div>
@@ -141,7 +155,8 @@ export function ExtensionsPage() {
         </div>
       </div>
 
-      ${configuring && html`
+      ${configuring &&
+      html`
         <${ConfigureModal}
           extensionName=${configuring}
           onClose=${handleCloseModal}
