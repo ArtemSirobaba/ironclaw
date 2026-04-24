@@ -62,7 +62,11 @@ export function App() {
           <${Route} path="dashboard" element=${html`<${DashboardPage} />`} />
           <${Route} path="chat" element=${html`<${ChatPage} />`} />
           <${Route} path="projects" element=${html`<${ProjectsPage} />`} />
+          <${Route} path="projects/:projectId" element=${html`<${ProjectsPage} />`} />
+          <${Route} path="projects/:projectId/missions/:missionId" element=${html`<${ProjectsPage} />`} />
+          <${Route} path="projects/:projectId/threads/:threadId" element=${html`<${ProjectsPage} />`} />
           <${Route} path="jobs" element=${html`<${JobsPage} />`} />
+          <${Route} path="jobs/:jobId" element=${html`<${JobsPage} />`} />
           <${Route} path="extensions" element=${html`<${ExtensionsPage} />`} />
           <${Route} path="settings" element=${html`<${SettingsPage} />`} />
         <//>

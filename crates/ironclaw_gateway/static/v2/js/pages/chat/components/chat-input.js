@@ -2,7 +2,7 @@ import { React, html } from "../../../lib/html.js";
 import { formatSize, useComposerAttachments } from "../hooks/useComposerAttachments.js";
 import { Icon } from "../../../design-system/icons.js";
 
-export function ChatInput({ onSend, disabled }) {
+export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" }) {
   const [text, setText] = React.useState("");
   const textareaRef = React.useRef(null);
   const {
@@ -24,6 +24,17 @@ export function ChatInput({ onSend, disabled }) {
   React.useEffect(() => {
     autoResize();
   }, [text, autoResize]);
+
+  React.useEffect(() => {
+    if (!initialText) return;
+    setText(initialText);
+    window.requestAnimationFrame(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(initialText.length, initialText.length);
+      }
+    });
+  }, [initialText, resetKey]);
 
   const handleSend = React.useCallback(() => {
     if ((!text.trim() && images.length === 0 && attachments.length === 0) || disabled) return;

@@ -9,7 +9,15 @@ import { ChatInput } from "./components/chat-input.js";
 import { ConnectionStatus } from "./components/connection-status.js";
 import { EmptyState } from "./components/empty-state.js";
 
-export function Chat({ threads, activeThreadId, onSelectThread, onCreateThread, isCreatingThread }) {
+export function Chat({
+  threads,
+  activeThreadId,
+  onSelectThread,
+  onCreateThread,
+  isCreatingThread,
+  composerDraft = "",
+  composerResetKey = "",
+}) {
   const {
     messages,
     isProcessing,
@@ -87,7 +95,12 @@ export function Chat({ threads, activeThreadId, onSelectThread, onCreateThread, 
 
           <${SuggestionChips} suggestions=${suggestions} onSelect=${handleSuggestion} />
 
-          <${ChatInput} onSend=${handleSend} disabled=${isProcessing && !pendingGate} />
+          <${ChatInput}
+            onSend=${handleSend}
+            disabled=${isProcessing && !pendingGate}
+            initialText=${composerDraft}
+            resetKey=${composerResetKey}
+          />
         `}
       </div>
     </div>

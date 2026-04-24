@@ -1,9 +1,18 @@
-import { useOutletContext } from "react-router";
-import { html } from "../../lib/html.js";
+import { useLocation, useOutletContext } from "react-router";
+import { React, html } from "../../lib/html.js";
 import { Chat } from "./chat.js";
 
 export function ChatPage() {
   const { threadsState } = useOutletContext();
+  const location = useLocation();
+  const composerDraft = location.state?.composerDraft || "";
+  const requestedThreadId = location.state?.threadId || null;
+
+  React.useEffect(() => {
+    if (requestedThreadId) {
+      threadsState.setActiveThreadId(requestedThreadId);
+    }
+  }, [requestedThreadId, threadsState]);
 
   return html`
     <${Chat}
@@ -12,6 +21,8 @@ export function ChatPage() {
       onSelectThread=${threadsState.setActiveThreadId}
       onCreateThread=${threadsState.createThread}
       isCreatingThread=${threadsState.isCreating}
+      composerDraft=${composerDraft}
+      composerResetKey=${location.key}
     />
   `;
 }
