@@ -1,0 +1,145 @@
+import { React, html } from "../../../lib/html.js";
+
+function SavedIndicator({ visible }) {
+  return html`
+    <span
+      className=${[
+        "font-mono text-[11px] text-mint transition-opacity duration-300",
+        visible ? "opacity-100" : "opacity-0",
+      ].join(" ")}
+      role="status"
+    >
+      saved
+    </span>
+  `;
+}
+
+function Toggle({ checked, onChange, label }) {
+  return html`
+    <button
+      type="button"
+      role="switch"
+      aria-checked=${checked}
+      aria-label=${label}
+      onClick=${() => onChange(!checked)}
+      className=${[
+        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200",
+        checked
+          ? "border-signal/40 bg-signal/30"
+          : "border-white/15 bg-white/[0.06]",
+      ].join(" ")}
+    >
+      <span
+        className=${[
+          "pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm transition-transform duration-200",
+          checked
+            ? "translate-x-5 bg-signal"
+            : "translate-x-0 bg-iron-300",
+        ].join(" ")}
+      />
+    </button>
+  `;
+}
+
+export function SettingsField({ field, value, onSave, isSaved }) {
+  const [localValue, setLocalValue] = React.useState("");
+
+  React.useEffect(() => {
+    if (field.type !== "boolean") {
+      setLocalValue(value !== null && value !== undefined ? String(value) : "");
+    }
+  }, [value, field.type]);
+
+  const handleCommit = React.useCallback(
+    (val) => {
+      if (val === "") {
+        onSave(field.key, null);
+      } else if (field.type === "number") {
+        const parsed = parseInt(val, 10);
+        if (!isNaN(parsed)) onSave(field.key, parsed);
+      } else if (field.type === "float") {
+        const parsed = parseFloat(val);
+        if (!isNaN(parsed)) onSave(field.key, parsed);
+      } else {
+        onSave(field.key, val);
+      }
+    },
+    [field.key, field.type, onSave]
+  );
+
+  return html`
+    <div className="flex items-start justify-between gap-6 border-t border-white/[0.06] py-4 first:border-0 first:pt-0">
+      <div className="min-w-0 flex-1">
+        <div className="text-sm font-medium text-iron-200">${field.label}</div>
+        ${field.description &&
+        html`<div className="mt-1 text-xs leading-5 text-iron-300">${field.description}</div>`}
+      </div>
+
+      <div className="flex shrink-0 items-center gap-3">
+        ${field.type === "boolean"
+          ? html`
+              <${Toggle}
+                checked=${value === true || value === "true"}
+                onChange=${(v) => onSave(field.key, v ? "true" : "false")}
+                label=${field.label}
+              />
+            `
+          : field.type === "select"
+          ? html`
+              <select
+                value=${localValue}
+                onChange=${(e) => {
+                  setLocalValue(e.target.value);
+                  handleCommit(e.target.value);
+                }}
+                aria-label=${field.label}
+                className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+              >
+                <option value="">default</option>
+                ${field.options.map(
+                  (opt) => html`<option key=${opt} value=${opt}>${opt}</option>`
+                )}
+              </select>
+            `
+          : html`
+              <input
+                type=${field.type === "float" || field.type === "number" ? "number" : "text"}
+                value=${localValue}
+                onChange=${(e) => setLocalValue(e.target.value)}
+                onBlur=${(e) => handleCommit(e.target.value)}
+                onKeyDown=${(e) => e.key === "Enter" && handleCommit(e.target.value)}
+                step=${field.step !== undefined ? String(field.step) : field.type === "float" ? "any" : "1"}
+                min=${field.min !== undefined ? String(field.min) : undefined}
+                max=${field.max !== undefined ? String(field.max) : undefined}
+                placeholder="default"
+                aria-label=${field.label}
+                className="h-9 w-36 rounded-md border border-white/12 bg-white/[0.04] px-3 text-right font-mono text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              />
+            `}
+        <${SavedIndicator} visible=${isSaved} />
+      </div>
+    </div>
+  `;
+}
+
+export function SettingsGroup({ group, fields, settings, onSave, savedKeys }) {
+  return html`
+    <div className="v2-panel rounded-[18px] p-5 sm:p-6">
+      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">${group}</h3>
+      <div>
+        ${fields.map(
+          (field) =>
+            html`
+              <${SettingsField}
+                key=${field.key}
+                field=${field}
+                value=${settings[field.key]}
+                onSave=${onSave}
+                isSaved=${savedKeys[field.key]}
+              />
+            `
+        )}
+      </div>
+    </div>
+  `;
+}
