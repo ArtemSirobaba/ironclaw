@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { html } from "../lib/html.js";
+import { React, html } from "../lib/html.js";
 import { primaryRoutes } from "../app/routes.js";
 import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
 import { useThreads } from "../pages/chat/hooks/useThreads.js";
@@ -7,9 +7,38 @@ import { Button } from "../design-system/button.js";
 import { StatusPill } from "../design-system/primitives.js";
 import { Icon } from "../design-system/icons.js";
 
+const THEME_STORAGE_KEY = "ironclaw:v2-theme";
+
+function initialTheme() {
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  } catch (_) {
+    return "light";
+  }
+}
+
+function useInterfaceTheme() {
+  const [theme, setTheme] = React.useState(initialTheme);
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (_) {}
+  }, [theme]);
+
+  const toggleTheme = React.useCallback(() => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  }, []);
+
+  return { theme, toggleTheme };
+}
+
 function RouteGlyph({ label }) {
   return html`
-    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.035] font-mono text-[10px] text-iron-300 transition group-hover:border-signal/35 group-hover:text-signal">
+    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.035] font-mono text-[10px] text-iron-300 transition group-hover:border-signal/35 group-hover:text-signal">
       ${label.slice(0, 2).toUpperCase()}
     </span>
   `;
@@ -24,7 +53,7 @@ function HeaderTabs() {
           to=${route.path}
           className=${({ isActive }) =>
             [
-              "group flex items-center gap-3 rounded-full border px-2.5 py-2 text-sm transition xl:px-3",
+              "group flex items-center gap-3 rounded-md border px-2.5 py-2 text-sm transition xl:px-3",
               isActive
                 ? "v2-nav-active border-signal/30 text-white"
                 : "border-white/10 bg-white/[0.02] text-iron-300 hover:border-white/15 hover:bg-white/[0.045] hover:text-white",
@@ -39,6 +68,7 @@ function HeaderTabs() {
 }
 
 export function GatewayLayout({ token, onSignOut }) {
+  const { theme, toggleTheme } = useInterfaceTheme();
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
   const status = statusQuery.data;
@@ -48,13 +78,13 @@ export function GatewayLayout({ token, onSignOut }) {
   return html`
     <div className="v2-app-bg min-h-[100dvh] overflow-hidden">
       <header className="v2-topbar sticky top-0 z-30 border-b border-white/10 bg-iron-950/88 backdrop-blur-xl">
-        <div className="flex h-[84px] w-full items-center gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="flex h-[88px] w-full items-center gap-3 px-4 sm:px-6 lg:px-8">
           <${Link} to="/chat" className="flex shrink-0 items-center gap-3 text-white">
-            <span className="grid h-10 w-10 place-items-center rounded-lg border border-signal/25 bg-signal/10 text-signal shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-signal/25 bg-signal/10 text-signal">
               <${Icon} name="bolt" className="h-5 w-5" />
             </span>
-            <span className="text-base font-semibold tracking-tight">IronClaw</span>
-            <span className="rounded-full border border-white/10 px-2 py-0.5 font-mono text-[11px] uppercase text-iron-300">
+            <span className="font-serif text-2xl font-semibold tracking-[-0.04em]">IronClaw</span>
+            <span className="rounded-full border border-white/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-iron-300">
               v2
             </span>
           <//>
@@ -67,6 +97,15 @@ export function GatewayLayout({ token, onSignOut }) {
             <div className="hidden lg:block">
               <${StatusPill} tone=${statusTone} label=${statusLabel} />
             </div>
+            <button
+              type="button"
+              onClick=${toggleTheme}
+              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-white/10 bg-white/[0.035] text-iron-300 hover:text-white"
+              aria-label=${theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+              title=${theme === "dark" ? "Light theme" : "Dark theme"}
+            >
+              <${Icon} name=${theme === "dark" ? "sun" : "moon"} className="h-4 w-4" />
+            </button>
             <${Button} variant="ghost" onClick=${onSignOut}>Sign out<//>
           </div>
         </div>
@@ -81,7 +120,7 @@ export function GatewayLayout({ token, onSignOut }) {
         </div>
       </header>
 
-      <div className="flex h-[calc(100dvh-84px)] min-h-0 w-full flex-col overflow-hidden">
+      <div className="flex h-[calc(100dvh-88px)] min-h-0 w-full flex-col overflow-hidden">
         <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
           ${statusQuery.error
             ? html`<div className="mb-4 rounded-md border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">

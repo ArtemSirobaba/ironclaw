@@ -5,10 +5,13 @@ import { defaultRoute } from "./routes.js";
 import { GatewayLayout } from "../layout/gateway-layout.js";
 import { LoginPage as LoginView } from "../pages/login/login-page.js";
 import { ChatPage } from "../pages/chat/chat-page.js";
+import { WorkspacePage } from "../pages/workspace/workspace-page.js";
 import { ProjectsPage } from "../pages/projects/projects-page.js";
+import { MissionsPage } from "../pages/missions/missions-page.js";
 import { JobsPage } from "../pages/jobs/jobs-page.js";
 import { ExtensionsPage } from "../pages/extensions/extensions-page.js";
 import { SettingsPage } from "../pages/settings/settings-page.js";
+import { AdminPage } from "../pages/admin/admin-page.js";
 
 function LoginPage({ auth }) {
   const navigate = useNavigate();
@@ -59,14 +62,19 @@ export function App() {
           <${Route} index element=${html`<${Navigate} to=${defaultRoute} replace />`} />
           <${Route} path="overview" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
           <${Route} path="chat" element=${html`<${ChatPage} />`} />
+          <${Route} path="workspace" element=${html`<${WorkspacePage} />`} />
+          <${Route} path="workspace/*" element=${html`<${WorkspacePage} />`} />
           <${Route} path="projects" element=${html`<${ProjectsPage} />`} />
           <${Route} path="projects/:projectId" element=${html`<${ProjectsPage} />`} />
           <${Route} path="projects/:projectId/missions/:missionId" element=${html`<${ProjectsPage} />`} />
           <${Route} path="projects/:projectId/threads/:threadId" element=${html`<${ProjectsPage} />`} />
+          <${Route} path="missions" element=${html`<${MissionsPage} />`} />
+          <${Route} path="missions/:missionId" element=${html`<${MissionsPage} />`} />
           <${Route} path="jobs" element=${html`<${JobsPage} />`} />
           <${Route} path="jobs/:jobId" element=${html`<${JobsPage} />`} />
           <${Route} path="extensions" element=${html`<${ExtensionsPage} />`} />
           <${Route} path="settings" element=${html`<${SettingsPage} />`} />
+          <${Route} path="admin" element=${html`<${AdminPage} />`} />
         <//>
         <${Route} path="*" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
       <//>

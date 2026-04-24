@@ -5,7 +5,7 @@ import { ToolActivity } from "./tool-activity.js";
 import { Icon } from "../../../design-system/icons.js";
 
 const ROLE_STYLES = {
-  user: "ml-auto bg-signal/10 text-iron-100 border-signal/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
+  user: "ml-auto bg-signal/10 text-iron-100 border-signal/25",
   assistant: "mr-auto bg-iron-800/58 text-iron-100 border-white/10",
   system: "mx-auto bg-copper/10 text-copper border-copper/20 text-center",
   error: "mx-auto bg-red-500/10 text-red-200 border-red-400/20 text-center",

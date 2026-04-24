@@ -7,6 +7,11 @@ export const primaryRoutes = [
     label: "Chat",
   },
   {
+    id: "workspace",
+    path: "/workspace",
+    label: "Workspace",
+  },
+  {
     id: "projects",
     path: "/projects",
     label: "Projects",
@@ -15,6 +20,11 @@ export const primaryRoutes = [
     id: "jobs",
     path: "/jobs",
     label: "Jobs",
+  },
+  {
+    id: "missions",
+    path: "/missions",
+    label: "Missions",
   },
   {
     id: "extensions",
@@ -26,16 +36,21 @@ export const primaryRoutes = [
     path: "/settings",
     label: "Settings",
   },
+  {
+    id: "admin",
+    path: "/admin",
+    label: "Admin",
+  },
 ];
 
 export const routeSections = [
   {
     label: "Work",
-    routes: primaryRoutes.filter((route) => ["chat", "projects", "jobs"].includes(route.id)),
+    routes: primaryRoutes.filter((route) => ["chat", "workspace", "projects", "jobs", "missions"].includes(route.id)),
   },
   {
     label: "System",
-    routes: primaryRoutes.filter((route) => ["extensions", "settings"].includes(route.id)),
+    routes: primaryRoutes.filter((route) => ["extensions", "settings", "admin"].includes(route.id)),
   },
 ];
 

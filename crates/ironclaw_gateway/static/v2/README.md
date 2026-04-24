@@ -31,7 +31,9 @@ Keep route modules thin. Put workflow composition in the page file, local UI in 
 ## Current Pages
 
 - `pages/chat/chat-page.js`
+- `pages/workspace/workspace-page.js`
 - `pages/projects/projects-page.js`
+- `pages/missions/missions-page.js`
 - `pages/jobs/jobs-page.js`
 - `pages/extensions/extensions-page.js`
 - `pages/settings/settings-page.js`

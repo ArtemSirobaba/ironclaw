@@ -1,9 +1,9 @@
 import { html } from "../lib/html.js";
 
 const variants = {
-  primary: "border border-signal/40 bg-signal text-iron-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-signal/90",
-  secondary: "border border-white/12 bg-white/[0.04] text-iron-100 hover:border-signal/45 hover:bg-signal/10",
-  ghost: "border border-transparent text-iron-200 hover:border-white/10 hover:bg-white/[0.045]",
+  primary: "v2-button-primary",
+  secondary: "v2-button-secondary",
+  ghost: "v2-button-ghost",
 };
 
 export function Button({ children, className = "", variant = "primary", ...props }) {

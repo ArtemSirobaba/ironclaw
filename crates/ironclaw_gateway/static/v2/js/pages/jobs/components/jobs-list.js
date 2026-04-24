@@ -85,7 +85,7 @@ export function JobsList({
             className=${[
               "group flex flex-col gap-4 rounded-[18px] border p-5",
               selectedJobId === job.id
-                ? "border-signal/35 bg-signal/10 shadow-[inset_2px_0_0_rgba(124,207,190,0.8)]"
+                ? "border-signal/35 bg-signal/10"
                 : "border-white/10 bg-white/[0.03] hover:border-signal/30 hover:bg-white/[0.05]",
             ].join(" ")}
           >

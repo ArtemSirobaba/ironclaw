@@ -13,7 +13,7 @@ export function ProjectsAttentionStrip({ items, onOpenItem }) {
   if (!items?.length) return null;
 
   return html`
-    <${Panel} className="overflow-hidden border-amber-300/10 bg-[linear-gradient(180deg,rgba(247,184,90,0.12),rgba(247,184,90,0.02))] p-0">
+    <${Panel} className="overflow-hidden border-amber-300/10 p-0">
       <div className="border-b border-amber-300/10 px-5 py-4 sm:px-6">
         <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">Needs attention</div>
         <p className="mt-2 max-w-[70ch] text-sm leading-6 text-iron-200">

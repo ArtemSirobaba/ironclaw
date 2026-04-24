@@ -86,7 +86,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
   );
 
   return html`
-    <div className="border-t border-white/10 bg-iron-950/84 px-4 py-4 backdrop-blur-xl sm:px-5 lg:px-8">
+    <div className="border-t border-white/10 bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8">
       ${(images.length > 0 || attachments.length > 0) && html`
         <div className="mb-2 flex flex-wrap gap-2">
           ${images.map((img, i) => html`
@@ -114,7 +114,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
         </div>
       `}
 
-      <div className="flex items-end gap-2" onDrop=${onDrop} onDragOver=${onDragOver}>
+      <div className="mx-auto flex max-w-5xl items-end gap-2" onDrop=${onDrop} onDragOver=${onDragOver}>
         <label className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal">
           <input type="file" multiple className="hidden" onChange=${onFileInputChange} />
           <${Icon} name="attach" className="h-5 w-5" />
@@ -135,7 +135,7 @@ export function ChatInput({ onSend, disabled, initialText = "", resetKey = "" })
         <button
           onClick=${handleSend}
           disabled=${disabled || (!text.trim() && images.length === 0 && attachments.length === 0)}
-          className="v2-button flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-signal/40 bg-signal text-iron-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] hover:bg-signal/90 disabled:opacity-50"
+          className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-md disabled:opacity-50"
           aria-label="Send message"
         >
           <${Icon} name="send" className="h-5 w-5" />

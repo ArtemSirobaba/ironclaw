@@ -11,12 +11,15 @@ function formatTime(iso) {
 }
 
 export function ThreadSidebar({ threads, activeThreadId, onSelect, onCreate, isCreating, compact = false }) {
+  const canCreate = !(activeThreadId && threads.some((t) => t.id === activeThreadId && (t.turn_count || 0) === 0));
+  const createDisabled = isCreating || !canCreate;
+
   if (compact) {
     return html`
       <div className="flex items-center gap-2">
         <button
           onClick=${onCreate}
-          disabled=${isCreating}
+          disabled=${createDisabled}
           className="v2-button h-9 shrink-0 rounded-md border border-signal/25 bg-signal/10 px-3 text-xs font-semibold text-signal disabled:opacity-50"
         >
           ${isCreating ? "Creating" : "New"}
@@ -46,7 +49,7 @@ export function ThreadSidebar({ threads, activeThreadId, onSelect, onCreate, isC
         </div>
         <button
           onClick=${onCreate}
-          disabled=${isCreating}
+          disabled=${createDisabled}
           className="v2-button inline-flex h-8 items-center gap-1.5 rounded-md border border-signal/25 bg-signal/10 px-2 text-xs font-medium text-signal hover:bg-signal/15 disabled:opacity-50"
         >
           ${isCreating ? "Creating" : html`<${Icon} name="plus" className="h-3.5 w-3.5" /> New`}
@@ -64,7 +67,7 @@ export function ThreadSidebar({ threads, activeThreadId, onSelect, onCreate, isC
               onClick=${() => onSelect(thread.id)}
               className=${[
                 "v2-button mb-1 flex w-full flex-col gap-1 rounded-md border px-3 py-3 text-left",
-                active ? "border-signal/35 bg-signal/10 shadow-[inset_2px_0_0_rgba(124,207,190,0.82)]" : "border-transparent hover:border-white/10 hover:bg-white/[0.045]",
+                active ? "border-signal/35 bg-signal/10" : "border-transparent hover:border-white/10 hover:bg-white/[0.045]",
               ].join(" ")}
             >
               <div className="flex items-center gap-2">

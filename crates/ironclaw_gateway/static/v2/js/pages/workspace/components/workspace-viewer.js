@@ -1,0 +1,111 @@
+import { html } from "../../../lib/html.js";
+import { Button } from "../../../design-system/button.js";
+import { EmptyPanel, Panel, StatusPill } from "../../../design-system/primitives.js";
+import { MarkdownRenderer } from "../../chat/components/markdown-renderer.js";
+import {
+  formatWorkspaceDate,
+  isMarkdownPath,
+  parentPath,
+  pathSegments,
+  routeForWorkspacePath,
+} from "../lib/workspace-presenters.js";
+
+function Breadcrumb({ path, onNavigate }) {
+  const parts = pathSegments(path);
+  let current = "";
+
+  return html`
+    <div className="flex min-w-0 flex-wrap items-center gap-2 font-mono text-sm">
+      <button type="button" onClick=${() => onNavigate("/workspace")} className="text-signal hover:underline">workspace</button>
+      ${parts.map((part) => {
+        current = current ? `${current}/${part}` : part;
+        const target = current;
+        return html`
+          <span key=${target} className="text-iron-400">/</span>
+          <button
+            key=${`${target}-button`}
+            type="button"
+            onClick=${() => onNavigate(routeForWorkspacePath(target))}
+            className="max-w-[220px] truncate text-signal hover:underline"
+          >
+            ${part}
+          </button>
+        `;
+      })}
+    </div>
+  `;
+}
+
+export function WorkspaceViewer({
+  path,
+  file,
+  draft,
+  onDraftChange,
+  editing,
+  onStartEdit,
+  onCancelEdit,
+  onSave,
+  isLoading,
+  isSaving,
+  onNavigate,
+}) {
+  if (isLoading) {
+    return html`
+      <div className="space-y-4">
+        <div className="v2-skeleton h-16 rounded-xl" />
+        <div className="v2-skeleton h-[460px] rounded-xl" />
+      </div>
+    `;
+  }
+
+  if (!file) {
+    return html`
+      <${EmptyPanel}
+        title="Pick a workspace file"
+        description="Choose a memory document from the tree or search results to inspect and edit it."
+      />
+    `;
+  }
+
+  return html`
+    <${Panel} className="flex min-h-[520px] flex-col overflow-hidden p-0 xl:min-h-0">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-4 py-3">
+        <${Breadcrumb} path=${path} onNavigate=${onNavigate} />
+        <div className="flex items-center gap-2">
+          <${StatusPill} tone="muted" label=${formatWorkspaceDate(file.updated_at)} />
+          ${editing
+            ? html`
+                <${Button} variant="ghost" onClick=${onCancelEdit} disabled=${isSaving}>Cancel<//>
+                <${Button} onClick=${onSave} disabled=${isSaving}>${isSaving ? "Saving" : "Save"}<//>
+              `
+            : html`<${Button} variant="secondary" onClick=${onStartEdit}>Edit<//>`}
+        </div>
+      </div>
+
+      ${editing
+        ? html`
+            <div className="min-h-0 flex-1 p-4">
+              <textarea
+                value=${draft}
+                onInput=${(event) => onDraftChange(event.target.value)}
+                className="h-full min-h-[460px] w-full resize-none rounded-xl border border-white/10 bg-iron-950/80 p-4 font-mono text-sm leading-6 text-white outline-none transition focus:border-signal/45"
+                spellCheck=${false}
+              />
+            </div>
+          `
+        : html`
+            <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+              ${isMarkdownPath(path)
+                ? html`<${MarkdownRenderer} content=${file.content} className="max-w-4xl text-base leading-7" />`
+                : html`<pre className="overflow-x-auto whitespace-pre-wrap font-mono text-sm leading-6 text-iron-200">${file.content}</pre>`}
+            </div>
+          `}
+
+      ${parentPath(path) && html`
+        <div className="border-t border-white/10 px-4 py-3 text-xs text-iron-400">
+          Parent: ${parentPath(path)}
+        </div>
+      `}
+    <//>
+  `;
+}

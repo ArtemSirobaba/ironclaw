@@ -10,10 +10,10 @@ import {
 
 function ProjectCard({ project, onOpen }) {
   return html`
-    <article className="group rounded-[22px] border border-white/10 bg-white/[0.03] p-5 transition hover:border-signal/30 hover:bg-white/[0.05]">
+    <article className="group rounded-xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-signal/30 hover:bg-white/[0.05]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h3 className="truncate text-xl font-semibold tracking-tight text-white">${project.name}</h3>
+          <h3 className="truncate font-serif text-2xl font-semibold tracking-[-0.03em] text-white">${project.name}</h3>
           <p className="mt-2 line-clamp-3 text-sm leading-6 text-iron-300">
             ${project.description || "No project description yet. The workspace is still being shaped by active missions and thread history."}
           </p>
@@ -59,11 +59,11 @@ function ProjectCard({ project, onOpen }) {
 
 function GeneralProjectCard({ project, onOpen }) {
   return html`
-    <${Panel} className="overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(124,207,190,0.18),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 sm:p-6">
+    <${Panel} className="overflow-hidden p-5 sm:p-6">
       <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
         <div className="max-w-3xl">
           <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-signal">General workspace</div>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">Default project control room</h2>
+          <h2 className="mt-3 font-serif text-4xl font-semibold tracking-[-0.04em] text-white">Default project control room</h2>
           <p className="mt-3 text-sm leading-6 text-iron-200">
             Shared context, ad hoc work, and the catch-all runtime path for threads that are not yet promoted into a named project.
           </p>
@@ -122,7 +122,7 @@ export function ProjectsGrid({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300">Explorer</div>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">Scoped projects</h2>
+            <h2 className="mt-2 font-serif text-3xl font-semibold tracking-[-0.04em] text-white">Scoped projects</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-iron-300">
               Browse durable workspaces, inspect missions, review recent activity, and jump into the project that needs you now.
             </p>

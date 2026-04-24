@@ -6,7 +6,7 @@ export function ApprovalCard({ gate, onApprove, onDeny, onAlways }) {
   const { toolName, description, parameters, allowAlways } = gate;
 
   return html`
-    <div className="mx-auto max-w-lg rounded-[18px] border border-copper/30 bg-copper/10 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+    <div className="mx-auto max-w-lg rounded-xl border border-copper/30 bg-copper/10 p-4">
       <div className="mb-3 flex items-center gap-2">
         <span className="grid h-8 w-8 place-items-center rounded-md border border-copper/25 bg-copper/10 text-copper">
           <${Icon} name="lock" className="h-4 w-4" />

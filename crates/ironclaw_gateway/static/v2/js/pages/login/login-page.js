@@ -18,38 +18,38 @@ export function LoginPage({ initialToken, error, onSubmit }) {
     <main className="v2-noise grid min-h-[100dvh] px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(380px,520px)] lg:items-center lg:gap-12 lg:px-12">
       <section className="hidden max-w-2xl self-center lg:block">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">Gateway v2</p>
-        <h1 className="mt-4 text-5xl font-semibold leading-none tracking-tight text-white">
+        <h1 className="mt-4 font-serif text-6xl font-semibold leading-[0.95] tracking-[-0.04em] text-white">
           Local agent control without losing the operator trail.
         </h1>
         <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-iron-300">
           Token access keeps the browser console tied to the same gateway runtime, approvals, tools, and thread state.
         </p>
         <div className="mt-10 grid max-w-xl grid-cols-[1fr_0.7fr] gap-3">
-          <div className="v2-panel rounded-[18px] p-5">
+          <div className="v2-panel rounded-xl p-6">
             <div className="flex items-center gap-3 text-signal">
               <${Icon} name="lock" className="h-5 w-5" />
               <span className="font-mono text-[11px] uppercase tracking-[0.16em]">Bearer auth</span>
             </div>
             <p className="mt-4 text-sm leading-6 text-iron-300">Paste the local gateway token to open the operator surface.</p>
           </div>
-          <div className="v2-panel rounded-[18px] p-5">
-            <div className="h-2 w-16 rounded-full bg-signal/60" />
+          <div className="v2-panel rounded-xl p-6">
+            <div className="h-2 w-16 rounded bg-signal/60" />
             <div className="mt-4 space-y-2">
-              <div className="v2-skeleton h-2 rounded-full" />
-              <div className="v2-skeleton h-2 w-2/3 rounded-full" />
+              <div className="v2-skeleton h-2 rounded" />
+              <div className="v2-skeleton h-2 w-2/3 rounded" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="v2-panel v2-page-entrance w-full max-w-md self-center rounded-[18px] p-6 sm:ml-auto">
+      <section className="v2-panel v2-page-entrance w-full max-w-md self-center rounded-xl p-6 sm:ml-auto">
         <div className="mb-8">
           <p
             className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-signal"
           >
             Gateway v2
           </p>
-          <h1 className="text-4xl font-semibold leading-none tracking-tight text-white">
+          <h1 className="font-serif text-5xl font-semibold leading-none tracking-[-0.04em] text-white">
             IronClaw console
           </h1>
           <p className="mt-4 text-sm leading-6 text-iron-300">

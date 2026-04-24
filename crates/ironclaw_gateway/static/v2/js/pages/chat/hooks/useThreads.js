@@ -12,6 +12,7 @@ export function useThreads() {
 
   const [activeThreadId, setActiveThreadId] = React.useState(null);
   const [isCreating, setIsCreating] = React.useState(false);
+  const createInFlightRef = React.useRef(null);
 
   React.useEffect(() => {
     if (query.data?.active_thread && !activeThreadId) {
@@ -20,16 +21,35 @@ export function useThreads() {
   }, [query.data, activeThreadId]);
 
   const handleCreateThread = React.useCallback(async () => {
-    setIsCreating(true);
-    try {
-      const data = await createThread();
-      queryClient.invalidateQueries({ queryKey: ["threads"] });
-      setActiveThreadId(data.thread_id);
-      return data.thread_id;
-    } finally {
-      setIsCreating(false);
+    const activeFromServer = query.data?.active_thread || null;
+    const candidateId = activeThreadId || activeFromServer;
+    const candidate =
+      candidateId && query.data?.threads ? query.data.threads.find((thread) => thread.id === candidateId) : null;
+
+    if (candidateId && candidate && (candidate.turn_count || 0) === 0) {
+      setActiveThreadId(candidateId);
+      return candidateId;
     }
-  }, []);
+
+    if (createInFlightRef.current) {
+      return createInFlightRef.current;
+    }
+    setIsCreating(true);
+    const createPromise = (async () => {
+      try {
+        const data = await createThread();
+        queryClient.invalidateQueries({ queryKey: ["threads"] });
+        setActiveThreadId(data.thread_id);
+        return data.thread_id;
+      } finally {
+        setIsCreating(false);
+        createInFlightRef.current = null;
+      }
+    })();
+
+    createInFlightRef.current = createPromise;
+    return createPromise;
+  }, [activeThreadId, query.data]);
 
   return {
     threads: query.data?.threads || [],

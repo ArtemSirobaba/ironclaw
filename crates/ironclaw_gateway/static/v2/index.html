@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://esm.sh">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
   <script type="importmap" nonce="__IRONCLAW_CSP_NONCE__">
     {
       "imports": {
@@ -27,18 +27,20 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style type="text/tailwindcss">
     @theme {
-      --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-      --color-iron-950: #111416;
-      --color-iron-900: #171b1e;
-      --color-iron-800: #20262a;
-      --color-iron-700: #384247;
-      --color-iron-300: #aebac0;
-      --color-iron-200: #d8e0e4;
-      --color-iron-100: #f2f6f7;
-      --color-signal: #7ccfbe;
-      --color-copper: #d3a85c;
-      --color-mint: #8ccfb0;
+      --font-sans: "Geist", "SF Pro Display", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+      --font-serif: "Newsreader", "Lyon Text", "Instrument Serif", Georgia, serif;
+      --font-mono: "Geist Mono", "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+      --color-iron-950: var(--v2-canvas-strong);
+      --color-iron-900: var(--v2-surface);
+      --color-iron-800: var(--v2-surface-soft);
+      --color-iron-700: var(--v2-panel-border);
+      --color-iron-400: var(--v2-text-faint);
+      --color-iron-300: var(--v2-text-muted);
+      --color-iron-200: var(--v2-text);
+      --color-iron-100: var(--v2-text-strong);
+      --color-signal: var(--v2-accent-text);
+      --color-copper: var(--v2-warning-text);
+      --color-mint: var(--v2-accent-text);
     }
   </style>
   <link rel="stylesheet" href="/v2/styles/app.css">
