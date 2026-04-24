@@ -1,8 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router";
 import { primaryRoutes } from "../app/routes.js";
-import { Button } from "../design-system/button.js";
 import { Icon } from "../design-system/icons.js";
-import { StatusPill } from "../design-system/primitives.js";
 import { useInterfaceTheme } from "../design-system/theme.js";
 import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
 import { html } from "../lib/html.js";
@@ -36,7 +34,9 @@ function HeaderTabs() {
     <nav
       className="flex min-w-max items-center gap-2 overflow-x-auto xl:gap-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
-      ${primaryRoutes.map((route) => {
+      ${primaryRoutes
+        .filter((route) => route.id !== "settings")
+        .map((route) => {
         const label = t(route.labelKey);
         return html`
           <${NavLink}
@@ -64,16 +64,6 @@ export function GatewayLayout({ token, onSignOut }) {
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
   const status = statusQuery.data;
-  const statusTone = statusQuery.error
-    ? "danger"
-    : statusQuery.isLoading
-    ? "muted"
-    : "success";
-  const statusLabel = statusQuery.error
-    ? t("status.offline")
-    : statusQuery.isLoading
-    ? t("status.checking")
-    : status?.status || t("status.online");
 
   return html`
     <div className="min-h-[100dvh] overflow-hidden">
@@ -109,9 +99,6 @@ export function GatewayLayout({ token, onSignOut }) {
           </div>
 
           <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-            <div className="hidden lg:block">
-              <${StatusPill} tone=${statusTone} label=${statusLabel} />
-            </div>
             <button
               type="button"
               onClick=${toggleTheme}
@@ -126,18 +113,29 @@ export function GatewayLayout({ token, onSignOut }) {
                 className="h-4 w-4"
               />
             </button>
-            <${Button} variant="ghost" onClick=${onSignOut}
-              >${t("header.signOut")}<//
+            <${Link}
+              to="/settings"
+              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-iron-700 bg-iron-800/70 text-iron-300 hover:text-iron-100"
+              aria-label=${t("nav.settings")}
+              title=${t("nav.settings")}
             >
+              <${Icon} name="settings" className="h-5 w-5" strokeWidth=${1.4} />
+            <//>
+            <button
+              type="button"
+              onClick=${onSignOut}
+              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-iron-700 bg-iron-800/70 text-iron-300 hover:text-iron-100"
+              aria-label=${t("header.signOut")}
+              title=${t("header.signOut")}
+            >
+              <${Icon} name="logout" className="h-4 w-4" />
+            </button>
           </div>
         </div>
 
         <div className="border-t border-iron-700 px-3 py-2 md:hidden">
           <div className="flex items-center gap-3 overflow-x-auto">
             <${HeaderTabs} />
-            <div className="shrink-0">
-              <${StatusPill} tone=${statusTone} label=${statusLabel} />
-            </div>
           </div>
         </div>
       </header>
