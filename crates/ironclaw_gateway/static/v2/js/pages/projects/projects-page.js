@@ -1,7 +1,7 @@
 import { useNavigate, useOutletContext, useParams } from "react-router";
 import { React, html } from "../../lib/html.js";
 import { Button } from "../../design-system/button.js";
-import { EmptyPanel, PageHeader } from "../../design-system/primitives.js";
+import { EmptyPanel } from "../../design-system/primitives.js";
 import { useProjectsOverview } from "./hooks/useProjectsOverview.js";
 import { useProjectWorkspace } from "./hooks/useProjectWorkspace.js";
 import { useProjectInspector } from "./hooks/useProjectInspector.js";
@@ -158,15 +158,11 @@ export function ProjectsPage() {
 
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
-      <${PageHeader}
-        eyebrow="Work"
-        title="Projects"
-        description="Durable workspaces for long-running agent context: named scopes, mission loops, recent execution, widgets, and operator-visible attention."
-        actions=${headerActions}
-      />
-
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="space-y-5">
+          <div className="flex flex-wrap justify-end gap-2">
+            ${headerActions}
+          </div>
           ${overviewState.error && html`
             <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
               ${overviewState.error.message}

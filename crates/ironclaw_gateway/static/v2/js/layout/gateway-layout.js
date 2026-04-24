@@ -22,7 +22,6 @@ function HeaderTabs() {
         <${NavLink}
           key=${route.id}
           to=${route.path}
-          title=${route.description}
           className=${({ isActive }) =>
             [
               "group flex items-center gap-3 rounded-full border px-2.5 py-2 text-sm transition xl:px-3",

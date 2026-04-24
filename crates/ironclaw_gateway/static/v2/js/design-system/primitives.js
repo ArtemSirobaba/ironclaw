@@ -24,19 +24,6 @@ export function StatusPill({ tone = "muted", label }) {
   `;
 }
 
-export function PageHeader({ eyebrow, title, description, actions }) {
-  return html`
-    <div className="v2-kinetic-line flex flex-col gap-4 border-b border-white/10 px-4 py-6 sm:px-6 lg:flex-row lg:items-end lg:justify-between">
-      <div className="min-w-0 max-w-[760px]">
-        ${eyebrow && html`<p className="font-mono text-xs uppercase tracking-[0.18em] text-signal">${eyebrow}</p>`}
-        <h1 className="mt-3 text-4xl font-semibold leading-none tracking-tight text-white md:text-5xl">${title}</h1>
-        ${description && html`<p className="mt-4 max-w-[65ch] text-base leading-relaxed text-iron-300">${description}</p>`}
-      </div>
-      ${actions && html`<div className="flex shrink-0 flex-wrap gap-2">${actions}</div>`}
-    </div>
-  `;
-}
-
 export function Panel({ children, className = "" }) {
   return html`<section className=${cx("v2-panel rounded-[18px]", className)}>${children}</section>`;
 }

@@ -1,6 +1,5 @@
 import { React, html } from "../../lib/html.js";
 import { useOutletContext } from "react-router";
-import { PageHeader } from "../../design-system/primitives.js";
 import { useExtensions } from "./hooks/useExtensions.js";
 import { ExtensionsTabs, ExtensionsTabsMobile } from "./components/extensions-tabs.js";
 import { InstalledTab } from "./components/installed-tab.js";
@@ -48,11 +47,6 @@ export function ExtensionsPage() {
   if (isLoading) {
     return html`
       <div className="flex h-full flex-col overflow-y-auto">
-        <${PageHeader}
-          eyebrow="System"
-          title="Extensions"
-          description="Channels, tools, setup status, readiness, and install state."
-        />
         <div className="v2-page-entrance flex-1 p-4 sm:p-6">
           <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
             <aside className="hidden xl:block">
@@ -120,12 +114,6 @@ export function ExtensionsPage() {
 
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
-      <${PageHeader}
-        eyebrow="System"
-        title="Extensions"
-        description="Channels, tools, setup status, readiness, and install state."
-      />
-
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="hidden xl:block">

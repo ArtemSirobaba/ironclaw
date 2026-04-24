@@ -1,6 +1,5 @@
 import { React, html } from "../../lib/html.js";
 import { useOutletContext } from "react-router";
-import { PageHeader } from "../../design-system/primitives.js";
 import { useSettings } from "./hooks/useSettings.js";
 import { SettingsTabs, SettingsTabsMobile } from "./components/settings-tabs.js";
 import { RestartBanner } from "./components/restart-banner.js";
@@ -47,12 +46,6 @@ export function SettingsPage() {
 
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
-      <${PageHeader}
-        eyebrow="System"
-        title="Settings"
-        description="Runtime configuration, tool policy, secrets, and operator controls."
-      />
-
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="hidden xl:block">

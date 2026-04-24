@@ -5,31 +5,26 @@ export const primaryRoutes = [
     id: "chat",
     path: "/chat",
     label: "Chat",
-    description: "Primary agent workspace with threads, approvals, tools, and attachments.",
   },
   {
     id: "projects",
     path: "/projects",
     label: "Projects",
-    description: "Workspaces, missions, files, and durable agent context.",
   },
   {
     id: "jobs",
     path: "/jobs",
     label: "Jobs",
-    description: "Sandbox runs, background tasks, artifacts, and event streams.",
   },
   {
     id: "extensions",
     path: "/extensions",
     label: "Extensions",
-    description: "Channels, tools, setup status, readiness, and install state.",
   },
   {
     id: "settings",
     path: "/settings",
     label: "Settings",
-    description: "Runtime configuration, tool policy, secrets, and operator controls.",
   },
 ];
 
