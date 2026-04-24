@@ -19,7 +19,7 @@ export function ConnectionStatus({ status }) {
   return html`
     <div
       className=${[
-        "sticky top-0 z-20 mx-auto mb-2 max-w-md rounded-full border px-4 py-1.5 text-center text-xs font-medium backdrop-blur-xl",
+        "sticky top-4 z-20 mx-auto mb-2 max-w-md rounded-full border px-4 py-1.5 text-center text-xs font-medium backdrop-blur-xl",
         STYLES[status] || STYLES.connecting,
       ].join(" ")}
     >

@@ -77,11 +77,6 @@ export function GatewayLayout({ token, onSignOut }) {
             to="/chat"
             className="flex shrink-0 items-center gap-3 text-iron-100"
           >
-            <span
-              className="v2-brand-mark grid h-10 w-10 place-items-center rounded-md border text-signal"
-            >
-              <${Icon} name="bolt" className="h-5 w-5" />
-            </span>
             <span className="text-2xl font-semibold tracking-[-0.02em]"
               >IronClaw</span
             >

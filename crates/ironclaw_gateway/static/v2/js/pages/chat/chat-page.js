@@ -3,7 +3,7 @@ import { React, html } from "../../lib/html.js";
 import { Chat } from "./chat.js";
 
 export function ChatPage() {
-  const { threadsState } = useOutletContext();
+  const { threadsState, gatewayStatus } = useOutletContext();
   const location = useLocation();
   const composerDraft = location.state?.composerDraft || "";
   const requestedThreadId = location.state?.threadId || null;
@@ -23,6 +23,7 @@ export function ChatPage() {
       isCreatingThread=${threadsState.isCreating}
       composerDraft=${composerDraft}
       composerResetKey=${location.key}
+      gatewayStatus=${gatewayStatus}
     />
   `;
 }

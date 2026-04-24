@@ -1,9 +1,9 @@
+import { resolveGate, sendApproval, sendMessage } from "../../../lib/api.js";
 import { React } from "../../../lib/html.js";
-import { sendMessage, sendApproval, resolveGate } from "../../../lib/api.js";
+import { normalizeHistoryGate } from "../lib/gates.js";
+import { useChatEvents } from "../lib/useChatEvents.js";
 import { useHistory } from "./useHistory.js";
 import { useSSE } from "./useSSE.js";
-import { useChatEvents } from "../lib/useChatEvents.js";
-import { normalizeHistoryGate } from "../lib/gates.js";
 
 export function useChat(threadId) {
   const {
@@ -39,11 +39,18 @@ export function useChat(threadId) {
     setSuggestions,
   });
 
-  const { status: sseStatus } = useSSE({ onEvent: handleEvent, enabled: Boolean(threadId) });
+  const { status: sseStatus } = useSSE({
+    onEvent: handleEvent,
+    enabled: Boolean(threadId),
+  });
 
   const send = React.useCallback(
-    async (content, { images = [], attachments = [] } = {}) => {
-      if (!threadId) return;
+    async (
+      content,
+      { images = [], attachments = [], threadId: targetThreadId } = {}
+    ) => {
+      const sendThreadId = targetThreadId || threadId;
+      if (!sendThreadId) return;
 
       const optimisticId = `pending-${Date.now()}`;
       setMessages((prev) => [
@@ -70,7 +77,7 @@ export function useChat(threadId) {
       try {
         await sendMessage({
           content,
-          threadId,
+          threadId: sendThreadId,
           images: images.map((img) => ({
             media_type: img.media_type || img.mime_type,
             data: img.data || img.base64,
@@ -84,7 +91,14 @@ export function useChat(threadId) {
       } catch (err) {
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === optimisticId ? { ...m, isOptimistic: false, status: "error", error: err.message } : m
+            m.id === optimisticId
+              ? {
+                  ...m,
+                  isOptimistic: false,
+                  status: "error",
+                  error: err.message,
+                }
+              : m
           )
         );
         setIsProcessing(false);

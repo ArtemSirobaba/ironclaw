@@ -37,9 +37,11 @@ registerPack("en", {
   // Login page
   "login.tagline": "Gateway v2",
   "login.hero": "Local agent control without losing the operator trail.",
-  "login.heroSub": "Token access keeps the browser console tied to the same gateway runtime, approvals, tools, and thread state.",
+  "login.heroSub":
+    "Token access keeps the browser console tied to the same gateway runtime, approvals, tools, and thread state.",
   "login.bearerAuth": "Bearer auth",
-  "login.bearerDesc": "Paste the local gateway token to open the operator surface.",
+  "login.bearerDesc":
+    "Paste the local gateway token to open the operator surface.",
   "login.console": "IronClaw console",
   "login.secureSub": "Secure access to the local agent gateway.",
   "login.tokenLabel": "Gateway token",
@@ -49,17 +51,30 @@ registerPack("en", {
   "login.connect": "Connect",
 
   // Chat — empty state
+  "chat.heroTitle": "Hello, what do you need help with?",
+  "chat.heroDesc":
+    "Start with a goal, a repo question, a review request, or files that need work.",
   "chat.emptyTitle": "Start with a concrete operator task.",
-  "chat.emptyDesc": "Send a message, attach files, or ask for a gateway check. The workspace keeps approvals and runtime activity visible as the turn progresses.",
+  "chat.emptyDesc":
+    "Send a message, attach files, or ask for a gateway check. The workspace keeps approvals and runtime activity visible as the turn progresses.",
   "chat.suggestion1": "Map the current gateway state",
+  "chat.suggestion1Desc": "Inspect runtime health, channels, tools, and open work.",
   "chat.suggestion2": "Review recent thread activity",
+  "chat.suggestion2Desc": "Look for correctness risks, blocked approvals, and follow-ups.",
   "chat.suggestion3": "Draft an extension readiness check",
+  "chat.suggestion3Desc": "Verify setup, auth, pairing, and available capabilities.",
 
   // Chat — input
   "chat.placeholder": "Message IronClaw...",
+  "chat.heroPlaceholder": "Ask IronClaw anything.",
+  "chat.followUpPlaceholder": "Ask for follow-up changes",
   "chat.send": "Send message",
+  "chat.attachFiles": "Attach files",
   "chat.removeImage": "Remove image",
   "chat.removeAttachment": "Remove attachment",
+  "chat.modeAutoReview": "Auto-review",
+  "chat.runtimeLocal": "Work locally",
+  "chat.statusWorking": "Working",
 
   // Chat — thread sidebar
   "chat.conversations": "Conversations",
@@ -67,7 +82,8 @@ registerPack("en", {
   "chat.newThread": "New",
   "chat.creating": "Creating",
   "chat.selectConversation": "Select conversation",
-  "chat.noConversations": "No conversations yet. Start a thread from the composer suggestions.",
+  "chat.noConversations":
+    "No conversations yet. Start a thread from the composer suggestions.",
   "chat.turns": "{count} turns",
 
   // Chat — connection
@@ -104,7 +120,8 @@ registerPack("en", {
   "settings.group.embeddings": "Embeddings",
   "settings.group.sampling": "Sampling",
   "settings.field.embeddingsEnabled": "Enable embeddings",
-  "settings.field.embeddingsEnabledDesc": "Semantic search over workspace memory",
+  "settings.field.embeddingsEnabledDesc":
+    "Semantic search over workspace memory",
   "settings.field.embeddingsProvider": "Provider",
   "settings.field.embeddingsProviderDesc": "Embedding model provider",
   "settings.field.embeddingsModel": "Model",
@@ -135,9 +152,11 @@ registerPack("en", {
   "settings.field.timezone": "Timezone",
   "settings.field.timezoneDesc": "IANA timezone for scheduled work",
   "settings.field.sessionIdleTimeout": "Session idle timeout",
-  "settings.field.sessionIdleTimeoutDesc": "Seconds of inactivity before session ends",
+  "settings.field.sessionIdleTimeoutDesc":
+    "Seconds of inactivity before session ends",
   "settings.field.stuckThreshold": "Stuck threshold",
-  "settings.field.stuckThresholdDesc": "Seconds before a job is considered stuck",
+  "settings.field.stuckThresholdDesc":
+    "Seconds before a job is considered stuck",
   "settings.field.maxRepairAttempts": "Max repair attempts",
   "settings.field.maxRepairAttemptsDesc": "Retry limit for stuck job recovery",
   "settings.field.dailyCostLimit": "Daily cost limit (cents)",
@@ -151,7 +170,8 @@ registerPack("en", {
   "settings.field.heartbeatInterval": "Interval",
   "settings.field.heartbeatIntervalDesc": "Seconds between heartbeat runs",
   "settings.field.heartbeatNotifyChannel": "Notify channel",
-  "settings.field.heartbeatNotifyChannelDesc": "Channel to send heartbeat notifications",
+  "settings.field.heartbeatNotifyChannelDesc":
+    "Channel to send heartbeat notifications",
   "settings.field.heartbeatNotifyUser": "Notify user",
   "settings.field.heartbeatNotifyUserDesc": "User ID to notify on findings",
   "settings.field.quietHoursStart": "Quiet hours start",
@@ -171,19 +191,23 @@ registerPack("en", {
   "settings.field.sandboxImage": "Docker image",
   "settings.field.sandboxImageDesc": "Container image for sandbox runs",
   "settings.field.routinesMaxConcurrent": "Max concurrent",
-  "settings.field.routinesMaxConcurrentDesc": "Parallel routine execution limit",
+  "settings.field.routinesMaxConcurrentDesc":
+    "Parallel routine execution limit",
   "settings.field.routinesDefaultCooldown": "Default cooldown",
   "settings.field.routinesDefaultCooldownDesc": "Seconds between routine runs",
   "settings.field.safetyMaxOutput": "Max output length",
   "settings.field.safetyMaxOutputDesc": "Character limit on tool output",
   "settings.field.safetyInjectionCheck": "Injection detection",
-  "settings.field.safetyInjectionCheckDesc": "Scan tool outputs for prompt injection",
+  "settings.field.safetyInjectionCheckDesc":
+    "Scan tool outputs for prompt injection",
   "settings.field.skillsMaxActive": "Max active skills",
   "settings.field.skillsMaxActiveDesc": "Concurrent skill attachment limit",
   "settings.field.skillsMaxContextTokens": "Max context tokens",
-  "settings.field.skillsMaxContextTokensDesc": "Token budget for injected skill prompts",
+  "settings.field.skillsMaxContextTokensDesc":
+    "Token budget for injected skill prompts",
   "settings.field.fusionStrategy": "Fusion strategy",
-  "settings.field.fusionStrategyDesc": "Result merging method for hybrid search",
+  "settings.field.fusionStrategyDesc":
+    "Result merging method for hybrid search",
 
   // Settings — networking
   "settings.group.gateway": "Gateway",
@@ -204,7 +228,8 @@ registerPack("en", {
   "channels.webGateway": "Web Gateway",
   "channels.webGatewayDesc": "Browser-based chat with SSE streaming",
   "channels.httpWebhook": "HTTP Webhook",
-  "channels.httpWebhookDesc": "Inbound webhook endpoint for external integrations",
+  "channels.httpWebhookDesc":
+    "Inbound webhook endpoint for external integrations",
   "channels.cli": "CLI",
   "channels.cliDesc": "Terminal interface with TUI or simple REPL",
   "channels.repl": "REPL",
@@ -234,7 +259,8 @@ registerPack("en", {
   // Settings — skills tab
   "skills.installed": "Installed skills",
   "skills.noInstalled": "No skills installed",
-  "skills.noInstalledDesc": "Skills extend the agent with domain-specific instructions. Install them from the ClawHub registry or place SKILL.md files in your workspace.",
+  "skills.noInstalledDesc":
+    "Skills extend the agent with domain-specific instructions. Install them from the ClawHub registry or place SKILL.md files in your workspace.",
   "skills.failedLoad": "Failed to load skills: {message}",
 
   // Settings — users tab
@@ -250,7 +276,8 @@ registerPack("en", {
   "users.creating": "Creating…",
   "users.cancel": "Cancel",
   "users.adminRequired": "Admin access required",
-  "users.adminRequiredDesc": "User management is only available to accounts with admin privileges.",
+  "users.adminRequiredDesc":
+    "User management is only available to accounts with admin privileges.",
   "users.failedLoad": "Failed to load users: {message}",
   "users.noUsers": "No users registered.",
 
@@ -265,7 +292,8 @@ registerPack("en", {
   "workspace.noFiles": "No files in workspace.",
   "workspace.breadcrumbRoot": "workspace",
   "workspace.pickFileTitle": "Pick a workspace file",
-  "workspace.pickFileDesc": "Choose a memory document from the tree or search results to inspect and edit it.",
+  "workspace.pickFileDesc":
+    "Choose a memory document from the tree or search results to inspect and edit it.",
   "workspace.edit": "Edit",
   "workspace.cancel": "Cancel",
   "workspace.save": "Save",
@@ -281,22 +309,26 @@ registerPack("en", {
   "jobs.refresh": "Refresh",
   "jobs.refreshing": "Refreshing",
   "jobs.unavailable": "Job unavailable",
-  "jobs.unavailableDesc": "This job no longer exists or is outside your access scope.",
+  "jobs.unavailableDesc":
+    "This job no longer exists or is outside your access scope.",
   "jobs.returnToJobs": "Return to jobs",
   "jobs.dismiss": "Dismiss",
 
   // Jobs — list
   "jobs.list.explorer": "Explorer",
   "jobs.list.queueTitle": "Job queue",
-  "jobs.list.queueDesc": "Search by title or ID, jump into a run, and stop active work without leaving the page.",
+  "jobs.list.queueDesc":
+    "Search by title or ID, jump into a run, and stop active work without leaving the page.",
   "jobs.list.visible": "{count} visible",
   "jobs.list.state.live": "live",
   "jobs.list.state.refreshing": "refreshing",
   "jobs.list.searchPlaceholder": "Search job title or UUID",
   "jobs.list.empty.noMatchTitle": "No jobs match the current filters",
-  "jobs.list.empty.noMatchDesc": "Try a broader search term or reset the state filter to see the rest of the queue.",
+  "jobs.list.empty.noMatchDesc":
+    "Try a broader search term or reset the state filter to see the rest of the queue.",
   "jobs.list.empty.noJobsTitle": "No jobs yet",
-  "jobs.list.empty.noJobsDesc": "Background work, sandbox runs, and operator interventions will appear here once the gateway starts creating jobs.",
+  "jobs.list.empty.noJobsDesc":
+    "Background work, sandbox runs, and operator interventions will appear here once the gateway starts creating jobs.",
   "jobs.list.filter.all": "All states",
   "jobs.list.filter.pending": "Pending",
   "jobs.list.filter.inProgress": "In progress",
@@ -321,7 +353,8 @@ registerPack("en", {
   "missions.refreshing": "Refreshing",
   "missions.title": "Missions",
   "missions.subtitle": "Execution loops",
-  "missions.summary": "{missions} missions across {projects} project workspaces.",
+  "missions.summary":
+    "{missions} missions across {projects} project workspaces.",
   "missions.searchPlaceholder": "Search missions",
   "missions.filter.status": "Status",
   "missions.filter.project": "Project",
@@ -337,7 +370,8 @@ registerPack("en", {
   "missions.emptyTitle": "No missions match",
   "missions.emptyDesc": "Adjust the search or filters to find a mission loop.",
   "missions.unavailable": "Mission unavailable",
-  "missions.unavailableDesc": "This mission no longer exists or is outside your access scope.",
+  "missions.unavailableDesc":
+    "This mission no longer exists or is outside your access scope.",
   "missions.dossier": "Mission dossier",
   "missions.meta.cadence": "Cadence",
   "missions.meta.manual": "manual",
@@ -370,7 +404,8 @@ registerPack("en", {
   // Extensions — registry
   "ext.registry.searchPlaceholder": "Search extensions…",
   "ext.registry.emptyTitle": "Registry is empty",
-  "ext.registry.emptyDesc": "All available extensions are already installed, or no registry is configured.",
+  "ext.registry.emptyDesc":
+    "All available extensions are already installed, or no registry is configured.",
   "ext.registry.availableTitle": "Available extensions",
   "ext.registry.noMatch": "No extensions match the filter.",
 
@@ -382,7 +417,8 @@ registerPack("en", {
   "projects.allProjects": "All projects",
   "projects.returnToProjects": "Return to projects",
   "projects.unavailable": "Project unavailable",
-  "projects.unavailableDesc": "This project no longer exists or is outside your access scope.",
+  "projects.unavailableDesc":
+    "This project no longer exists or is outside your access scope.",
   "projects.refresh": "Refresh",
   "projects.refreshing": "Refreshing",
   "projects.newProject": "New project",
@@ -390,22 +426,30 @@ registerPack("en", {
   "projects.createFromChat": "Create from chat",
   "projects.startProject": "Start a project",
   "projects.searchPlaceholder": "Search projects",
-  "projects.creationDraft": "Create a new project for me. I want to set up an autonomous workspace for: ",
-  "projects.chatAutoFail": "Unable to prepare chat automatically. Opening chat anyway.",
+  "projects.creationDraft":
+    "Create a new project for me. I want to set up an autonomous workspace for: ",
+  "projects.chatAutoFail":
+    "Unable to prepare chat automatically. Opening chat anyway.",
   "projects.openWorkspace": "Open workspace",
   "projects.openGeneralWorkspace": "Open general workspace",
-  "projects.noDescription": "No project description yet. The workspace is still being shaped by active missions and thread history.",
+  "projects.noDescription":
+    "No project description yet. The workspace is still being shaped by active missions and thread history.",
   "projects.general.label": "General workspace",
   "projects.general.title": "Default project control room",
-  "projects.general.desc": "Shared context, ad hoc work, and the catch-all runtime path for threads that are not yet promoted into a named project.",
+  "projects.general.desc":
+    "Shared context, ad hoc work, and the catch-all runtime path for threads that are not yet promoted into a named project.",
   "projects.scoped.title": "Scoped projects",
-  "projects.scoped.desc": "Browse durable workspaces, inspect missions, review recent activity, and jump into the project that needs you now.",
+  "projects.scoped.desc":
+    "Browse durable workspaces, inspect missions, review recent activity, and jump into the project that needs you now.",
   "projects.scoped.onlyGeneralTitle": "Only the general workspace is active",
-  "projects.scoped.onlyGeneralDesc": "Create a named project when work deserves its own missions, files, widgets, and long-running context.",
+  "projects.scoped.onlyGeneralDesc":
+    "Create a named project when work deserves its own missions, files, widgets, and long-running context.",
   "projects.empty.noMatchTitle": "No projects match the current search",
-  "projects.empty.noMatchDesc": "Try a broader search term or clear the filter to return to the full workspace map.",
+  "projects.empty.noMatchDesc":
+    "Try a broader search term or clear the filter to return to the full workspace map.",
   "projects.empty.noneTitle": "No projects yet",
-  "projects.empty.noneDesc": "Projects appear once the assistant creates durable workspaces. You can start from chat and ask IronClaw to spin up a scoped project for ongoing work.",
+  "projects.empty.noneDesc":
+    "Projects appear once the assistant creates durable workspaces. You can start from chat and ask IronClaw to spin up a scoped project for ongoing work.",
   "projects.card.runtime": "Runtime",
   "projects.card.risk": "Risk",
   "projects.card.threadsToday": "{count} today",
@@ -485,7 +529,8 @@ registerPack("en", {
   "admin.users.token": "Token",
   "admin.users.jobsCount": "{count} jobs",
   "admin.users.suspendTitle": "Suspend user",
-  "admin.users.suspendDesc": "This will prevent the user from authenticating. Continue?",
+  "admin.users.suspendDesc":
+    "This will prevent the user from authenticating. Continue?",
   "admin.users.tokenNamePrompt": "Token name for {name}:",
   "admin.users.tokenCreated": "Token created",
   "admin.users.tokenCreatedDesc": "Copy this now — it will not be shown again.",
@@ -495,7 +540,8 @@ registerPack("en", {
   "admin.users.createToken": "Create token",
   "admin.users.delete": "Delete",
   "admin.users.deleteUserTitle": "Delete user",
-  "admin.users.deleteUserDesc": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+  "admin.users.deleteUserDesc":
+    'Are you sure you want to delete "{name}"? This action cannot be undone.',
 
   // Admin — user detail
   "admin.user.profile": "Profile",

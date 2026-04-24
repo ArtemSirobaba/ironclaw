@@ -11,8 +11,11 @@ export function ChatInput({
   disabled,
   initialText = "",
   resetKey = "",
+  variant = "dock",
+  context = {},
 }) {
   const t = useT();
+  const isHero = variant === "hero";
   const [text, setText] = React.useState("");
   const textareaRef = React.useRef(null);
   const {
@@ -102,69 +105,77 @@ export function ChatInput({
     [addFiles]
   );
 
-  return html`
-    <div
-      className="border-t border-white/10 bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8"
-    >
-      ${(images.length > 0 || attachments.length > 0) &&
-      html`
-        <div className="mb-2 flex flex-wrap gap-2">
-          ${images.map(
-            (img, i) => html`
-              <div key=${i} className="group relative">
-                <img
-                  src=${img.dataUrl}
-                  className="h-16 w-16 rounded-lg border border-iron-700 object-cover"
-                  alt=""
-                />
-                <button
-                  onClick=${() => removeImage(i)}
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 group-hover:opacity-100"
-                  aria-label=${t("chat.removeImage")}
-                >
-                  <${Icon} name="close" className="h-3 w-3" />
-                </button>
-              </div>
-            `
-          )}
-          ${attachments.map(
-            (att, i) => html`
-              <div
-                key=${i}
-                className="flex items-center gap-2 rounded-md border border-iron-700 bg-iron-900 px-2 py-1 text-xs"
-              >
-                <${Icon} name="file" className="h-3.5 w-3.5 text-signal" />
-                <span className="truncate">${att.filename}</span>
-                <span className="text-iron-200">${formatSize(att.size)}</span>
-                <button
-                  onClick=${() => removeAttachment(i)}
-                  className="ml-1 text-iron-200 hover:text-white"
-                  aria-label=${t("chat.removeAttachment")}
-                >
-                  <${Icon} name="close" className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            `
-          )}
-        </div>
-      `}
+  const hasPayload =
+    text.trim() || images.length > 0 || attachments.length > 0;
+  const placeholder = isHero
+    ? t("chat.heroPlaceholder")
+    : t("chat.followUpPlaceholder");
+  const shellClass = isHero
+    ? "w-full"
+    : "bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8";
+  const composerClass = [
+    "v2-chat-composer mx-auto w-full max-w-5xl rounded-[26px] border border-white/10 bg-iron-900/86 p-3",
+    "transition-colors",
+    isHero ? "min-h-[190px]" : "min-h-[154px]",
+    disabled ? "opacity-70" : "",
+  ].join(" ");
+  const textClass = [
+    "w-full flex-1 resize-none border-0 !border-transparent !bg-transparent px-2 text-[15px] leading-6",
+    "text-white outline-none placeholder:text-iron-700 focus:!border-transparent focus:!bg-transparent focus:!outline-none focus:!shadow-none disabled:opacity-50",
+    isHero ? "min-h-[96px]" : "min-h-[72px]",
+  ].join(" ");
 
+  return html`
+    <div className=${shellClass}>
       <div
-        className="mx-auto flex max-w-5xl items-end gap-2"
+        className=${composerClass}
         onDrop=${onDrop}
         onDragOver=${onDragOver}
       >
-        <label
-          className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal"
-        >
-          <input
-            type="file"
-            multiple
-            className="hidden"
-            onChange=${onFileInputChange}
-          />
-          <${Icon} name="attach" className="h-5 w-5" />
-        </label>
+        ${(images.length > 0 || attachments.length > 0) &&
+        html`
+          <div className="mb-3 flex flex-wrap gap-2">
+            ${images.map(
+              (img, i) => html`
+                <div key=${i} className="group relative">
+                  <img
+                    src=${img.dataUrl}
+                    className="h-16 w-16 rounded-lg border border-iron-700 object-cover"
+                    alt=""
+                  />
+                  <button
+                    onClick=${() => removeImage(i)}
+                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 group-hover:opacity-100"
+                    aria-label=${t("chat.removeImage")}
+                  >
+                    <${Icon} name="close" className="h-3 w-3" />
+                  </button>
+                </div>
+              `
+            )}
+            ${attachments.map(
+              (att, i) => html`
+                <div
+                  key=${i}
+                  className="flex max-w-full items-center gap-2 rounded-md border border-iron-700 bg-iron-900 px-2 py-1 text-xs"
+                >
+                  <${Icon} name="file" className="h-3.5 w-3.5 shrink-0 text-signal" />
+                  <span className="truncate">${att.filename}</span>
+                  <span className="shrink-0 text-iron-200"
+                    >${formatSize(att.size)}</span
+                  >
+                  <button
+                    onClick=${() => removeAttachment(i)}
+                    className="ml-1 text-iron-200 hover:text-white"
+                    aria-label=${t("chat.removeAttachment")}
+                  >
+                    <${Icon} name="close" className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              `
+            )}
+          </div>
+        `}
 
         <textarea
           ref=${textareaRef}
@@ -172,22 +183,115 @@ export function ChatInput({
           onChange=${(e) => setText(e.target.value)}
           onKeyDown=${onKeyDown}
           onPaste=${onPaste}
-          placeholder=${t("chat.placeholder")}
+          placeholder=${placeholder}
           rows=${1}
           disabled=${disabled}
-          className="max-h-[200px] min-h-[44px] flex-1 resize-none rounded-md border border-white/10 bg-iron-900/86 px-3 py-2.5 text-sm text-white outline-none placeholder:text-iron-700 focus:border-signal/70 disabled:opacity-50"
+          className=${textClass}
         />
 
-        <button
-          onClick=${handleSend}
-          disabled=${disabled ||
-          (!text.trim() && images.length === 0 && attachments.length === 0)}
-          className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-md disabled:opacity-50"
-          aria-label=${t("chat.send")}
-        >
-          <${Icon} name="send" className="h-5 w-5" />
-        </button>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <label
+            className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal"
+            title=${t("chat.attachFiles")}
+          >
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange=${onFileInputChange}
+            />
+            <${Icon} name="attach" className="h-5 w-5" />
+          </label>
+
+          <div className="ml-auto flex min-w-0 items-center gap-2">
+            ${disabled &&
+            html`
+              <span className="hidden items-center gap-2 text-xs text-iron-300 sm:inline-flex">
+                <span
+                  className="h-2 w-2 animate-pulse rounded-full bg-signal"
+                />
+                ${t("chat.statusWorking")}
+              </span>
+            `}
+            <${ComposerPill}
+              icon="bolt"
+              label=${formatModelLabel(context.model, context.backend)}
+              strong=${true}
+            />
+            <button
+              onClick=${handleSend}
+              disabled=${disabled || !hasPayload}
+              className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-full disabled:opacity-50"
+              aria-label=${t("chat.send")}
+            >
+              <${Icon} name="send" className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </div>
+
+      <${ComposerContextRow} context=${context} />
     </div>
   `;
+}
+
+function ComposerPill({
+  icon,
+  label,
+  tone = "muted",
+  strong = false,
+  className = "",
+}) {
+  const toneClass =
+    tone === "signal"
+      ? "border-signal/35 bg-signal/10 text-signal"
+      : "border-white/10 bg-white/[0.035] text-iron-300";
+  return html`
+    <span
+      className=${[
+        "inline-flex h-9 max-w-[220px] items-center gap-2 rounded-full border px-3 text-sm",
+        toneClass,
+        strong ? "font-semibold text-white" : "font-medium",
+        className,
+      ].join(" ")}
+      title=${label}
+    >
+      <${Icon} name=${icon} className="h-4 w-4 shrink-0" />
+      <span className="truncate">${label}</span>
+    </span>
+  `;
+}
+
+function ComposerContextRow({ context }) {
+  const items = [
+    context.threadLabel,
+    context.turnCountLabel,
+    context.engineLabel,
+    context.connectionLabel,
+  ].filter(Boolean);
+
+  if (items.length === 0) return null;
+
+  return html`
+    <div
+      className="mx-auto mt-3 flex w-full max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-2 text-sm text-iron-300"
+    >
+      ${items.map(
+        (item, index) => html`
+          <span key=${`${item}-${index}`} className="inline-flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-iron-700" />
+            <span className="truncate">${item}</span>
+          </span>
+        `
+      )}
+    </div>
+  `;
+}
+
+function formatModelLabel(model, backend) {
+  const raw = model || backend || "";
+  if (!raw) return "Model ready";
+  const cleaned = String(raw).split("/").pop();
+  if (cleaned.length <= 22) return cleaned;
+  return `${cleaned.slice(0, 9)}...${cleaned.slice(-9)}`;
 }

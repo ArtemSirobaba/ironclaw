@@ -30,9 +30,11 @@ registerPack("es", {
 
   "login.tagline": "Gateway v2",
   "login.hero": "Control del agente local sin perder el rastro del operador.",
-  "login.heroSub": "El acceso por token mantiene la consola del navegador vinculada al mismo runtime del gateway, aprobaciones, herramientas y estado del hilo.",
+  "login.heroSub":
+    "El acceso por token mantiene la consola del navegador vinculada al mismo runtime del gateway, aprobaciones, herramientas y estado del hilo.",
   "login.bearerAuth": "Auth Bearer",
-  "login.bearerDesc": "Pega el token del gateway local para abrir la consola del operador.",
+  "login.bearerDesc":
+    "Pega el token del gateway local para abrir la consola del operador.",
   "login.console": "Consola IronClaw",
   "login.secureSub": "Acceso seguro al gateway local del agente.",
   "login.tokenLabel": "Token del gateway",
@@ -42,7 +44,8 @@ registerPack("es", {
   "login.connect": "Conectar",
 
   "chat.emptyTitle": "Empieza con una tarea concreta de operador.",
-  "chat.emptyDesc": "Envía un mensaje, adjunta archivos o pide una verificación del gateway. El workspace mantiene visibles aprobaciones y actividad de runtime a medida que avanza el turno.",
+  "chat.emptyDesc":
+    "Envía un mensaje, adjunta archivos o pide una verificación del gateway. El workspace mantiene visibles aprobaciones y actividad de runtime a medida que avanza el turno.",
   "chat.suggestion1": "Mapear el estado actual del gateway",
   "chat.suggestion2": "Revisar actividad reciente del hilo",
   "chat.suggestion3": "Redactar una verificación de preparación de extensiones",
@@ -57,7 +60,8 @@ registerPack("es", {
   "chat.newThread": "Nuevo",
   "chat.creating": "Creando",
   "chat.selectConversation": "Selecciona una conversación",
-  "chat.noConversations": "Aún no hay conversaciones. Inicia un hilo desde las sugerencias del compositor.",
+  "chat.noConversations":
+    "Aún no hay conversaciones. Inicia un hilo desde las sugerencias del compositor.",
   "chat.turns": "{count} turnos",
 
   "connection.connected": "Conectado",
@@ -82,18 +86,22 @@ registerPack("es", {
   "settings.skills": "Skills",
   "settings.users": "Usuarios",
   "settings.language": "Idioma",
-  "settings.restartRequired": "Algunos cambios requieren reiniciar para aplicarse.",
+  "settings.restartRequired":
+    "Algunos cambios requieren reiniciar para aplicarse.",
 
   "settings.group.embeddings": "Embeddings",
   "settings.group.sampling": "Muestreo",
   "settings.field.embeddingsEnabled": "Habilitar embeddings",
-  "settings.field.embeddingsEnabledDesc": "Búsqueda semántica sobre la memoria del workspace",
+  "settings.field.embeddingsEnabledDesc":
+    "Búsqueda semántica sobre la memoria del workspace",
   "settings.field.embeddingsProvider": "Proveedor",
   "settings.field.embeddingsProviderDesc": "Proveedor del modelo de embeddings",
   "settings.field.embeddingsModel": "Modelo",
-  "settings.field.embeddingsModelDesc": "Identificador del modelo de embeddings",
+  "settings.field.embeddingsModelDesc":
+    "Identificador del modelo de embeddings",
   "settings.field.temperature": "Temperatura",
-  "settings.field.temperatureDesc": "Temperatura de muestreo por defecto (0.0–2.0)",
+  "settings.field.temperatureDesc":
+    "Temperatura de muestreo por defecto (0.0–2.0)",
 
   "settings.group.core": "Núcleo",
   "settings.group.heartbeat": "Heartbeat",
@@ -105,35 +113,46 @@ registerPack("es", {
   "settings.field.agentName": "Nombre del agente",
   "settings.field.agentNameDesc": "Nombre visible del asistente",
   "settings.field.maxParallelJobs": "Máx. trabajos en paralelo",
-  "settings.field.maxParallelJobsDesc": "Límite de trabajos en segundo plano concurrentes",
+  "settings.field.maxParallelJobsDesc":
+    "Límite de trabajos en segundo plano concurrentes",
   "settings.field.jobTimeout": "Tiempo límite de trabajo",
-  "settings.field.jobTimeoutDesc": "Segundos antes de marcar un trabajo como bloqueado",
+  "settings.field.jobTimeoutDesc":
+    "Segundos antes de marcar un trabajo como bloqueado",
   "settings.field.maxToolIterations": "Máx. iteraciones de herramientas",
-  "settings.field.maxToolIterationsDesc": "Límite de llamadas a herramientas por turno",
+  "settings.field.maxToolIterationsDesc":
+    "Límite de llamadas a herramientas por turno",
   "settings.field.planning": "Planificación",
-  "settings.field.planningDesc": "Habilitar planificación multi‑paso antes de ejecutar",
+  "settings.field.planningDesc":
+    "Habilitar planificación multi‑paso antes de ejecutar",
   "settings.field.autoApproveTools": "Autoaprobar herramientas",
-  "settings.field.autoApproveToolsDesc": "Omitir aprobación para todas las llamadas",
+  "settings.field.autoApproveToolsDesc":
+    "Omitir aprobación para todas las llamadas",
   "settings.field.timezone": "Zona horaria",
   "settings.field.timezoneDesc": "Zona horaria IANA para trabajos programados",
   "settings.field.sessionIdleTimeout": "Tiempo de inactividad de sesión",
-  "settings.field.sessionIdleTimeoutDesc": "Segundos de inactividad antes de terminar la sesión",
+  "settings.field.sessionIdleTimeoutDesc":
+    "Segundos de inactividad antes de terminar la sesión",
   "settings.field.stuckThreshold": "Umbral de bloqueo",
-  "settings.field.stuckThresholdDesc": "Segundos antes de considerar un trabajo bloqueado",
+  "settings.field.stuckThresholdDesc":
+    "Segundos antes de considerar un trabajo bloqueado",
   "settings.field.maxRepairAttempts": "Máx. intentos de reparación",
-  "settings.field.maxRepairAttemptsDesc": "Límite de reintentos para recuperar trabajos bloqueados",
+  "settings.field.maxRepairAttemptsDesc":
+    "Límite de reintentos para recuperar trabajos bloqueados",
   "settings.field.dailyCostLimit": "Límite diario (centavos)",
   "settings.field.dailyCostLimitDesc": "Gasto máximo por día en centavos",
   "settings.field.actionsPerHour": "Límite por hora",
   "settings.field.actionsPerHourDesc": "Tope de tasa de acciones por hora",
   "settings.field.allowLocalTools": "Permitir herramientas locales",
-  "settings.field.allowLocalToolsDesc": "Habilitar acceso al sistema de archivos y shell",
+  "settings.field.allowLocalToolsDesc":
+    "Habilitar acceso al sistema de archivos y shell",
   "settings.field.heartbeatEnabled": "Habilitar heartbeat",
   "settings.field.heartbeatEnabledDesc": "Ejecución proactiva periódica",
   "settings.field.heartbeatInterval": "Intervalo",
-  "settings.field.heartbeatIntervalDesc": "Segundos entre ejecuciones de heartbeat",
+  "settings.field.heartbeatIntervalDesc":
+    "Segundos entre ejecuciones de heartbeat",
   "settings.field.heartbeatNotifyChannel": "Canal de notificación",
-  "settings.field.heartbeatNotifyChannelDesc": "Canal para enviar notificaciones de heartbeat",
+  "settings.field.heartbeatNotifyChannelDesc":
+    "Canal para enviar notificaciones de heartbeat",
   "settings.field.heartbeatNotifyUser": "Notificar usuario",
   "settings.field.heartbeatNotifyUserDesc": "ID de usuario a notificar",
   "settings.field.quietHoursStart": "Inicio de horas silenciosas",
@@ -141,9 +160,11 @@ registerPack("es", {
   "settings.field.quietHoursEnd": "Fin de horas silenciosas",
   "settings.field.quietHoursEndDesc": "Hora (0–23) para terminar la supresión",
   "settings.field.heartbeatTimezone": "Zona horaria",
-  "settings.field.heartbeatTimezoneDesc": "Zona horaria IANA para horas silenciosas",
+  "settings.field.heartbeatTimezoneDesc":
+    "Zona horaria IANA para horas silenciosas",
   "settings.field.sandboxEnabled": "Habilitar sandbox",
-  "settings.field.sandboxEnabledDesc": "Ejecución de herramientas basada en Docker",
+  "settings.field.sandboxEnabledDesc":
+    "Ejecución de herramientas basada en Docker",
   "settings.field.sandboxPolicy": "Política",
   "settings.field.sandboxPolicyDesc": "Nivel de acceso al FS del contenedor",
   "settings.field.sandboxTimeout": "Tiempo límite",
@@ -155,17 +176,22 @@ registerPack("es", {
   "settings.field.routinesMaxConcurrent": "Máx. concurrentes",
   "settings.field.routinesMaxConcurrentDesc": "Límite de rutinas en paralelo",
   "settings.field.routinesDefaultCooldown": "Cooldown por defecto",
-  "settings.field.routinesDefaultCooldownDesc": "Segundos entre ejecuciones de rutina",
+  "settings.field.routinesDefaultCooldownDesc":
+    "Segundos entre ejecuciones de rutina",
   "settings.field.safetyMaxOutput": "Máx. longitud de salida",
-  "settings.field.safetyMaxOutputDesc": "Límite de caracteres en salida de herramientas",
+  "settings.field.safetyMaxOutputDesc":
+    "Límite de caracteres en salida de herramientas",
   "settings.field.safetyInjectionCheck": "Detección de inyección",
-  "settings.field.safetyInjectionCheckDesc": "Escanear salidas por prompt injection",
+  "settings.field.safetyInjectionCheckDesc":
+    "Escanear salidas por prompt injection",
   "settings.field.skillsMaxActive": "Máx. skills activas",
   "settings.field.skillsMaxActiveDesc": "Límite de skills activas concurrentes",
   "settings.field.skillsMaxContextTokens": "Máx. tokens de contexto",
-  "settings.field.skillsMaxContextTokensDesc": "Presupuesto de tokens para skills inyectadas",
+  "settings.field.skillsMaxContextTokensDesc":
+    "Presupuesto de tokens para skills inyectadas",
   "settings.field.fusionStrategy": "Estrategia de fusión",
-  "settings.field.fusionStrategyDesc": "Método de mezcla de resultados de búsqueda híbrida",
+  "settings.field.fusionStrategyDesc":
+    "Método de mezcla de resultados de búsqueda híbrida",
 
   "settings.group.gateway": "Gateway",
   "settings.group.tunnel": "Túnel",
@@ -212,7 +238,8 @@ registerPack("es", {
 
   "skills.installed": "Skills instaladas",
   "skills.noInstalled": "No hay skills instaladas",
-  "skills.noInstalledDesc": "Las skills amplían al agente con instrucciones específicas. Instálalas desde el registro de ClawHub o coloca archivos SKILL.md en tu workspace.",
+  "skills.noInstalledDesc":
+    "Las skills amplían al agente con instrucciones específicas. Instálalas desde el registro de ClawHub o coloca archivos SKILL.md en tu workspace.",
   "skills.failedLoad": "Error al cargar skills: {message}",
 
   "users.title": "Usuarios ({count})",
@@ -227,7 +254,8 @@ registerPack("es", {
   "users.creating": "Creando…",
   "users.cancel": "Cancelar",
   "users.adminRequired": "Se requiere acceso admin",
-  "users.adminRequiredDesc": "La gestión de usuarios solo está disponible para cuentas con privilegios de administrador.",
+  "users.adminRequiredDesc":
+    "La gestión de usuarios solo está disponible para cuentas con privilegios de administrador.",
   "users.failedLoad": "No se pudieron cargar usuarios: {message}",
   "users.noUsers": "No hay usuarios registrados.",
 
@@ -241,7 +269,8 @@ registerPack("es", {
   "workspace.noFiles": "No hay archivos en el workspace.",
   "workspace.breadcrumbRoot": "workspace",
   "workspace.pickFileTitle": "Elige un archivo del workspace",
-  "workspace.pickFileDesc": "Elige un documento de memoria del árbol o de la búsqueda para inspeccionarlo y editarlo.",
+  "workspace.pickFileDesc":
+    "Elige un documento de memoria del árbol o de la búsqueda para inspeccionarlo y editarlo.",
   "workspace.edit": "Editar",
   "workspace.cancel": "Cancelar",
   "workspace.save": "Guardar",
@@ -256,7 +285,8 @@ registerPack("es", {
   "jobs.refresh": "Actualizar",
   "jobs.refreshing": "Actualizando",
   "jobs.unavailable": "Trabajo no disponible",
-  "jobs.unavailableDesc": "Este trabajo ya no existe o está fuera de tu acceso.",
+  "jobs.unavailableDesc":
+    "Este trabajo ya no existe o está fuera de tu acceso.",
   "jobs.returnToJobs": "Volver a trabajos",
   "jobs.dismiss": "Cerrar",
 
@@ -265,7 +295,8 @@ registerPack("es", {
   "missions.refreshing": "Actualizando",
   "missions.title": "Misiones",
   "missions.subtitle": "Bucles de ejecución",
-  "missions.summary": "{missions} misiones en {projects} workspaces de proyecto.",
+  "missions.summary":
+    "{missions} misiones en {projects} workspaces de proyecto.",
   "missions.searchPlaceholder": "Buscar misiones",
   "missions.filter.status": "Estado",
   "missions.filter.project": "Proyecto",
@@ -279,9 +310,11 @@ registerPack("es", {
   "missions.threadCount": "{count} hilos",
   "missions.updated": "Actualizado {value}",
   "missions.emptyTitle": "No hay misiones que coincidan",
-  "missions.emptyDesc": "Ajusta la búsqueda o los filtros para encontrar un bucle de misión.",
+  "missions.emptyDesc":
+    "Ajusta la búsqueda o los filtros para encontrar un bucle de misión.",
   "missions.unavailable": "Misión no disponible",
-  "missions.unavailableDesc": "Esta misión ya no existe o está fuera de tu acceso.",
+  "missions.unavailableDesc":
+    "Esta misión ya no existe o está fuera de tu acceso.",
   "missions.dossier": "Dossier de misión",
   "missions.meta.cadence": "Cadencia",
   "missions.meta.manual": "manual",
@@ -302,7 +335,8 @@ registerPack("es", {
   "missions.summary.active": "Activas",
   "missions.summary.paused": "Pausadas",
   "missions.summary.spawnedThreads": "Hilos generados",
-  "missions.summary.completedFailed": "{completed} completadas / {failed} fallidas",
+  "missions.summary.completedFailed":
+    "{completed} completadas / {failed} fallidas",
   "missions.summary.acrossProjects": "En todos los workspaces de proyecto",
 
   "ext.installed": "Instaladas",
@@ -376,7 +410,8 @@ registerPack("es", {
   "admin.users.token": "Token",
   "admin.users.jobsCount": "{count} trabajos",
   "admin.users.suspendTitle": "Suspender usuario",
-  "admin.users.suspendDesc": "Esto impedirá que el usuario se autentique. ¿Continuar?",
+  "admin.users.suspendDesc":
+    "Esto impedirá que el usuario se autentique. ¿Continuar?",
   "admin.users.tokenNamePrompt": "Nombre del token para {name}:",
   "admin.users.tokenCreated": "Token creado",
   "admin.users.tokenCreatedDesc": "Cópialo ahora — no se mostrará de nuevo.",
@@ -386,7 +421,8 @@ registerPack("es", {
   "admin.users.createToken": "Crear token",
   "admin.users.delete": "Eliminar",
   "admin.users.deleteUserTitle": "Eliminar usuario",
-  "admin.users.deleteUserDesc": "¿Seguro que quieres eliminar a \"{name}\"? Esta acción no se puede deshacer.",
+  "admin.users.deleteUserDesc":
+    '¿Seguro que quieres eliminar a "{name}"? Esta acción no se puede deshacer.',
 
   "admin.user.profile": "Perfil",
   "admin.user.summary": "Resumen",
@@ -423,15 +459,19 @@ registerPack("es", {
   // Jobs — lista
   "jobs.list.explorer": "Explorador",
   "jobs.list.queueTitle": "Cola de jobs",
-  "jobs.list.queueDesc": "Busca por título o ID, entra en una ejecución y detén trabajo activo sin salir de la página.",
+  "jobs.list.queueDesc":
+    "Busca por título o ID, entra en una ejecución y detén trabajo activo sin salir de la página.",
   "jobs.list.visible": "{count} visibles",
   "jobs.list.state.live": "en vivo",
   "jobs.list.state.refreshing": "actualizando",
   "jobs.list.searchPlaceholder": "Buscar título del job o UUID",
-  "jobs.list.empty.noMatchTitle": "Ningún job coincide con los filtros actuales",
-  "jobs.list.empty.noMatchDesc": "Prueba una búsqueda más amplia o restablece el filtro de estado para ver el resto de la cola.",
+  "jobs.list.empty.noMatchTitle":
+    "Ningún job coincide con los filtros actuales",
+  "jobs.list.empty.noMatchDesc":
+    "Prueba una búsqueda más amplia o restablece el filtro de estado para ver el resto de la cola.",
   "jobs.list.empty.noJobsTitle": "Aún no hay jobs",
-  "jobs.list.empty.noJobsDesc": "El trabajo en segundo plano, ejecuciones en sandbox e intervenciones del operador aparecerán aquí cuando el gateway empiece a crear jobs.",
+  "jobs.list.empty.noJobsDesc":
+    "El trabajo en segundo plano, ejecuciones en sandbox e intervenciones del operador aparecerán aquí cuando el gateway empiece a crear jobs.",
   "jobs.list.filter.all": "Todos los estados",
   "jobs.list.filter.pending": "Pendiente",
   "jobs.list.filter.inProgress": "En progreso",
@@ -453,7 +493,8 @@ registerPack("es", {
   // Extensiones — registro
   "ext.registry.searchPlaceholder": "Buscar extensiones…",
   "ext.registry.emptyTitle": "El registro está vacío",
-  "ext.registry.emptyDesc": "Todas las extensiones disponibles ya están instaladas, o no hay un registro configurado.",
+  "ext.registry.emptyDesc":
+    "Todas las extensiones disponibles ya están instaladas, o no hay un registro configurado.",
   "ext.registry.availableTitle": "Extensiones disponibles",
   "ext.registry.noMatch": "Ninguna extensión coincide con el filtro.",
 
@@ -465,7 +506,8 @@ registerPack("es", {
   "projects.allProjects": "Todos los proyectos",
   "projects.returnToProjects": "Volver a proyectos",
   "projects.unavailable": "Proyecto no disponible",
-  "projects.unavailableDesc": "Este proyecto ya no existe o está fuera de tu alcance de acceso.",
+  "projects.unavailableDesc":
+    "Este proyecto ya no existe o está fuera de tu alcance de acceso.",
   "projects.refresh": "Actualizar",
   "projects.refreshing": "Actualizando",
   "projects.newProject": "Nuevo proyecto",
@@ -473,22 +515,32 @@ registerPack("es", {
   "projects.createFromChat": "Crear desde el chat",
   "projects.startProject": "Iniciar un proyecto",
   "projects.searchPlaceholder": "Buscar proyectos",
-  "projects.creationDraft": "Crea un nuevo proyecto para mí. Quiero configurar un espacio de trabajo autónomo para: ",
-  "projects.chatAutoFail": "No se pudo preparar el chat automáticamente. Abriendo el chat de todos modos.",
+  "projects.creationDraft":
+    "Crea un nuevo proyecto para mí. Quiero configurar un espacio de trabajo autónomo para: ",
+  "projects.chatAutoFail":
+    "No se pudo preparar el chat automáticamente. Abriendo el chat de todos modos.",
   "projects.openWorkspace": "Abrir espacio de trabajo",
   "projects.openGeneralWorkspace": "Abrir espacio de trabajo general",
-  "projects.noDescription": "Aún no hay descripción del proyecto. El espacio de trabajo sigue siendo moldeado por misiones activas y el historial de hilos.",
+  "projects.noDescription":
+    "Aún no hay descripción del proyecto. El espacio de trabajo sigue siendo moldeado por misiones activas y el historial de hilos.",
   "projects.general.label": "Espacio de trabajo general",
   "projects.general.title": "Sala de control del proyecto predeterminado",
-  "projects.general.desc": "Contexto compartido, trabajo ad hoc y la ruta de ejecución comodín para hilos que aún no se han promovido a un proyecto con nombre.",
+  "projects.general.desc":
+    "Contexto compartido, trabajo ad hoc y la ruta de ejecución comodín para hilos que aún no se han promovido a un proyecto con nombre.",
   "projects.scoped.title": "Proyectos con alcance",
-  "projects.scoped.desc": "Explora espacios de trabajo duraderos, inspecciona misiones, revisa actividad reciente y entra al proyecto que te necesita ahora.",
-  "projects.scoped.onlyGeneralTitle": "Solo el espacio de trabajo general está activo",
-  "projects.scoped.onlyGeneralDesc": "Crea un proyecto con nombre cuando el trabajo merezca sus propias misiones, archivos, widgets y contexto de larga duración.",
-  "projects.empty.noMatchTitle": "Ningún proyecto coincide con la búsqueda actual",
-  "projects.empty.noMatchDesc": "Prueba una búsqueda más amplia o limpia el filtro para volver al mapa completo del espacio de trabajo.",
+  "projects.scoped.desc":
+    "Explora espacios de trabajo duraderos, inspecciona misiones, revisa actividad reciente y entra al proyecto que te necesita ahora.",
+  "projects.scoped.onlyGeneralTitle":
+    "Solo el espacio de trabajo general está activo",
+  "projects.scoped.onlyGeneralDesc":
+    "Crea un proyecto con nombre cuando el trabajo merezca sus propias misiones, archivos, widgets y contexto de larga duración.",
+  "projects.empty.noMatchTitle":
+    "Ningún proyecto coincide con la búsqueda actual",
+  "projects.empty.noMatchDesc":
+    "Prueba una búsqueda más amplia o limpia el filtro para volver al mapa completo del espacio de trabajo.",
   "projects.empty.noneTitle": "Aún no hay proyectos",
-  "projects.empty.noneDesc": "Los proyectos aparecen cuando el asistente crea espacios de trabajo duraderos. Puedes empezar desde el chat y pedirle a IronClaw que cree un proyecto con alcance para trabajo continuo.",
+  "projects.empty.noneDesc":
+    "Los proyectos aparecen cuando el asistente crea espacios de trabajo duraderos. Puedes empezar desde el chat y pedirle a IronClaw que cree un proyecto con alcance para trabajo continuo.",
   "projects.card.runtime": "Runtime",
   "projects.card.risk": "Riesgo",
   "projects.card.threadsToday": "{count} hoy",
@@ -496,4 +548,3 @@ registerPack("es", {
   "projects.card.spendToday": "{value} gastados hoy",
   "projects.explorer": "Explorador",
 });
-

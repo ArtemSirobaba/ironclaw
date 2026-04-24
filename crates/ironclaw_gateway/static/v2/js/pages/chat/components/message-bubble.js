@@ -1,5 +1,4 @@
 import { html } from "../../../lib/html.js";
-import { Avatar } from "./avatar.js";
 import { MarkdownRenderer } from "./markdown-renderer.js";
 import { ToolActivity } from "./tool-activity.js";
 import { Icon } from "../../../design-system/icons.js";
@@ -32,8 +31,7 @@ export function MessageBubble({ message }) {
   if (role === "image") {
     const imgs = generatedImages || [];
     return html`
-      <div className="flex gap-3">
-        <${Avatar} role="assistant" />
+      <div className="flex">
         <div className="flex flex-wrap gap-2">
           ${imgs.map((img, i) => html`<img key=${i} src=${img.data_url} className="max-h-64 rounded-lg border border-iron-700 object-cover" alt="Generated result" />`)}
         </div>
@@ -42,8 +40,7 @@ export function MessageBubble({ message }) {
   }
 
   return html`
-    <div className=${["flex gap-3", isUser ? "flex-row-reverse" : "flex-row"].join(" ")}>
-      <${Avatar} role=${role} />
+    <div className=${["flex", isUser ? "justify-end" : "justify-start"].join(" ")}>
       <div className="flex min-w-0 max-w-[85%] flex-col gap-1">
         <div
           className=${[
