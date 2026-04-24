@@ -46,11 +46,7 @@ export function LoginPage({ initialToken, error, onSubmit }) {
         >
           ${t("login.hero")}
         </h1>
-        <p
-          className="mt-6 max-w-[58ch] text-base leading-relaxed text-iron-300"
-        >
-          ${t("login.heroSub")}
-        </p>
+
         <div className="mt-10 grid max-w-xl grid-cols-[1fr_0.7fr] gap-3">
           <div className="v2-panel rounded-xl p-6">
             <div className="flex items-center gap-3 text-signal">
@@ -75,7 +71,7 @@ export function LoginPage({ initialToken, error, onSubmit }) {
       </section>
 
       <section
-        className="v2-panel v2-page-entrance w-full max-w-md self-center rounded-xl p-6 sm:ml-auto"
+        className="v2-panel w-full max-w-md self-center rounded-xl p-6 sm:ml-auto"
       >
         <div className="mb-8">
           <p
@@ -109,7 +105,7 @@ export function LoginPage({ initialToken, error, onSubmit }) {
                 required: t("login.tokenRequired"),
                 setValueAs: (value) => value.trim(),
               })}
-              className="h-11 w-full rounded-md border border-iron-700 bg-iron-900 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal"
+              className="h-11 w-full rounded-md border border-iron-700 bg-iron-900 px-3 text-sm text-iron-100 outline-none placeholder:text-iron-400 focus:border-signal"
               placeholder=${t("login.tokenPlaceholder")}
               autocomplete="current-password"
             />

@@ -119,7 +119,7 @@ export function ChatInput({
                 />
                 <button
                   onClick=${() => removeImage(i)}
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 transition group-hover:opacity-100"
+                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-red-300/30 bg-red-500 text-white opacity-0 group-hover:opacity-100"
                   aria-label=${t("chat.removeImage")}
                 >
                   <${Icon} name="close" className="h-3 w-3" />
@@ -175,7 +175,7 @@ export function ChatInput({
           placeholder=${t("chat.placeholder")}
           rows=${1}
           disabled=${disabled}
-          className="max-h-[200px] min-h-[44px] flex-1 resize-none rounded-md border border-white/10 bg-iron-900/86 px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-iron-700 focus:border-signal/70 disabled:opacity-50"
+          className="max-h-[200px] min-h-[44px] flex-1 resize-none rounded-md border border-white/10 bg-iron-900/86 px-3 py-2.5 text-sm text-white outline-none placeholder:text-iron-700 focus:border-signal/70 disabled:opacity-50"
         />
 
         <button

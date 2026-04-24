@@ -58,7 +58,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
                 value=${tool.state}
                 onChange=${(e) => onPermissionChange(tool.name, e.target.value)}
                 aria-label=${t("tools.permissionFor", { name: tool.name })}
-                className="h-8 rounded-md border border-white/12 bg-white/[0.04] px-2.5 font-mono text-xs text-iron-100 outline-none transition focus:border-signal/45"
+                className="h-8 rounded-md border border-white/12 bg-white/[0.04] px-2.5 font-mono text-xs text-iron-100 outline-none focus:border-signal/45"
               >
                 ${permissionStates.map(
                   (p) =>
@@ -125,7 +125,7 @@ export function ToolsTab() {
           value=${filter}
           onChange=${(e) => setFilter(e.target.value)}
           placeholder=${t("tools.filterPlaceholder")}
-          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
         />
         <span className="font-mono text-[11px] text-iron-700">
           ${filtered.length} / ${tools.length}

@@ -107,7 +107,7 @@ export function ProjectMissionInspector({
                   <button
                     key=${thread.id}
                     onClick=${() => onOpenThread(thread.id)}
-                    className="w-full rounded-2xl border border-white/8 bg-iron-950/60 p-4 text-left transition hover:border-signal/30 hover:bg-white/[0.05]"
+                    className="w-full rounded-2xl border border-white/8 bg-iron-950/60 p-4 text-left hover:border-signal/30 hover:bg-white/[0.05]"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="min-w-0 truncate text-sm font-semibold text-white">${thread.goal}</div>

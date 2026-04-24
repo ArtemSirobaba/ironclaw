@@ -32,7 +32,7 @@ export function LanguageTab() {
               type="button"
               onClick=${() => setLang(l.code)}
               className=${[
-                "flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition",
+                "flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left",
                 l.code === lang
                   ? "border-signal/35 bg-signal/10 text-white"
                   : "border-white/[0.06] bg-white/[0.02] text-iron-300 hover:border-white/10 hover:bg-white/[0.035] hover:text-white",

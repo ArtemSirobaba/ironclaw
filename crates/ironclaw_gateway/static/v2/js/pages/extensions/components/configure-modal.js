@@ -115,7 +115,7 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
                     [secret.name]: e.target.value,
                   }))}
                 onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
-                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
               />
               ${secret.auto_generate &&
               !secret.provided &&
@@ -151,7 +151,7 @@ export function ConfigureModal({ extensionName, onClose, onSaved }) {
                     [field.name]: e.target.value,
                   }))}
                 onKeyDown=${(e) => e.key === "Enter" && handleSubmit()}
-                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+                className="h-10 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
               />
             </div>
           `
@@ -211,7 +211,7 @@ function ModalShell({ onClose, title, children }) {
           <h3 className="text-lg font-semibold text-white">${title}</h3>
           <button
             onClick=${onClose}
-            className="grid h-8 w-8 place-items-center rounded-md text-iron-300 transition hover:bg-white/[0.06] hover:text-white"
+            className="grid h-8 w-8 place-items-center rounded-md text-iron-300 hover:bg-white/[0.06] hover:text-white"
           >
             <${Icon} name="close" className="h-4 w-4" />
           </button>

@@ -134,7 +134,7 @@ export function JobActivityTab({ job, events, onSendPrompt, isSendingPrompt }) {
               }
             }}
             placeholder="Send a follow-up prompt to the running job"
-            className="h-11 rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none transition focus:border-signal/45"
+            className="h-11 rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none focus:border-signal/45"
           />
           <${Button} variant="secondary" disabled=${isSendingPrompt} onClick=${() => handleSend(true)}>Done<//>
           <${Button} variant="primary" disabled=${isSendingPrompt} onClick=${() => handleSend(false)}>Send<//>

@@ -54,7 +54,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               value=${name}
               onChange=${(e) => setName(e.target.value)}
               required
-              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
             />
           </div>
           <div>
@@ -65,7 +65,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               type="email"
               value=${email}
               onChange=${(e) => setEmail(e.target.value)}
-              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
             />
           </div>
         </div>
@@ -76,7 +76,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
           <select
             value=${role}
             onChange=${(e) => setRole(e.target.value)}
-            className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+            className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
           >
             <option value="member">${t("users.member")}</option>
             <option value="admin">${t("users.admin")}</option>

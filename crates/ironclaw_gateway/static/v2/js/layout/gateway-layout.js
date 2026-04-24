@@ -23,7 +23,7 @@ const routeIcons = {
 function RouteGlyph({ icon }) {
   return html`
     <span
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-iron-700 bg-iron-800 text-iron-300 transition group-hover:border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] group-hover:bg-[var(--v2-accent-soft)] group-hover:text-signal"
+      className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-iron-700 bg-iron-800 text-iron-300 group-hover:border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] group-hover:bg-[var(--v2-accent-soft)] group-hover:text-signal"
     >
       <${Icon} name=${icon} className="h-4 w-4" />
     </span>
@@ -44,9 +44,9 @@ function HeaderTabs() {
             to=${route.path}
             className=${({ isActive }) =>
               [
-                "group flex items-center gap-2 rounded-md border px-2.5 py-2 text-sm transition xl:px-3",
+                "group flex items-center gap-2 rounded-md border px-2.5 py-2 text-sm xl:px-3",
                 isActive
-                  ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-panel)] text-iron-100 shadow-[var(--v2-shadow-active)]"
+                  ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-panel)] text-iron-100"
                   : "border-iron-700 bg-iron-800/60 text-iron-300 hover:border-iron-700 hover:bg-iron-800/80 hover:text-iron-100",
               ].join(" ")}
           >

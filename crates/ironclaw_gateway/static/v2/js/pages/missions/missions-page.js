@@ -139,11 +139,6 @@ export function MissionsPage() {
               onClick=${() => navigate("/missions")}
               >${t("missions.allMissions")}<//
             >`}
-            <${Button} variant="secondary" onClick=${missionsState.invalidate}>
-              ${missionsState.isRefreshing || detailState.isRefreshing
-                ? t("missions.refreshing")
-                : t("missions.refresh")}
-            <//>
           </div>
 
           ${missionsState.error &&

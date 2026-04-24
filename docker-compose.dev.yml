@@ -1,7 +1,8 @@
 # Dev compose — runs IronClaw with live reload inside Docker.
 #
-# Edit Rust source or frontend assets on the host; cargo-watch detects
-# changes, rebuilds, and restarts the binary automatically.
+# Edit Rust source on the host; cargo-watch detects changes, rebuilds, and
+# restarts the binary automatically. The v2 frontend runs in a separate static
+# dev server so JS/CSS edits do not rebuild Rust.
 #
 # Usage:
 #   cp .env.example .env   # configure LLM backend, DB, etc.
@@ -50,6 +51,7 @@ services:
       CARGO_TARGET_DIR: /workspace/target-docker
       CARGO_TERM_COLOR: always
       RUST_LOG: ironclaw=debug
+      GATEWAY_PORT: 3000
       # Override DATABASE_URL to point at the postgres service
       DATABASE_URL: postgres://ironclaw:ironclaw@postgres:5432/ironclaw
       # Bind to 0.0.0.0 so the port forward works
@@ -58,6 +60,21 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  v2-frontend:
+    image: node:22-bookworm
+    working_dir: /app
+    command: npm run dev
+    volumes:
+      - ./crates/ironclaw_gateway/static/v2:/app
+    ports:
+      - "5174:5174"
+    environment:
+      V2_FRONTEND_HOST: 0.0.0.0
+      V2_FRONTEND_PORT: 5174
+      IRONCLAW_GATEWAY_URL: http://ironclaw:3000
+    depends_on:
+      - ironclaw
 
 volumes:
   pg-data:

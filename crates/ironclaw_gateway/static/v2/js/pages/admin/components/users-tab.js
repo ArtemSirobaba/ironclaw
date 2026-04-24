@@ -94,7 +94,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               value=${name}
               onChange=${(e) => setName(e.target.value)}
               required
-              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none placeholder:text-iron-400 focus:border-signal/45"
               placeholder=${t("admin.users.displayNamePlaceholder")}
             />
           </div>
@@ -104,7 +104,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
               type="email"
               value=${email}
               onChange=${(e) => setEmail(e.target.value)}
-              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none placeholder:text-iron-400 focus:border-signal/45"
               placeholder=${t("admin.users.emailPlaceholder")}
             />
           </div>
@@ -113,7 +113,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
             <select
               value=${role}
               onChange=${(e) => setRole(e.target.value)}
-              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
             >
               <option value="member">${t("admin.users.member")}</option>
               <option value="admin">${t("admin.users.admin")}</option>
@@ -136,14 +136,14 @@ function ConfirmModal({ title, message, confirmLabel, onConfirm, onCancel }) {
   const t = useT();
   return html`
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick=${onCancel}>
-      <div className="w-full max-w-md rounded-xl border border-iron-700 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md rounded-xl border border-iron-700 bg-iron-900 p-6" onClick=${(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold text-iron-100">${title}</h3>
         <p className="mt-2 text-sm text-iron-300">${message}</p>
         <div className="mt-5 flex justify-end gap-2">
           <${Button} variant="ghost" onClick=${onCancel}>${t("admin.users.cancel")}<//>
           <button
             onClick=${onConfirm}
-            className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-[var(--v2-danger-soft)] px-4 text-sm font-semibold text-[var(--v2-danger-text)] transition hover:bg-[color-mix(in_srgb,var(--v2-danger-soft)_65%,var(--v2-danger-text))]"
+            className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-[var(--v2-danger-soft)] px-4 text-sm font-semibold text-[var(--v2-danger-text)] hover:bg-[color-mix(in_srgb,var(--v2-danger-soft)_65%,var(--v2-danger-text))]"
           >
             ${confirmLabel}
           </button>
@@ -181,17 +181,17 @@ function UserRow({ user, onSelect, onSuspend, onActivate, onChangeRole, onCreate
         <span className="hidden text-xs text-iron-700 lg:inline">${formatRelativeTime(user.last_active_at)}</span>
         <div className="flex gap-1">
           ${user.status === "active"
-            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-[color-mix(in_srgb,var(--v2-danger-text)_36%,var(--v2-panel-border))] hover:text-[var(--v2-danger-text)]">${t("admin.users.suspend")}</button>`
-            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal">${t("admin.users.activate")}</button>`}
+            ? html`<button onClick=${() => onSuspend(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 hover:border-[color-mix(in_srgb,var(--v2-danger-text)_36%,var(--v2-panel-border))] hover:text-[var(--v2-danger-text)]">${t("admin.users.suspend")}</button>`
+            : html`<button onClick=${() => onActivate(user.id)} className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 hover:border-signal/30 hover:text-signal">${t("admin.users.activate")}</button>`}
           <button
             onClick=${() => onChangeRole(user.id, user.role === "admin" ? "member" : "admin")}
-            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-iron-700 hover:text-iron-100"
+            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 hover:border-iron-700 hover:text-iron-100"
           >
             ${user.role === "admin" ? t("admin.users.demote") : t("admin.users.promote")}
           </button>
           <button
             onClick=${() => onCreateToken(user.id, user.display_name)}
-            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 transition hover:border-signal/30 hover:text-signal"
+            className="rounded-md border border-iron-700 px-2.5 py-1.5 text-[11px] font-medium text-iron-300 hover:border-signal/30 hover:text-signal"
           >
             ${t("admin.users.token")}
           </button>
@@ -281,7 +281,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
               placeholder=${t("admin.users.searchPlaceholder")}
               value=${search}
               onChange=${(e) => setSearch(e.target.value)}
-              className="h-8 w-48 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-xs text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/45"
+              className="h-8 w-48 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-xs text-iron-100 outline-none placeholder:text-iron-400 focus:border-signal/45"
             />
             <div className="flex gap-1">
               ${FILTERS.map(
@@ -290,7 +290,7 @@ export function AdminUsersTab({ selectedUserId, onSelectUser }) {
                     key=${f.value}
                     onClick=${() => setFilter(f.value)}
                     className=${[
-                      "rounded-md px-2.5 py-1.5 text-[11px] font-medium transition",
+                      "rounded-md px-2.5 py-1.5 text-[11px] font-medium",
                       filter === f.value
                         ? "border border-signal/35 bg-signal/10 text-iron-100"
                         : "border border-transparent text-iron-300 hover:text-iron-100",

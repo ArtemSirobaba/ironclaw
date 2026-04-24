@@ -6,7 +6,7 @@ function SavedIndicator({ visible }) {
   return html`
     <span
       className=${[
-        "font-mono text-[11px] text-mint transition-opacity duration-300",
+        "font-mono text-[11px] text-mint",
         visible ? "opacity-100" : "opacity-0",
       ].join(" ")}
       role="status"
@@ -25,7 +25,7 @@ function Toggle({ checked, onChange, label }) {
       aria-label=${label}
       onClick=${() => onChange(!checked)}
       className=${[
-        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200",
+        "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border",
         checked
           ? "border-signal/40 bg-signal/30"
           : "border-white/15 bg-white/[0.06]",
@@ -33,7 +33,7 @@ function Toggle({ checked, onChange, label }) {
     >
       <span
         className=${[
-          "pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm transition-transform duration-200",
+          "pointer-events-none inline-block h-5 w-5 rounded-full",
           checked
             ? "translate-x-5 bg-signal"
             : "translate-x-0 bg-iron-300",
@@ -98,7 +98,7 @@ export function SettingsField({ field, value, onSave, isSaved }) {
                   handleCommit(e.target.value);
                 }}
                 aria-label=${label}
-                className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+                className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
               >
                 <option value="">${t("tools.default")}</option>
                 ${field.options.map(
@@ -118,7 +118,7 @@ export function SettingsField({ field, value, onSave, isSaved }) {
                 max=${field.max !== undefined ? String(field.max) : undefined}
                 placeholder=${t("tools.default")}
                 aria-label=${label}
-                className="h-9 w-36 rounded-md border border-white/12 bg-white/[0.04] px-3 text-right font-mono text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+                className="h-9 w-36 rounded-md border border-white/12 bg-white/[0.04] px-3 text-right font-mono text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
               />
             `}
         <${SavedIndicator} visible=${isSaved} />

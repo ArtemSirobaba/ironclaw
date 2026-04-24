@@ -15,12 +15,17 @@ export function JobsSummaryStrip({ summary }) {
     <${Panel} className="p-4 sm:p-5">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         ${SUMMARY_CARDS.map((card) => html`
-          <div key=${card.key} className="border border-white/8 bg-white/[0.02] px-4 py-2">
+          <div
+            key=${card.key}
+            className="rounded-2xl border border-white/8 bg-white/[0.03] p-4"
+          >
             <${StatCard}
               label=${card.label}
               value=${summary?.[card.key] ?? 0}
               tone=${card.tone}
               detail=${card.detail}
+              showDivider=${false}
+              className="px-0 py-0"
             />
           </div>
         `)}

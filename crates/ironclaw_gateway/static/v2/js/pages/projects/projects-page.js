@@ -88,9 +88,6 @@ export function ProjectsPage() {
 
   const headerActions = html`
     ${projectId && html`<${Button} variant="ghost" onClick=${() => navigate("/projects")}>${t("projects.allProjects")}<//>`}
-    <${Button} variant="secondary" onClick=${handleRefresh}>
-      ${overviewState.isRefreshing || workspaceState.isRefreshing ? t("projects.refreshing") : t("projects.refresh")}
-    <//>
     <${Button} onClick=${handleCreateProject}>
       ${threadsState.isCreating ? t("projects.preparingChat") : t("projects.newProject")}
     <//>

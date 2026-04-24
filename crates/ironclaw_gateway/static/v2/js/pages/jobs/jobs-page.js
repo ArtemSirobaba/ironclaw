@@ -33,7 +33,7 @@ function FeedbackBanner({ result, onDismiss }) {
       <span className="min-w-0 flex-1">${result.message}</span>
       <button
         onClick=${onDismiss}
-        className="shrink-0 opacity-70 transition hover:opacity-100"
+        className="shrink-0 opacity-70 hover:opacity-100"
       >
         ${t("jobs.dismiss")}
       </button>
@@ -106,11 +106,6 @@ export function JobsPage() {
     html`<${Button} variant="ghost" onClick=${() => navigate("/jobs")}
       >${t("jobs.allJobs")}<//
     >`}
-    <${Button} variant="secondary" onClick=${jobsState.invalidate}>
-      ${jobsState.isRefreshing || detailState.isRefreshing
-        ? t("jobs.refreshing")
-        : t("jobs.refresh")}
-    <//>
   `;
 
   let detailContent = null;
@@ -210,7 +205,7 @@ export function JobsPage() {
 
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
-      <div className="v2-page-entrance flex-1 p-4 sm:p-6">
+      <div className="flex-1 p-4 sm:p-6">
         <div className="space-y-5">
           <div className="flex flex-wrap justify-end gap-2">
             ${headerActions}

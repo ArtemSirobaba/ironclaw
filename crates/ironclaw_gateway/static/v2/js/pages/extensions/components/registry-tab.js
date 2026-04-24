@@ -47,7 +47,7 @@ export function RegistryTab({
           value=${filter}
           onChange=${(e) => setFilter(e.target.value)}
           placeholder=${t("ext.registry.searchPlaceholder")}
-          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
         />
         <span className="font-mono text-[11px] text-iron-700">
           ${filtered.length} / ${allAvailable.length}

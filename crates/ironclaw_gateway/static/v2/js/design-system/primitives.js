@@ -39,9 +39,22 @@ export function Panel({ children, className = "" }) {
   </section>`;
 }
 
-export function StatCard({ label, value, tone = "muted", detail }) {
+export function StatCard({
+  label,
+  value,
+  tone = "muted",
+  detail,
+  showDivider = true,
+  className = "",
+}) {
   return html`
-    <div className="border-t border-iron-700 px-1 py-4">
+    <div
+      className=${cx(
+        "px-1 py-4",
+        showDivider && "border-t border-iron-700",
+        className
+      )}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div

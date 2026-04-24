@@ -13,7 +13,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
             key=${tab.id}
             onClick=${() => onTabChange(tab.id)}
             className=${[
-              "group flex items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm transition",
+              "group flex items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm",
               activeTab === tab.id
                 ? "v2-nav-active text-white"
                 : "text-iron-300 hover:bg-white/[0.045] hover:text-white",
@@ -21,7 +21,7 @@ export function SettingsTabs({ activeTab, onTabChange }) {
           >
             <span
               className=${[
-                "grid h-7 w-7 shrink-0 place-items-center rounded-md border transition",
+                "grid h-7 w-7 shrink-0 place-items-center rounded-md border",
                 activeTab === tab.id
                   ? "border-signal/35 bg-signal/10 text-signal"
                   : "border-white/10 bg-white/[0.035] text-iron-300 group-hover:border-signal/35 group-hover:text-signal",
@@ -47,7 +47,7 @@ export function SettingsTabsMobile({ activeTab, onTabChange }) {
             key=${tab.id}
             onClick=${() => onTabChange(tab.id)}
             className=${[
-              "flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm whitespace-nowrap transition",
+              "flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm whitespace-nowrap",
               activeTab === tab.id
                 ? "border border-signal/35 bg-signal/10 text-white"
                 : "border border-transparent text-iron-300 hover:text-white",

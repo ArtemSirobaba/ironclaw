@@ -20,11 +20,11 @@ function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory
         <button
           type="button"
           onClick=${() => onToggleDirectory(entry.path)}
-          className="flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-left text-sm text-iron-200 transition hover:bg-white/[0.05] hover:text-white"
+          className="flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-left text-sm text-iron-200 hover:bg-white/[0.05] hover:text-white"
           style=${{ paddingLeft: `${8 + depth * 16}px` }}
           aria-expanded=${isExpanded}
         >
-          <span className=${["w-3 text-[10px] transition", isExpanded ? "rotate-90" : ""].join(" ")}>></span>
+          <span className=${["w-3 text-[10px]", isExpanded ? "rotate-90" : ""].join(" ")}>></span>
           <span className="min-w-0 truncate font-semibold">${entry.name}</span>
         </button>
         ${isExpanded && html`
@@ -53,7 +53,7 @@ function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory
       type="button"
       onClick=${() => onSelectFile(entry.path)}
       className=${[
-        "flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-left text-sm transition",
+        "flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-left text-sm",
         selectedPath === entry.path ? "bg-signal/10 text-signal" : "text-iron-300 hover:bg-white/[0.05] hover:text-white",
       ].join(" ")}
       style=${{ paddingLeft: `${24 + depth * 16}px` }}
@@ -114,7 +114,7 @@ export function WorkspaceSearchResults({ results, query, onSelectFile, isSearchi
           key=${result.path}
           type="button"
           onClick=${() => onSelectFile(result.path)}
-          className="w-full rounded-md border border-white/8 bg-white/[0.025] p-3 text-left transition hover:border-signal/25 hover:bg-white/[0.05]"
+          className="w-full rounded-md border border-white/8 bg-white/[0.025] p-3 text-left hover:border-signal/25 hover:bg-white/[0.05]"
         >
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0 truncate font-mono text-xs text-signal">${result.path}</div>

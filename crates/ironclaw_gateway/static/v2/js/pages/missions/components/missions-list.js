@@ -21,7 +21,7 @@ function FilterSelect({ value, onChange, children, label }) {
       <select
         value=${value}
         onChange=${(event) => onChange(event.target.value)}
-        className="h-11 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/40"
+        className="h-11 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/40"
       >
         ${children}
       </select>
@@ -36,7 +36,7 @@ function MissionRow({ mission, selectedMissionId, onSelectMission, onOpenProject
   return html`
     <div
       className=${[
-        "w-full rounded-xl border p-4 text-left transition",
+        "w-full rounded-xl border p-4 text-left",
         selected
           ? "border-signal/35 bg-signal/10"
           : "border-iron-700 bg-iron-800/50 hover:border-signal/25 hover:bg-iron-800/80",
@@ -109,7 +109,7 @@ export function MissionsList({
           value=${search}
           onChange=${(event) => onSearchChange(event.target.value)}
           placeholder=${t("missions.searchPlaceholder")}
-          className="h-11 min-w-[220px] flex-1 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none transition placeholder:text-iron-400 focus:border-signal/40"
+          className="h-11 min-w-[220px] flex-1 rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none placeholder:text-iron-400 focus:border-signal/40"
         />
         <${FilterSelect} value=${statusFilter} onChange=${onStatusFilterChange} label=${t("missions.filter.status")}>
           ${statusOptions.map((status) => html`<option key=${status.value} value=${status.value}>${status.label}<//>`)}

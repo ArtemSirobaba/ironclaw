@@ -1,7 +1,9 @@
 # Dev Dockerfile — builds and runs IronClaw with live reload via cargo-watch.
 #
 # Source is bind-mounted from the host, so edits are picked up automatically.
-# cargo-watch rebuilds and restarts the binary on any Rust/asset change.
+# cargo-watch rebuilds and restarts the binary on Rust/backend asset changes.
+# The v2 browser-native frontend is intentionally ignored so it can be served
+# separately without forcing a Rust rebuild on every JS/CSS edit.
 #
 # Usage: docker compose -f docker-compose.dev.yml up --build
 
@@ -31,6 +33,7 @@ CMD ["cargo", "watch", \
      "--why", \
      "-w", "src", \
      "-w", "crates", \
+     "-i", "crates/ironclaw_gateway/static/v2/**", \
      "-w", "Cargo.toml", \
      "-w", "Cargo.lock", \
      "-w", "build.rs", \

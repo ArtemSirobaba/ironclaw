@@ -8,7 +8,7 @@ function TreeNodes({ nodes, depth = 0, selectedPath, expandingPath, onToggleDire
         <button
           onClick=${() => (node.isDir ? onToggleDirectory(node.path) : onSelectPath(node.path))}
           className=${[
-            "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition",
+            "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm",
             selectedPath === node.path ? "bg-signal/10 text-white" : "text-iron-200 hover:bg-white/[0.05]",
           ].join(" ")}
           style=${{ paddingLeft: `${depth * 18 + 12}px` }}

@@ -37,28 +37,6 @@ export function WorkspacePage() {
     <div className="flex h-full flex-col overflow-y-auto">
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="flex h-full min-h-0 flex-col space-y-5">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <div
-                className="font-mono text-[11px] uppercase tracking-[0.16em] text-iron-300"
-              >
-                ${t("workspace.title")}
-              </div>
-              <h1
-                className="mt-2 text-3xl font-semibold tracking-tight text-white"
-              >
-                ${t("workspace.subtitle")}
-              </h1>
-            </div>
-            <div className="flex flex-wrap justify-end gap-2">
-              <${Button} variant="secondary" onClick=${workspace.refresh}>
-                ${workspace.isLoadingTree || workspace.isLoadingFile
-                  ? t("workspace.refreshing")
-                  : t("workspace.refresh")}
-              <//>
-            </div>
-          </div>
-
           ${workspace.error &&
           html`
             <div

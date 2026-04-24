@@ -26,10 +26,9 @@
   --v2-danger-text: #b42342;
   --v2-info-soft: rgba(76, 167, 230, 0.12);
   --v2-info-text: #146fae;
-  --v2-shadow: 0 18px 48px rgba(15, 23, 32, 0.08);
-  --v2-shadow-soft: 0 1px 0 rgba(15, 23, 32, 0.05),
-    0 14px 36px rgba(15, 23, 32, 0.06);
-  --v2-shadow-active: 0 18px 44px rgba(76, 167, 230, 0.18);
+  --v2-shadow: none;
+  --v2-shadow-soft: none;
+  --v2-shadow-active: none;
   background: var(--v2-canvas);
 }
 
@@ -61,13 +60,9 @@
   --v2-danger-text: var(--text-danger, #ff6480);
   --v2-info-soft: rgba(76, 167, 230, 0.14);
   --v2-info-text: var(--accent-primary-soft, #8fc8f2);
-  --v2-shadow: var(--shadow-panel, 0 10px 30px rgba(0, 0, 0, 0.18));
-  --v2-shadow-soft: 0 1px 0 rgba(255, 255, 255, 0.04),
-    var(--shadow-panel, 0 10px 30px rgba(0, 0, 0, 0.18));
-  --v2-shadow-active: var(
-    --shadow-panel-active,
-    0 18px 44px rgba(76, 167, 230, 0.08)
-  );
+  --v2-shadow: none;
+  --v2-shadow-soft: none;
+  --v2-shadow-active: none;
 }
 
 :root[data-theme="light"] {
@@ -109,7 +104,6 @@ button {
 .v2-panel {
   border: 1px solid var(--v2-panel-border);
   background: var(--v2-panel);
-  box-shadow: var(--v2-shadow-soft);
   backdrop-filter: blur(18px);
 }
 
@@ -120,7 +114,6 @@ button {
     var(--v2-canvas-strong) 88%,
     transparent
   ) !important;
-  box-shadow: var(--v2-shadow-soft);
 }
 
 .v2-brand-mark {
@@ -135,7 +128,6 @@ button {
       transparent
     ),
     var(--v2-accent-soft);
-  box-shadow: 0 0 28px color-mix(in srgb, var(--v2-accent) 20%, transparent);
 }
 
 .v2-theme-toggle {
@@ -185,16 +177,6 @@ button {
   ) !important;
   background: var(--v2-panel) !important;
   color: var(--v2-text-strong) !important;
-  box-shadow: var(--v2-shadow-active);
-}
-
-.v2-page-entrance {
-  animation: v2-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.v2-stagger > * {
-  animation: v2-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(var(--index, 0) * 70ms);
 }
 
 .v2-kinetic-line {
@@ -210,24 +192,13 @@ button {
   background: var(--v2-panel-border);
 }
 
-.v2-breathing-dot {
-  animation: v2-breathe 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
 .v2-button {
-  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .v2-button:hover {
-  box-shadow: var(--v2-shadow);
 }
 
 .v2-button:active {
-  transform: scale(0.985);
 }
 
 .v2-button-primary {
@@ -239,7 +210,6 @@ button {
     var(--v2-accent-strong)
   );
   color: #ffffff;
-  box-shadow: 0 18px 28px -20px color-mix(in srgb, var(--v2-accent) 64%, transparent);
 }
 
 .v2-button-primary:hover {
@@ -247,10 +217,6 @@ button {
     180deg,
     color-mix(in srgb, var(--v2-accent) 88%, white),
     var(--v2-accent-strong)
-  );
-  box-shadow: var(
-    --shadow-button-hover,
-    0 24px 24px -20px rgba(76, 167, 230, 0.55)
   );
 }
 
@@ -321,40 +287,7 @@ button {
     color-mix(in srgb, var(--v2-surface-muted) 64%, var(--v2-accent-soft)),
     var(--v2-surface-muted)
   );
-  background-size: 220% 100%;
-  animation: v2-shimmer 1.8s ease-in-out infinite;
-}
-
-@keyframes v2-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 10px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes v2-breathe {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(0.9);
-  }
-  52% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes v2-shimmer {
-  0% {
-    background-position: 120% 0;
-  }
-  100% {
-    background-position: -120% 0;
-  }
+  background-size: 100% 100%;
 }
 
 /* Theme-aware compatibility for existing Tailwind utility-heavy modules. */
@@ -526,8 +459,9 @@ textarea:focus {
     var(--v2-accent) 54%,
     var(--v2-panel-border)
   ) !important;
-  outline: none;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--v2-accent) 14%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--v2-accent) 32%, transparent);
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 [class*="rounded-[18px]"],

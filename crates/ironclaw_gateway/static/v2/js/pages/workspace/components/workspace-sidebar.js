@@ -25,7 +25,7 @@ export function WorkspaceSidebar({
           value=${search}
           onInput=${(event) => onSearchChange(event.target.value)}
           placeholder=${t("workspace.searchPlaceholder")}
-          className="h-11 w-full rounded-md border border-white/10 bg-iron-950/80 px-3 text-sm text-white outline-none transition placeholder:text-iron-400 focus:border-signal/45"
+          className="h-11 w-full rounded-md border border-white/10 bg-iron-950/80 px-3 text-sm text-white outline-none placeholder:text-iron-400 focus:border-signal/45"
         />
       </div>
 

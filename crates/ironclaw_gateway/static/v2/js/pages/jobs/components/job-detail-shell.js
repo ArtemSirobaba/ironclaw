@@ -27,7 +27,7 @@ export function JobDetailShell({
       <${Panel} className="p-5 sm:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0">
-            <button onClick=${onBack} className="text-sm text-signal transition hover:text-white">Back to all jobs</button>
+            <button onClick=${onBack} className="text-sm text-signal hover:text-white">Back to all jobs</button>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <h2 className="text-3xl font-semibold tracking-tight text-white">${job.title || "Untitled job"}</h2>
               <${StatusPill} tone=${statusToneForState(job.state)} label=${stateLabel(job.state)} />

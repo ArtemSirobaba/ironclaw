@@ -43,7 +43,7 @@ export function PairingSection({ channel }) {
           onChange=${(e) => setManualCode(e.target.value)}
           onKeyDown=${(e) => e.key === "Enter" && handleManualSubmit()}
           placeholder=${t("pairing.placeholder")}
-          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 font-mono text-sm text-iron-100 outline-none transition placeholder:text-iron-700 focus:border-signal/45"
+          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 font-mono text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
         />
         <${Button}
           variant="secondary"

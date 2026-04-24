@@ -68,12 +68,12 @@ export function JobsList({
             value=${search}
             onInput=${(event) => onSearchChange(event.target.value)}
             placeholder=${t("jobs.list.searchPlaceholder")}
-            className="h-11 rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+            className="h-11 rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
           />
           <select
             value=${stateFilter}
             onChange=${(event) => onStateFilterChange(event.target.value)}
-            className="h-11 rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+            className="h-11 rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
           >
             ${FILTERS.map((filter) => html`<option key=${filter.value} value=${filter.value}>${filter.label}</option>`)}
           </select>

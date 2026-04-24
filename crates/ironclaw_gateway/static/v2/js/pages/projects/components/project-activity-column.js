@@ -25,7 +25,7 @@ export function ProjectActivityColumn({ threads, selectedThreadId, onSelectThrea
                   key=${thread.id}
                   onClick=${() => onSelectThread(thread.id)}
                   className=${[
-                    "w-full rounded-[20px] border p-4 text-left transition",
+                    "w-full rounded-[20px] border p-4 text-left",
                     selectedThreadId === thread.id
                       ? "border-signal/35 bg-signal/10"
                       : "border-white/10 bg-white/[0.025] hover:border-signal/25 hover:bg-white/[0.045]",

@@ -81,7 +81,7 @@ export function UserDetail({ userId, onBack }) {
     <div className="space-y-5">
       <button
         onClick=${onBack}
-        className="flex items-center gap-1.5 text-xs text-iron-300 transition hover:text-white"
+        className="flex items-center gap-1.5 text-xs text-iron-300 hover:text-white"
       >
         <span>←</span>
         <span>${t("admin.users.backToUsers")}</span>
@@ -103,7 +103,7 @@ export function UserDetail({ userId, onBack }) {
             <${Button} variant="secondary" onClick=${handleCreateToken}>${t("admin.users.createToken")}<//>
             <button
               onClick=${() => setConfirmDelete(true)}
-              className="v2-button inline-flex h-10 items-center justify-center rounded-md border border-red-400/30 bg-red-500/10 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/20"
+              className="v2-button inline-flex h-10 items-center justify-center rounded-md border border-red-400/30 bg-red-500/10 px-4 text-sm font-semibold text-red-200 hover:bg-red-500/20"
             >
               ${t("admin.users.delete")}
             </button>
@@ -160,7 +160,7 @@ export function UserDetail({ userId, onBack }) {
             <select
               value=${role || user.role}
               onChange=${(e) => setRole(e.target.value)}
-              className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+              className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
             >
               <option value="member">${t("admin.users.member")}</option>
               <option value="admin">${t("admin.users.admin")}</option>
@@ -208,7 +208,7 @@ export function UserDetail({ userId, onBack }) {
 
       ${confirmDelete && html`
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick=${() => setConfirmDelete(false)}>
-          <div className="w-full max-w-md rounded-xl border border-white/10 bg-iron-900 p-6 shadow-2xl" onClick=${(e) => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-xl border border-white/10 bg-iron-900 p-6" onClick=${(e) => e.stopPropagation()}>
             <h3 className="text-lg font-semibold text-white">${t("admin.users.deleteUserTitle")}</h3>
             <p className="mt-2 text-sm text-iron-300">
               ${t("admin.users.deleteUserDesc", { name: user.display_name })}
@@ -217,7 +217,7 @@ export function UserDetail({ userId, onBack }) {
               <${Button} variant="ghost" onClick=${() => setConfirmDelete(false)}>${t("admin.users.cancel")}<//>
               <button
                 onClick=${handleDelete}
-                className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-red-500/20 px-4 text-sm font-semibold text-red-200 transition hover:bg-red-500/30"
+                className="v2-button inline-flex h-10 items-center justify-center rounded-md bg-red-500/20 px-4 text-sm font-semibold text-red-200 hover:bg-red-500/30"
               >
                 ${t("admin.users.delete")}
               </button>

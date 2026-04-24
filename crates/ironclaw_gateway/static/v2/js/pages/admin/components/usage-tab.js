@@ -22,7 +22,7 @@ function UsageBar({ value, max }) {
   return html`
     <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
       <div
-        className="h-full rounded-full bg-signal/50 transition-all duration-300"
+        className="h-full rounded-full bg-signal/50"
         style=${{ width: `${Math.max(pct, 1)}%` }}
       />
     </div>
@@ -63,7 +63,7 @@ export function UsageTab({ onSelectUser }) {
                   key=${p.value}
                   onClick=${() => setPeriod(p.value)}
                   className=${[
-                    "rounded-md px-3 py-1.5 text-[11px] font-medium transition",
+                    "rounded-md px-3 py-1.5 text-[11px] font-medium",
                     period === p.value
                       ? "border border-signal/35 bg-signal/10 text-white"
                       : "border border-transparent text-iron-300 hover:text-white",

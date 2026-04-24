@@ -11,7 +11,7 @@ import {
 
 function ProjectCard({ project, onOpen, t }) {
   return html`
-    <article className="group rounded-xl border border-iron-700 bg-iron-800/60 p-5 transition hover:border-signal/30 hover:bg-iron-800/80">
+    <article className="group rounded-xl border border-iron-700 bg-iron-800/60 p-5 hover:border-signal/30 hover:bg-iron-800/80">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="truncate font-serif text-2xl font-semibold tracking-[-0.03em] text-iron-100">${project.name}</h3>
@@ -138,7 +138,7 @@ export function ProjectsGrid({
               value=${search}
               onInput=${(event) => onSearchChange(event.target.value)}
               placeholder=${t("projects.searchPlaceholder")}
-              className="h-11 min-w-[220px] rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none transition focus:border-signal/45"
+              className="h-11 min-w-[220px] rounded-md border border-iron-700 bg-iron-950/90 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
             />
             <${Button} onClick=${onCreateProject}>${isPreparingChat ? t("projects.preparingChat") : t("projects.newProject")}<//>
           </div>
