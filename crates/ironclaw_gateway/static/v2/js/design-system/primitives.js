@@ -16,7 +16,7 @@ export function StatusPill({ tone = "muted", label }) {
   return html`
     <span
       className=${cx(
-        "inline-flex h-7 items-center gap-2 rounded-full border px-2.5 font-mono text-[11px] uppercase tracking-[0.12em]",
+        "inline-flex h-7 items-center gap-2 rounded-full border px-2.5 font-mono text-[0.6875rem] uppercase tracking-[0.12em]",
         pillTones[tone] || pillTones.muted
       )}
     >
@@ -58,7 +58,7 @@ export function StatCard({
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div
-            className="font-mono text-[11px] uppercase tracking-[0.14em] text-iron-300"
+            className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-iron-300"
           >
             ${label}
           </div>

@@ -81,7 +81,7 @@ export function GatewayLayout({ token, onSignOut }) {
               >IronClaw</span
             >
             <span
-              className="hidden rounded-full border border-iron-700 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-iron-300 sm:inline-flex"
+              className="hidden rounded-full border border-iron-700 px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-iron-300 sm:inline-flex"
             >
               v2
             </span>

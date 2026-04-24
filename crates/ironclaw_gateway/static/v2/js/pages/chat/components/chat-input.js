@@ -120,7 +120,7 @@ export function ChatInput({
     disabled ? "opacity-70" : "",
   ].join(" ");
   const textClass = [
-    "w-full flex-1 resize-none border-0 !border-transparent !bg-transparent px-2 text-[15px] leading-6",
+    "w-full flex-1 resize-none border-0 !border-transparent !bg-transparent px-2 text-[0.9375rem] leading-6",
     "text-white outline-none placeholder:text-iron-700 focus:!border-transparent focus:!bg-transparent focus:!outline-none focus:!shadow-none disabled:opacity-50",
     isHero ? "min-h-[96px]" : "min-h-[72px]",
   ].join(" ");

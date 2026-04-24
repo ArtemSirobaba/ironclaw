@@ -77,6 +77,13 @@ html {
   background: var(--v2-canvas);
 }
 
+/* Slightly smaller type on desktop without affecting mobile. */
+@media (min-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 body {
   overflow: hidden;
   margin: 0;
