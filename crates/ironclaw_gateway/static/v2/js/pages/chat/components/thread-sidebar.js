@@ -40,7 +40,7 @@ export function ThreadSidebar({
         <select
           value=${activeThreadId || ""}
           onChange=${(event) => onSelect(event.target.value || null)}
-          className="h-9 min-w-0 flex-1 rounded-md border border-white/10 bg-iron-900 px-3 text-sm text-white outline-none focus:border-signal/60"
+          className="v2-select h-9 min-w-0 flex-1 rounded-md border border-white/10 bg-iron-900 px-3 text-sm text-white outline-none focus:border-signal/60"
         >
           <option value="">${t("chat.selectConversation")}</option>
           ${threads.map(
@@ -99,14 +99,14 @@ export function ThreadSidebar({
               key=${thread.id}
               onClick=${() => onSelect(thread.id)}
               className=${[
-                "v2-button mb-1 flex w-full flex-col gap-1 rounded-md border px-3 py-3 text-left",
+                "v2-button mb-1 flex w-full justify-start items-start flex-col gap-1 rounded-md border px-3 py-3 text-left",
                 active
                   ? "border-signal/35 bg-signal/10"
                   : "border-transparent hover:border-white/10 hover:bg-white/[0.045]",
               ].join(" ")}
             >
               <div className="flex items-center gap-2">
-                <span className="truncate text-sm font-medium text-iron-100">
+                <span className="truncate max-w-[150px] text-sm font-medium text-iron-100">
                   ${thread.title || `Thread ${thread.id.slice(0, 8)}`}
                 </span>
                 ${thread.state === "Processing" &&

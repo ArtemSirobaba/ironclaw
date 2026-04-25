@@ -53,37 +53,45 @@ export function SettingsPage() {
   };
 
   return html`
-    <div className="flex h-full flex-col overflow-y-auto">
-      <div className="v2-page-entrance flex-1 p-4 sm:p-6">
-        <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="hidden xl:block">
-            <div className="sticky top-6">
-              <${SettingsTabs}
-                activeTab=${activeTab}
-                onTabChange=${setActiveTab}
-              />
-            </div>
-          </aside>
-
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <!-- Sticky header: keep tab navigation visible -->
+      <div className="sticky top-0 z-20 border-b border-white/10 bg-[color-mix(in_srgb,var(--v2-canvas-strong)_88%,transparent)] backdrop-blur-xl">
+        <div className="px-4 py-3 sm:px-6 sm:py-4">
           <div className="xl:hidden">
             <${SettingsTabsMobile}
               activeTab=${activeTab}
               onTabChange=${setActiveTab}
             />
           </div>
+        </div>
+      </div>
 
-          <div className="min-w-0 space-y-5">
-            <${RestartBanner} visible=${needsRestart} />
-
-            ${saveError &&
-            html`
-              <div
-                className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-              >
-                ${t("error.saveFailed", { message: saveError.message })}
+      <!-- Scroll region: everything below tabs -->
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <div className="v2-page-entrance flex-1 p-4 sm:p-6">
+          <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
+            <aside className="hidden xl:block">
+              <div className="sticky top-6">
+                <${SettingsTabs}
+                  activeTab=${activeTab}
+                  onTabChange=${setActiveTab}
+                />
               </div>
-            `}
-            ${tabContent[activeTab] || tabContent.inference}
+            </aside>
+
+            <div className="min-w-0 space-y-5">
+              <${RestartBanner} visible=${needsRestart} />
+
+              ${saveError &&
+              html`
+                <div
+                  className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+                >
+                  ${t("error.saveFailed", { message: saveError.message })}
+                </div>
+              `}
+              ${tabContent[activeTab] || tabContent.inference}
+            </div>
           </div>
         </div>
       </div>

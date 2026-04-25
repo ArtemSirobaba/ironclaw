@@ -5,6 +5,12 @@ import { StatusPill } from "../../../design-system/primitives.js";
 import { listWorkspace } from "../lib/workspace-api.js";
 import { formatWorkspaceDate, snippetFor } from "../lib/workspace-presenters.js";
 
+function isUiHiddenWorkspacePath(path = "") {
+  return String(path)
+    .split("/")
+    .some((segment) => segment.startsWith("."));
+}
+
 function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory, onSelectFile }) {
   const t = useT();
   const isExpanded = expandedPaths.has(entry.path);
@@ -31,7 +37,9 @@ function TreeNode({ entry, depth, selectedPath, expandedPaths, onToggleDirectory
           <div className="space-y-1">
             ${childQuery.isLoading
               ? html`<div className="px-4 py-2 text-xs text-iron-400">${t("workspace.loading")}</div>`
-              : (childQuery.data?.entries || []).map((child) => html`
+              : (childQuery.data?.entries || [])
+                .filter((child) => !isUiHiddenWorkspacePath(child.path))
+                .map((child) => html`
                   <${TreeNode}
                     key=${child.path}
                     entry=${child}
@@ -76,13 +84,15 @@ export function WorkspaceTree({
     return html`<div className="space-y-2 p-3">${[1, 2, 3, 4].map((i) => html`<div key=${i} className="v2-skeleton h-8 rounded-md" />`)}</div>`;
   }
 
-  if (!entries.length) {
+  const visibleEntries = entries.filter((entry) => !isUiHiddenWorkspacePath(entry.path));
+
+  if (!visibleEntries.length) {
     return html`<div className="px-4 py-8 text-sm text-iron-300">${t("workspace.noFiles")}</div>`;
   }
 
   return html`
     <div className="space-y-1 p-2">
-      ${entries.map((entry) => html`
+      ${visibleEntries.map((entry) => html`
         <${TreeNode}
           key=${entry.path}
           entry=${entry}
@@ -103,13 +113,15 @@ export function WorkspaceSearchResults({ results, query, onSelectFile, isSearchi
     return html`<div className="p-4 text-sm text-iron-300">${t("workspace.searching")}</div>`;
   }
 
-  if (!results.length) {
+  const visibleResults = results.filter((result) => !isUiHiddenWorkspacePath(result.path));
+
+  if (!visibleResults.length) {
     return html`<div className="p-4 text-sm text-iron-300">${t("workspace.noResults")}</div>`;
   }
 
   return html`
     <div className="space-y-2 p-2">
-      ${results.map((result) => html`
+      ${visibleResults.map((result) => html`
         <button
           key=${result.path}
           type="button"

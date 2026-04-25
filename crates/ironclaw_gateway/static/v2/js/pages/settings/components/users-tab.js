@@ -70,7 +70,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
             id="user-role"
             value=${role}
             onChange=${(e) => setRole(e.target.value)}
-            className="h-9 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-3 text-sm text-[var(--v2-text-strong)] outline-none focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
+            className="v2-select h-9 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-3 text-sm text-[var(--v2-text-strong)] outline-none focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
           >
             <option value="member">${t("users.member")}</option>
             <option value="admin">${t("users.admin")}</option>

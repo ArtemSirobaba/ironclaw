@@ -59,7 +59,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
                 value=${tool.state}
                 onChange=${(e) => onPermissionChange(tool.name, e.target.value)}
                 aria-label=${t("tools.permissionFor", { name: tool.name })}
-                className="h-8 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-2.5 font-mono text-xs text-[var(--v2-text-strong)] outline-none focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
+                className="v2-select h-8 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-2.5 font-mono text-xs text-[var(--v2-text-strong)] outline-none focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
               >
                 ${permissionStates.map(
                   (p) =>

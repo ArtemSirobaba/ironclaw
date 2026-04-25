@@ -34,6 +34,9 @@
   --v2-inverse:     #ffffff;
   --v2-ink:         #0f1720;
 
+  /* Controls */
+  --v2-select-chevron: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2012%2012%27%20fill%3D%27none%27%20stroke%3D%27%235f7183%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M2.5%204.5%206%208l3.5-3.5%27/%3E%3C/svg%3E");
+
   /* Accent — signal blue */
   --v2-accent:       #2e9de2;
   --v2-accent-strong:#1678bd;
@@ -79,6 +82,8 @@
   --v2-text-faint:  var(--text-tertiary, rgba(255, 255, 255, 0.45));
   --v2-inverse:     var(--text-inverse, #111111);
   --v2-ink:         var(--accent-primary, #4ca7e6);
+
+  --v2-select-chevron: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2012%2012%27%20fill%3D%27none%27%20stroke%3D%27%23ffffff%27%20stroke-opacity%3D%270.55%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M2.5%204.5%206%208l3.5-3.5%27/%3E%3C/svg%3E");
 
   --v2-accent:        var(--accent-primary,        #4ca7e6);
   --v2-accent-strong: var(--accent-primary-strong, #2882c8);
@@ -293,6 +298,17 @@ input:focus, select:focus, textarea:focus {
   font: inherit;
   transition: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Consistent select chevron + inset (native chevrons sit too tight). */
+.v2-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 2.25rem;
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.9rem 0.9rem;
+  background-image: var(--v2-select-chevron);
 }
 .v2-button:disabled {
   opacity: 0.5;

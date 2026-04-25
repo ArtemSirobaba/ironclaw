@@ -3,7 +3,7 @@ import { primaryRoutes } from "../app/routes.js";
 import { Icon } from "../design-system/icons.js";
 import { useInterfaceTheme } from "../design-system/theme.js";
 import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
-import { html } from "../lib/html.js";
+import { React, html } from "../lib/html.js";
 import { useT } from "../lib/i18n.js";
 import { useThreads } from "../pages/chat/hooks/useThreads.js";
 import { cn } from "../utils/cn.js";
@@ -58,15 +58,47 @@ function HeaderTabs() {
   `;
 }
 
+function MobileMenu({ onNavigate }) {
+  const t = useT();
+  return html`
+    <nav className="grid gap-2 p-3">
+      ${primaryRoutes
+        .filter((r) => r.id !== "settings")
+        .map((route) => {
+          const label = t(route.labelKey);
+          return html`
+            <${NavLink}
+              key=${route.id}
+              to=${route.path}
+              onClick=${onNavigate}
+              className=${({ isActive }) =>
+                cn(
+                  "flex items-center justify-between gap-3 rounded-[14px] border px-4 py-3",
+                  "text-[15px] font-medium",
+                  isActive
+                    ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-card-bg)] text-[var(--v2-text-strong)]"
+                    : "border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]"
+                )}
+            >
+              <span className="min-w-0 truncate">${label}</span>
+              <span className="text-[var(--v2-text-muted)]">→</span>
+            <//>
+          `;
+        })}
+    </nav>
+  `;
+}
+
 /* ─── Header icon button ───────────────────────────────────────────── */
 
-function HeaderAction({ onClick, to, ariaLabel, title, children }) {
+function HeaderAction({ onClick, to, ariaLabel, title, children, className = "" }) {
   const cls = cn(
     "grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[14px]",
     "border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)]",
     "text-[var(--v2-text-muted)]",
     "hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]/50"
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]/50",
+    className
   );
 
   if (to) {
@@ -97,6 +129,7 @@ export function GatewayLayout({ token, onSignOut }) {
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
   const status = statusQuery.data;
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   return html`
     <div className="min-h-[100dvh] overflow-hidden bg-[var(--v2-canvas)]">
@@ -116,11 +149,13 @@ export function GatewayLayout({ token, onSignOut }) {
           <${Link}
             to="/chat"
             className="flex shrink-0 items-center gap-2.5 text-[var(--v2-text-strong)] opacity-90 hover:opacity-100"
+            aria-label="IronClaw"
           >
-            <span className="text-xl font-semibold tracking-[-0.03em]">IronClaw</span>
-            <span
-              className="hidden rounded-full border border-[var(--v2-panel-border)] px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--v2-text-muted)] sm:inline-flex"
-            >v2</span>
+            <img
+              src="/v2/assets/logo.jpg"
+              alt="IronClaw"
+              className="h-7 w-auto"
+            />
           <//>
 
           <!-- Centre: nav tabs (md+) -->
@@ -130,6 +165,14 @@ export function GatewayLayout({ token, onSignOut }) {
 
           <!-- Right: actions -->
           <div className="ml-auto flex shrink-0 items-center gap-2">
+            <${HeaderAction}
+              onClick=${() => setMobileMenuOpen((v) => !v)}
+              ariaLabel=${mobileMenuOpen ? t("nav.close") : t("nav.open")}
+              title=${mobileMenuOpen ? t("nav.close") : t("nav.open")}
+              className="md:hidden"
+            >
+              <${Icon} name=${mobileMenuOpen ? "close" : "list"} className="h-4 w-4" />
+            <//>
             <${HeaderAction}
               onClick=${toggleTheme}
               ariaLabel=${theme === "dark" ? t("theme.switchToLight") : t("theme.switchToDark")}
@@ -154,12 +197,26 @@ export function GatewayLayout({ token, onSignOut }) {
           </div>
         </div>
 
-        <!-- Mobile nav row -->
-        <div
-          className="border-t border-[var(--v2-panel-border)] px-3 py-2 md:hidden"
-        >
-          <${HeaderTabs} />
-        </div>
+        ${mobileMenuOpen && html`
+          <div className="md:hidden">
+            <button
+              type="button"
+              aria-label=${t("nav.close")}
+              onClick=${() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/35"
+            />
+            <div
+              className=${cn(
+                "fixed inset-x-0 top-16 z-50",
+                "border-b border-[var(--v2-panel-border)]",
+                "bg-[color-mix(in_srgb,var(--v2-canvas-strong)_96%,transparent)]",
+                "backdrop-blur-xl"
+              )}
+            >
+              <${MobileMenu} onNavigate=${() => setMobileMenuOpen(false)} />
+            </div>
+          </div>
+        `}
       </header>
 
       <!-- ── Page body ────────────────────────────────────────────── -->

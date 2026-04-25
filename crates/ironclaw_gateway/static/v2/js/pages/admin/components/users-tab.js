@@ -113,7 +113,7 @@ function CreateUserForm({ onCreate, isCreating, error }) {
             <select
               value=${role}
               onChange=${(e) => setRole(e.target.value)}
-              className="h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
+              className="v2-select h-9 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
             >
               <option value="member">${t("admin.users.member")}</option>
               <option value="admin">${t("admin.users.admin")}</option>

@@ -78,10 +78,10 @@ export function WorkspaceViewer({
           <${StatusPill} tone="muted" label=${formatWorkspaceDate(file.updated_at)} />
           ${editing
             ? html`
-                <${Button} variant="ghost" onClick=${onCancelEdit} disabled=${isSaving}>${t("workspace.cancel")}<//>
-                <${Button} onClick=${onSave} disabled=${isSaving}>${isSaving ? t("workspace.saving") : t("workspace.save")}<//>
+                <${Button} variant="ghost" size="sm" onClick=${onCancelEdit} disabled=${isSaving}>${t("workspace.cancel")}<//>
+                <${Button} size="sm" onClick=${onSave} disabled=${isSaving}>${isSaving ? t("workspace.saving") : t("workspace.save")}<//>
               `
-            : html`<${Button} variant="secondary" onClick=${onStartEdit}>${t("workspace.edit")}<//>`}
+            : html`<${Button} variant="secondary" size="sm" onClick=${onStartEdit}>${t("workspace.edit")}<//>`}
         </div>
       </div>
 
@@ -97,7 +97,7 @@ export function WorkspaceViewer({
             </div>
           `
         : html`
-            <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3 sm:px-6 sm:py-4">
               ${isMarkdownPath(path)
                 ? html`<${MarkdownRenderer} content=${file.content} className="max-w-4xl text-base leading-7" />`
                 : html`<pre className="overflow-x-auto whitespace-pre-wrap font-mono text-sm leading-6 text-iron-200">${file.content}</pre>`}

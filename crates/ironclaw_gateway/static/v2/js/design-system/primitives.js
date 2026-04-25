@@ -122,23 +122,28 @@ export function FlowList({ items }) {
  *   title       string
  *   description string
  *   children    optional CTA (usually a Button)
+ *   boxed       boolean (wrap in Card)
  */
-export function EmptyPanel({ title, description, children }) {
-  return html`
-    <${Card} padding="lg">
-      <div className="max-w-xl">
-        <h2
-          className="text-[1.35rem] font-medium tracking-[-0.03em] text-[var(--v2-text-strong)] md:text-[1.6rem]"
-        >
-          ${title}
-        </h2>
-        <p className="mt-3 text-[15px] leading-relaxed text-[var(--v2-text-muted)]">
-          ${description}
-        </p>
-        ${children && html`<div className="mt-5">${children}</div>`}
-      </div>
-    <//>
+export function EmptyPanel({ title, description, children, boxed = true }) {
+  const body = html`
+    <div className="max-w-xl">
+      <h2
+        className="text-[1.35rem] font-medium tracking-[-0.03em] text-[var(--v2-text-strong)] md:text-[1.6rem]"
+      >
+        ${title}
+      </h2>
+      <p className="mt-3 text-[15px] leading-relaxed text-[var(--v2-text-muted)]">
+        ${description}
+      </p>
+      ${children && html`<div className="mt-5">${children}</div>`}
+    </div>
   `;
+
+  if (!boxed) {
+    return html`<div className="py-8">${body}</div>`;
+  }
+
+  return html`<${Card} padding="lg">${body}<//>`;
 }
 
 /* ── SectionHeader ─────────────────────────────────────────────────── */

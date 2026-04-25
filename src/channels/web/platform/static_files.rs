@@ -1037,7 +1037,9 @@ mod tests {
         assert_eq!(response.status(), StatusCode::OK);
         assert_eq!(
             response.headers().get(header::CONTENT_TYPE),
-            Some(&header::HeaderValue::from_static("text/html; charset=utf-8"))
+            Some(&header::HeaderValue::from_static(
+                "text/html; charset=utf-8"
+            ))
         );
     }
 

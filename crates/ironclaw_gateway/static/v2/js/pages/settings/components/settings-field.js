@@ -4,12 +4,10 @@ import { Card } from "../../../design-system/card.js";
 
 function SavedIndicator({ visible }) {
   const t = useT();
+  if (!visible) return null;
   return html`
     <span
-      className=${[
-        "font-mono text-[11px] text-mint",
-        visible ? "opacity-100" : "opacity-0",
-      ].join(" ")}
+      className="font-mono text-[11px] text-mint"
       role="status"
     >
       ${t("tools.saved")}
@@ -99,7 +97,7 @@ export function SettingsField({ field, value, onSave, isSaved }) {
                   handleCommit(e.target.value);
                 }}
                 aria-label=${label}
-                className="h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
+                className="v2-select h-9 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none focus:border-signal/45"
               >
                 <option value="">${t("tools.default")}</option>
                 ${field.options.map(
@@ -132,7 +130,7 @@ export function SettingsGroup({ group, groupKey, fields, settings, onSave, saved
   const t = useT();
   const groupLabel = groupKey ? t(groupKey) : group || "";
   return html`
-    <${Card} className="p-5 sm:p-6">
+    <${Card} className="p-4 sm:p-6">
       <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">${groupLabel}</h3>
       <div>
         ${fields.map(

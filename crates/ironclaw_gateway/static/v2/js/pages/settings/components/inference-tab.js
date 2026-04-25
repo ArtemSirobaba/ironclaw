@@ -16,7 +16,7 @@ export function InferenceTab({ settings, gatewayStatus, onSave, savedKeys, isLoa
 
   return html`
     <div className="space-y-5">
-      <${Card} padding="md">
+      <${Card} padding="none" className="p-4 sm:p-5">
         <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">${t("inference.provider")}</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-4 py-3">

@@ -21,8 +21,7 @@ export function LoginPage({ initialToken, error, onSubmit }) {
 
   return html`
     <main
-      className="relative grid min-h-[100dvh] bg-[var(--v2-canvas)] px-4 py-8 sm:px-6
-        lg:grid-cols-[minmax(0,1fr)_minmax(380px,520px)] lg:items-center lg:gap-12 lg:px-12"
+      className="relative flex min-h-[100dvh] items-center justify-center bg-[var(--v2-canvas)] px-4 py-8 sm:px-6 lg:px-12"
     >
       <!-- Theme toggle -->
       <${Button}
@@ -36,53 +35,12 @@ export function LoginPage({ initialToken, error, onSubmit }) {
         <${Icon} name=${theme === "dark" ? "sun" : "moon"} className="h-4 w-4" />
       <//>
 
-      <!-- Left: marketing copy (desktop only) -->
-      <section className="hidden max-w-2xl self-center lg:block">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--v2-accent-text)]">
-          ${t("login.tagline")}
-        </p>
-        <h1
-          className="mt-4 font-sans text-6xl font-semibold leading-[0.95] tracking-[-0.04em] text-[var(--v2-text-strong)]"
-        >
-          ${t("login.hero")}
-        </h1>
-
-        <div className="mt-10 grid max-w-xl grid-cols-[1fr_0.7fr] gap-3">
-          <${Card} padding="md">
-            <div className="flex items-center gap-3 text-[var(--v2-accent-text)]">
-              <${Icon} name="lock" className="h-5 w-5" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em]">
-                ${t("login.bearerAuth")}
-              </span>
-            </div>
-            <p className="mt-4 text-sm leading-6 text-[var(--v2-text-muted)]">
-              ${t("login.bearerDesc")}
-            </p>
-          <//>
-
-          <${Card} padding="md">
-            <div className="h-2 w-16 rounded bg-[var(--v2-accent)]/60" />
-            <div className="mt-4 space-y-2">
-              <!-- Skeleton lines -->
-              <div
-                className="h-2 rounded"
-                style=${{ background: "linear-gradient(90deg, var(--v2-surface-muted), color-mix(in srgb, var(--v2-surface-muted) 64%, var(--v2-accent-soft)), var(--v2-surface-muted))" }}
-              />
-              <div
-                className="h-2 w-2/3 rounded"
-                style=${{ background: "linear-gradient(90deg, var(--v2-surface-muted), color-mix(in srgb, var(--v2-surface-muted) 64%, var(--v2-accent-soft)), var(--v2-surface-muted))" }}
-              />
-            </div>
-          <//>
-        </div>
-      </section>
-
-      <!-- Right: login form -->
+      <!-- Login form (centered) -->
       <${Card}
         as="section"
         radius="lg"
         padding="md"
-        className="w-full max-w-md self-center p-6 sm:ml-auto sm:p-8"
+        className="w-full max-w-md p-6 shadow-none sm:p-8"
       >
         <div className="mb-8">
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--v2-accent-text)]">

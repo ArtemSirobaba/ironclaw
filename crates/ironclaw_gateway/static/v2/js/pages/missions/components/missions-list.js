@@ -21,7 +21,7 @@ function FilterSelect({ value, onChange, children, label }) {
       <select
         value=${value}
         onChange=${(event) => onChange(event.target.value)}
-        className="h-11 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/40"
+        className="v2-select h-11 w-full rounded-md border border-iron-700 bg-iron-800/70 px-3 text-sm text-iron-100 outline-none focus:border-signal/40"
       >
         ${children}
       </select>
@@ -135,6 +135,7 @@ export function MissionsList({
               <${EmptyPanel}
                 title=${t("missions.emptyTitle")}
                 description=${t("missions.emptyDesc")}
+                boxed=${false}
               />
             `}
       </div>

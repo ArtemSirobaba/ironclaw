@@ -95,7 +95,7 @@ export function JobActivityTab({ job, events, onSendPrompt, isSendingPrompt }) {
           <select
             value=${filter}
             onChange=${(event) => setFilter(event.target.value)}
-            className="h-10 rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none focus:border-signal/45"
+            className="v2-select h-10 rounded-md border border-white/10 bg-iron-950/90 px-3 text-sm text-white outline-none focus:border-signal/45"
           >
             ${FILTERS.map((option) => html`<option key=${option.value} value=${option.value}>${option.label}</option>`)}
           </select>
