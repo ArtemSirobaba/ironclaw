@@ -1051,6 +1051,31 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_v2_manifest_asset_is_served_as_manifest_json() {
+        let response =
+            v2_asset_handler(axum::extract::Path("assets/site.webmanifest".to_string())).await;
+
+        assert_eq!(response.status(), StatusCode::OK);
+        assert_eq!(
+            response.headers().get(header::CONTENT_TYPE),
+            Some(&header::HeaderValue::from_static(
+                "application/manifest+json; charset=utf-8"
+            ))
+        );
+
+        let body = axum::body::to_bytes(response.into_body(), 4096)
+            .await
+            .expect("body");
+        let manifest: serde_json::Value = serde_json::from_slice(&body).expect("manifest JSON");
+        assert_eq!(manifest["start_url"], "/v2/");
+        assert_eq!(manifest["scope"], "/v2/");
+        assert_eq!(
+            manifest["icons"][0]["src"],
+            "/v2/assets/web-app-manifest-192x192.png"
+        );
+    }
+
+    #[tokio::test]
     async fn test_csp_header_present_on_responses() {
         use std::net::SocketAddr;
 
