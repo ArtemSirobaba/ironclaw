@@ -44,8 +44,9 @@ export function ToolActivity({ activity }) {
           <span className="truncate font-medium">${toolName}</span>
           ${toolStatus === "running" &&
           html`<span
-            className="ml-auto h-4 w-4 animate-spin rounded-full border-2 border-iron-200 border-t-transparent"
-          />`}
+            className="ml-auto shrink-0 font-mono text-[11px] text-iron-200"
+            >…</span
+          >`}
           ${toolDurationMs &&
           html`<span
             className="ml-auto shrink-0 font-mono text-[11px] text-iron-200"

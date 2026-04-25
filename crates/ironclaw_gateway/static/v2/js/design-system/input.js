@@ -22,7 +22,7 @@ const INPUT_BASE =
   "w-full border bg-[var(--v2-input-bg)] text-[var(--v2-text-strong)] " +
   "placeholder:text-[var(--v2-text-faint)] " +
   "border-[var(--v2-panel-border)] " +
-  "outline-none transition-colors duration-150 " +
+  "outline-none " +
   "focus:border-[var(--v2-accent)] " +
   "focus:ring-2 focus:ring-[color-mix(in_srgb,var(--v2-accent)_28%,transparent)] " +
   "disabled:cursor-not-allowed disabled:opacity-50";

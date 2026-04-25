@@ -116,7 +116,6 @@ export function ChatInput({
     : "px-4 py-4 sm:px-5 lg:px-8";
   const composerClass = [
     "mx-auto w-full max-w-5xl rounded-[26px] border border-[var(--v2-panel-border)] bg-[var(--v2-card-bg)] shadow-[var(--v2-card-shadow)] p-3",
-    "transition-colors",
     isHero ? "min-h-[190px]" : "min-h-[154px]",
     disabled ? "opacity-70" : "",
   ].join(" ");
@@ -192,7 +191,7 @@ export function ChatInput({
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <label
-            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:border-[color-mix(in_srgb,var(--v2-accent)_40%,var(--v2-panel-border))] hover:text-[var(--v2-accent-text)] transition-colors"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:border-[color-mix(in_srgb,var(--v2-accent)_40%,var(--v2-panel-border))] hover:text-[var(--v2-accent-text)]"
             title=${t("chat.attachFiles")}
           >
             <input
@@ -209,7 +208,7 @@ export function ChatInput({
             html`
               <span className="hidden items-center gap-2 text-xs text-[var(--v2-text-muted)] sm:inline-flex">
                 <span
-                  className="h-2 w-2 animate-pulse rounded-full bg-[var(--v2-accent)]"
+                  className="h-2 w-2 rounded-full bg-[var(--v2-accent)]"
                 />
                 ${t("chat.statusWorking")}
               </span>

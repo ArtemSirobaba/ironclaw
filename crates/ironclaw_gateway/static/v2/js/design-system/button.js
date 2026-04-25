@@ -28,7 +28,6 @@ const PRIMARY_HOVER_BG =
 
 const BASE =
   "inline-flex items-center justify-center font-semibold select-none " +
-  "transition-all duration-200 " +
   "disabled:cursor-not-allowed disabled:opacity-50 " +
   "focus-visible:outline-none focus-visible:ring-2 " +
   "focus-visible:ring-[var(--v2-accent)]/50 focus-visible:ring-offset-1 " +
@@ -102,7 +101,7 @@ export function Button({
         <span
           aria-hidden="true"
           style=${{ background: PRIMARY_HOVER_BG }}
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[350ms] group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100"
         />
         <span className="relative z-10 flex items-center gap-2">
           ${children}

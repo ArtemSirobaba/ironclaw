@@ -79,9 +79,6 @@ export function EmptyState({
                   ${item.detail}
                 </span>
               </span>
-              <span className="text-lg text-iron-300 group-hover:text-signal">
-                +
-              </span>
             </button>
           `
         )}

@@ -122,7 +122,7 @@ export function ModalHeader({ children, onClose, className = "" }) {
             aria-label="Close"
             className="grid h-8 w-8 shrink-0 place-items-center rounded-[10px]
               border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)]
-              text-[var(--v2-text-muted)] transition-colors duration-150
+              text-[var(--v2-text-muted)]
               hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]"
           >
             <${Icon} name="close" className="h-4 w-4" />

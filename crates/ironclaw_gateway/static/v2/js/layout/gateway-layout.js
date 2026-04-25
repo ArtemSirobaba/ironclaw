@@ -14,7 +14,7 @@ function NavGlyph({ icon, isActive }) {
   return html`
     <span
       className=${cn(
-        "grid h-8 w-8 shrink-0 place-items-center rounded-[10px] border transition-colors duration-150",
+        "grid h-8 w-8 shrink-0 place-items-center rounded-[10px] border",
         isActive
           ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-accent-soft)] text-[var(--v2-accent-text)]"
           : "border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] group-hover:border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] group-hover:bg-[var(--v2-accent-soft)] group-hover:text-[var(--v2-accent-text)]"
@@ -44,7 +44,7 @@ function HeaderTabs() {
               className=${({ isActive }) =>
                 cn(
                   "group flex items-center gap-2 rounded-[10px] border px-2.5 py-1.5",
-                  "text-[13px] font-medium transition-colors duration-150",
+                  "text-[13px] font-medium",
                   isActive
                     ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-card-bg)] text-[var(--v2-text-strong)]"
                     : "border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]"
@@ -64,7 +64,7 @@ function HeaderAction({ onClick, to, ariaLabel, title, children }) {
   const cls = cn(
     "grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[14px]",
     "border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)]",
-    "text-[var(--v2-text-muted)] transition-colors duration-150",
+    "text-[var(--v2-text-muted)]",
     "hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]/50"
   );
@@ -115,7 +115,7 @@ export function GatewayLayout({ token, onSignOut }) {
           <!-- Wordmark -->
           <${Link}
             to="/chat"
-            className="flex shrink-0 items-center gap-2.5 text-[var(--v2-text-strong)] opacity-90 transition-opacity hover:opacity-100"
+            className="flex shrink-0 items-center gap-2.5 text-[var(--v2-text-strong)] opacity-90 hover:opacity-100"
           >
             <span className="text-xl font-semibold tracking-[-0.03em]">IronClaw</span>
             <span
