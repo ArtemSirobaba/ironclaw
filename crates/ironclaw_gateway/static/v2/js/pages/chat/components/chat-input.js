@@ -1,4 +1,5 @@
 import { Icon } from "../../../design-system/icons.js";
+import { Button } from "../../../design-system/button.js";
 import { React, html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import {
@@ -112,9 +113,9 @@ export function ChatInput({
     : t("chat.followUpPlaceholder");
   const shellClass = isHero
     ? "w-full"
-    : "bg-iron-950/84 px-4 py-4 sm:px-5 lg:px-8";
+    : "px-4 py-4 sm:px-5 lg:px-8";
   const composerClass = [
-    "v2-chat-composer mx-auto w-full max-w-5xl rounded-[26px] border border-white/10 bg-iron-900/86 p-3",
+    "mx-auto w-full max-w-5xl rounded-[26px] border border-[var(--v2-panel-border)] bg-[var(--v2-card-bg)] shadow-[var(--v2-card-shadow)] p-3",
     "transition-colors",
     isHero ? "min-h-[190px]" : "min-h-[154px]",
     disabled ? "opacity-70" : "",
@@ -191,7 +192,7 @@ export function ChatInput({
 
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <label
-            className="v2-button flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-iron-200 hover:border-signal/40 hover:text-signal"
+            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:border-[color-mix(in_srgb,var(--v2-accent)_40%,var(--v2-panel-border))] hover:text-[var(--v2-accent-text)] transition-colors"
             title=${t("chat.attachFiles")}
           >
             <input
@@ -206,9 +207,9 @@ export function ChatInput({
           <div className="ml-auto flex min-w-0 items-center gap-2">
             ${disabled &&
             html`
-              <span className="hidden items-center gap-2 text-xs text-iron-300 sm:inline-flex">
+              <span className="hidden items-center gap-2 text-xs text-[var(--v2-text-muted)] sm:inline-flex">
                 <span
-                  className="h-2 w-2 animate-pulse rounded-full bg-signal"
+                  className="h-2 w-2 animate-pulse rounded-full bg-[var(--v2-accent)]"
                 />
                 ${t("chat.statusWorking")}
               </span>
@@ -218,14 +219,16 @@ export function ChatInput({
               label=${formatModelLabel(context.model, context.backend)}
               strong=${true}
             />
-            <button
+            <${Button}
+              variant="primary"
+              size="icon-sm"
               onClick=${handleSend}
               disabled=${disabled || !hasPayload}
-              className="v2-button v2-button-primary flex h-11 w-11 shrink-0 items-center justify-center rounded-full disabled:opacity-50"
               aria-label=${t("chat.send")}
+              className="rounded-full"
             >
               <${Icon} name="send" className="h-5 w-5" />
-            </button>
+            <//>
           </div>
         </div>
       </div>

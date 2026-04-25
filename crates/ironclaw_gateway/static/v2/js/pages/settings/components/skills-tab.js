@@ -1,6 +1,7 @@
 import { html } from "../../../lib/html.js";
+import { Badge } from "../../../design-system/badge.js";
+import { Card } from "../../../design-system/card.js";
 import { useT } from "../../../lib/i18n.js";
-import { StatusPill } from "../../../design-system/primitives.js";
 import { useSkills } from "../hooks/useSkills.js";
 
 export function SkillsTab() {
@@ -9,61 +10,62 @@ export function SkillsTab() {
 
   if (query.isLoading) {
     return html`
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <div className="v2-skeleton mb-4 h-3 w-24 rounded" />
+      <${Card} padding="md">
+        <div className="mb-4 h-3 w-24 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
         ${[1, 2, 3].map((i) => html`
-          <div key=${i} className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0">
+          <div key=${i} className="flex items-center justify-between border-t border-[var(--v2-panel-border)] py-4 first:border-0">
             <div>
-              <div className="v2-skeleton h-4 w-32 rounded" />
-              <div className="v2-skeleton mt-1 h-3 w-48 rounded" />
+              <div className="h-4 w-32 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+              <div className="mt-1 h-3 w-48 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
             </div>
-            <div className="v2-skeleton h-6 w-20 rounded-full" />
+            <div className="h-6 w-20 animate-pulse rounded-full bg-[var(--v2-surface-muted)]" />
           </div>
         `)}
-      </div>
+      <//>
     `;
   }
 
   if (query.error) {
     return html`
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <p className="text-sm text-red-200">${t("skills.failedLoad", { message: query.error.message })}</p>
-      </div>
+      <${Card} padding="md">
+        <p className="text-sm text-[var(--v2-danger-text)]">${t("skills.failedLoad", { message: query.error.message })}</p>
+      <//>
     `;
   }
 
   if (skills.length === 0) {
     return html`
-      <div className="v2-panel rounded-[18px] p-6 sm:p-8">
-        <h3 className="text-lg font-semibold text-white">${t("skills.noInstalled")}</h3>
-        <p className="mt-2 max-w-md text-sm leading-6 text-iron-300">
+      <${Card} padding="lg">
+        <h3 className="text-lg font-semibold text-[var(--v2-text-strong)]">${t("skills.noInstalled")}</h3>
+        <p className="mt-2 max-w-md text-sm leading-6 text-[var(--v2-text-muted)]">
           ${t("skills.noInstalledDesc")}
         </p>
-      </div>
+      <//>
     `;
   }
 
   return html`
-    <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal">
+    <${Card} padding="md">
+      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">
         ${t("skills.installed")}
       </h3>
       ${skills.map(
         (skill) => html`
           <div
             key=${skill.name || skill.id}
-            className="flex items-start justify-between gap-4 border-t border-white/[0.06] py-4 first:border-0 first:pt-0"
+            className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
           >
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-iron-200">${skill.name || skill.id}</span>
-                <${StatusPill}
-                  tone=${skill.trust_level === "trusted" ? "success" : "muted"}
+                <span className="text-sm font-medium text-[var(--v2-text)]">${skill.name || skill.id}</span>
+                <${Badge}
+                  tone=${skill.trust_level === "trusted" ? "positive" : "muted"}
                   label=${skill.trust_level || "installed"}
+                  size="sm"
                 />
               </div>
               ${skill.description && html`
-                <div className="mt-1 text-xs text-iron-300">${skill.description}</div>
+                <div className="mt-1 text-xs text-[var(--v2-text-muted)]">${skill.description}</div>
               `}
               ${skill.keywords?.length > 0 && html`
                 <div className="mt-2 flex flex-wrap gap-1">
@@ -71,7 +73,7 @@ export function SkillsTab() {
                     (kw) => html`
                       <span
                         key=${kw}
-                        className="rounded border border-white/[0.06] bg-white/[0.03] px-1.5 py-0.5 font-mono text-[10px] text-iron-300"
+                        className="rounded border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--v2-text-muted)]"
                       >
                         ${kw}
                       </span>
@@ -81,11 +83,11 @@ export function SkillsTab() {
               `}
             </div>
             ${skill.version && html`
-              <span className="shrink-0 font-mono text-[11px] text-iron-700">v${skill.version}</span>
+              <span className="shrink-0 font-mono text-[11px] text-[var(--v2-text-faint)]">v${skill.version}</span>
             `}
           </div>
         `
       )}
-    </div>
+    <//>
   `;
 }

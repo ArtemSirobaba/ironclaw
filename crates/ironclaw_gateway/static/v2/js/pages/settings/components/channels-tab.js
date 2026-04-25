@@ -1,4 +1,5 @@
-import { StatusPill } from "../../../design-system/primitives.js";
+import { Badge } from "../../../design-system/badge.js";
+import { Card } from "../../../design-system/card.js";
 import { html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { useChannels } from "../hooks/useChannels.js";
@@ -7,19 +8,20 @@ function BuiltinChannelCard({ name, description, enabled, detail }) {
   const t = useT();
   return html`
     <div
-      className="flex items-start justify-between gap-4 border-t border-white/[0.06] py-4 first:border-0 first:pt-0"
+      className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-iron-200">${name}</span>
-          <${StatusPill}
-            tone=${enabled ? "success" : "muted"}
+          <span className="text-sm font-medium text-[var(--v2-text)]">${name}</span>
+          <${Badge}
+            tone=${enabled ? "positive" : "muted"}
             label=${enabled ? t("channels.statusOn") : t("channels.statusOff")}
+            size="sm"
           />
         </div>
-        <div className="mt-1 text-xs text-iron-300">${description}</div>
+        <div className="mt-1 text-xs text-[var(--v2-text-muted)]">${description}</div>
         ${detail &&
-        html`<div className="mt-1 font-mono text-[11px] text-iron-700">
+        html`<div className="mt-1 font-mono text-[11px] text-[var(--v2-text-faint)]">
           ${detail}
         </div>`}
       </div>
@@ -39,9 +41,9 @@ function ExtensionChannelCard({ channel, registryEntry }) {
   const state = channel?.onboarding_state || "setup_required";
 
   const toneMap = {
-    ready: "success",
+    ready: "positive",
     auth_required: "warning",
-    pairing_required: "copper",
+    pairing_required: "warning",
     setup_required: "muted",
   };
   const labelMap = {
@@ -53,22 +55,24 @@ function ExtensionChannelCard({ channel, registryEntry }) {
 
   return html`
     <div
-      className="flex items-start justify-between gap-4 border-t border-white/[0.06] py-4 first:border-0 first:pt-0"
+      className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-iron-200">${name}</span>
+          <span className="text-sm font-medium text-[var(--v2-text)]">${name}</span>
           ${isInstalled
-            ? html`<${StatusPill}
+            ? html`<${Badge}
                 tone=${toneMap[state] || "muted"}
                 label=${labelMap[state] || state}
+                size="sm"
               />`
-            : html`<${StatusPill}
+            : html`<${Badge}
                 tone="muted"
                 label=${t("channels.available")}
+                size="sm"
               />`}
         </div>
-        <div className="mt-1 text-xs text-iron-300">${desc}</div>
+        <div className="mt-1 text-xs text-[var(--v2-text-muted)]">${desc}</div>
       </div>
     </div>
   `;
@@ -88,20 +92,20 @@ export function ChannelsTab() {
   if (isLoading) {
     return html`
       <div className="space-y-5">
-        <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-          <div className="v2-skeleton mb-4 h-3 w-28 rounded" />
+        <${Card} padding="md">
+          <div className="mb-4 h-3 w-28 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
           ${[1, 2, 3].map(
             (i) => html`
               <div
                 key=${i}
-                className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0"
+                className="flex items-center justify-between border-t border-[var(--v2-panel-border)] py-4 first:border-0"
               >
-                <div className="v2-skeleton h-4 w-32 rounded" />
-                <div className="v2-skeleton h-6 w-16 rounded-full" />
+                <div className="h-4 w-32 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+                <div className="h-6 w-16 animate-pulse rounded-full bg-[var(--v2-surface-muted)]" />
               </div>
             `
           )}
-        </div>
+        <//>
       </div>
     `;
   }
@@ -118,9 +122,9 @@ export function ChannelsTab() {
 
   return html`
     <div className="space-y-5">
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
+      <${Card} padding="md">
         <h3
-          className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal"
+          className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
         >
           ${t("channels.builtIn")}
         </h3>
@@ -151,13 +155,13 @@ export function ChannelsTab() {
           enabled=${enabledChannels.includes("repl")}
           detail="ironclaw run --repl"
         />
-      </div>
+      <//>
 
       ${(channels.length > 0 || availableRegistry.length > 0) &&
       html`
-        <div className="v2-panel rounded-[18px] p-5 sm:p-6">
+        <${Card} padding="md">
           <h3
-            className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal"
+            className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
           >
             ${t("channels.messaging")}
           </h3>
@@ -175,13 +179,13 @@ export function ChannelsTab() {
               <${ExtensionChannelCard} key=${r.name} registryEntry=${r} />
             `
           )}
-        </div>
+        <//>
       `}
       ${(mcpServers.length > 0 || availableMcp.length > 0) &&
       html`
-        <div className="v2-panel rounded-[18px] p-5 sm:p-6">
+        <${Card} padding="md">
           <h3
-            className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal"
+            className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
           >
             ${t("channels.mcpServers")}
           </h3>
@@ -190,21 +194,22 @@ export function ChannelsTab() {
               html`
                 <div
                   key=${m.name}
-                  className="flex items-start justify-between gap-4 border-t border-white/[0.06] py-4 first:border-0 first:pt-0"
+                  className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-iron-200"
+                      <span className="text-sm font-medium text-[var(--v2-text)]"
                         >${m.display_name || m.name}</span
                       >
-                      <${StatusPill}
-                        tone=${m.active ? "success" : "muted"}
+                      <${Badge}
+                        tone=${m.active ? "positive" : "muted"}
                         label=${m.active
                           ? t("channels.active")
                           : t("channels.inactive")}
+                        size="sm"
                       />
                     </div>
-                    <div className="mt-1 text-xs text-iron-300">
+                    <div className="mt-1 text-xs text-[var(--v2-text-muted)]">
                       ${m.description || ""}
                     </div>
                   </div>
@@ -216,26 +221,27 @@ export function ChannelsTab() {
               html`
                 <div
                   key=${r.name}
-                  className="flex items-start justify-between gap-4 border-t border-white/[0.06] py-4 first:border-0 first:pt-0"
+                  className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
                 >
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-iron-200"
+                      <span className="text-sm font-medium text-[var(--v2-text)]"
                         >${r.display_name || r.name}</span
                       >
-                      <${StatusPill}
+                      <${Badge}
                         tone="muted"
                         label=${t("channels.available")}
+                        size="sm"
                       />
                     </div>
-                    <div className="mt-1 text-xs text-iron-300">
+                    <div className="mt-1 text-xs text-[var(--v2-text-muted)]">
                       ${r.description || ""}
                     </div>
                   </div>
                 </div>
               `
           )}
-        </div>
+        <//>
       `}
     </div>
   `;

@@ -1,5 +1,6 @@
 import { Icon } from "../../../design-system/icons.js";
-import { StatusPill } from "../../../design-system/primitives.js";
+import { Badge } from "../../../design-system/badge.js";
+import { Card } from "../../../design-system/card.js";
 import { React, html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { useTools } from "../hooks/useTools.js";
@@ -7,7 +8,7 @@ import { useTools } from "../hooks/useTools.js";
 function ToolRow({ tool, onPermissionChange, isSaved }) {
   const t = useT();
   const permissionStates = [
-    { value: "always_allow", label: t("tools.alwaysAllow"), tone: "success" },
+    { value: "always_allow", label: t("tools.alwaysAllow"), tone: "positive" },
     { value: "ask", label: t("tools.askEachTime"), tone: "warning" },
     { value: "disabled", label: t("tools.disabled"), tone: "danger" },
   ];
@@ -19,23 +20,23 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
 
   return html`
     <div
-      className="flex items-center justify-between gap-4 border-t border-white/[0.06] py-3.5 first:border-0 first:pt-0"
+      className="flex items-center justify-between gap-4 border-t border-[var(--v2-panel-border)] py-3.5 first:border-0 first:pt-0"
     >
       <div className="flex min-w-0 items-center gap-3">
         ${isLocked &&
         html`<${Icon}
           name="lock"
-          className="h-3.5 w-3.5 shrink-0 text-iron-700"
+          className="h-3.5 w-3.5 shrink-0 text-[var(--v2-text-faint)]"
         />`}
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="truncate font-mono text-sm text-iron-200"
+            <span className="truncate font-mono text-sm text-[var(--v2-text)]"
               >${tool.name}</span
             >
             ${isDefault &&
             html`
               <span
-                className="rounded border border-white/[0.06] bg-white/[0.03] px-1.5 py-0.5 font-mono text-[10px] text-iron-700"
+                className="rounded border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--v2-text-faint)]"
               >
                 ${t("tools.default")}
               </span>
@@ -43,7 +44,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
           </div>
           ${tool.description &&
           html`
-            <div className="mt-0.5 truncate text-xs text-iron-300">
+            <div className="mt-0.5 truncate text-xs text-[var(--v2-text-muted)]">
               ${tool.description}
             </div>
           `}
@@ -52,13 +53,13 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
 
       <div className="flex shrink-0 items-center gap-3">
         ${isLocked
-          ? html`<${StatusPill} tone=${current.tone} label=${current.label} />`
+          ? html`<${Badge} tone=${current.tone} label=${current.label} size="sm" />`
           : html`
               <select
                 value=${tool.state}
                 onChange=${(e) => onPermissionChange(tool.name, e.target.value)}
                 aria-label=${t("tools.permissionFor", { name: tool.name })}
-                className="h-8 rounded-md border border-white/12 bg-white/[0.04] px-2.5 font-mono text-xs text-iron-100 outline-none focus:border-signal/45"
+                className="h-8 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-2.5 font-mono text-xs text-[var(--v2-text-strong)] outline-none focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
               >
                 ${permissionStates.map(
                   (p) =>
@@ -70,7 +71,7 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
             `}
         ${isSaved &&
         html`
-          <span className="font-mono text-[11px] text-mint"
+          <span className="font-mono text-[11px] text-[var(--v2-accent-text)]"
             >${t("tools.saved")}</span
           >
         `}
@@ -86,30 +87,30 @@ export function ToolsTab() {
 
   if (query.isLoading) {
     return html`
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <div className="v2-skeleton mb-4 h-3 w-28 rounded" />
+      <${Card} padding="md">
+        <div className="mb-4 h-3 w-28 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
         ${[1, 2, 3, 4, 5].map(
           (i) => html`
             <div
               key=${i}
-              className="flex items-center justify-between border-t border-white/[0.06] py-3.5 first:border-0"
+              className="flex items-center justify-between border-t border-[var(--v2-panel-border)] py-3.5 first:border-0"
             >
-              <div className="v2-skeleton h-4 w-36 rounded" />
-              <div className="v2-skeleton h-8 w-28 rounded" />
+              <div className="h-4 w-36 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+              <div className="h-8 w-28 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
             </div>
           `
         )}
-      </div>
+      <//>
     `;
   }
 
   if (query.error) {
     return html`
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-        <p className="text-sm text-red-200">
+      <${Card} padding="md">
+        <p className="text-sm text-[var(--v2-danger-text)]">
           ${t("tools.failedLoad", { message: query.error.message })}
         </p>
-      </div>
+      <//>
     `;
   }
 
@@ -125,21 +126,21 @@ export function ToolsTab() {
           value=${filter}
           onChange=${(e) => setFilter(e.target.value)}
           placeholder=${t("tools.filterPlaceholder")}
-          className="h-9 flex-1 rounded-md border border-white/12 bg-white/[0.04] px-3 text-sm text-iron-100 outline-none placeholder:text-iron-700 focus:border-signal/45"
+          className="h-9 flex-1 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-3 text-sm text-[var(--v2-text-strong)] outline-none placeholder:text-[var(--v2-text-faint)] focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
         />
-        <span className="font-mono text-[11px] text-iron-700">
+        <span className="font-mono text-[11px] text-[var(--v2-text-faint)]">
           ${filtered.length} / ${tools.length}
         </span>
       </div>
 
-      <div className="v2-panel rounded-[18px] p-5 sm:p-6">
+      <${Card} padding="md">
         <h3
-          className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-signal"
+          className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
         >
           ${t("tools.permissions")}
         </h3>
         ${filtered.length === 0
-          ? html`<p className="py-4 text-sm text-iron-300">
+          ? html`<p className="py-4 text-sm text-[var(--v2-text-muted)]">
               ${t("tools.noMatch")}
             </p>`
           : filtered.map(
@@ -153,7 +154,7 @@ export function ToolsTab() {
                   />
                 `
             )}
-      </div>
+      <//>
     </div>
   `;
 }

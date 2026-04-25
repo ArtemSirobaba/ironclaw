@@ -51,12 +51,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
       @theme {
-        --font-sans: "Geist", "SF Pro Display", "Helvetica Neue", ui-sans-serif,
-          system-ui, sans-serif;
+        /* ── Fonts ─────────────────────────────────────────────────── */
+        --font-sans: "Geist", "Inter", "SF Pro Display", "Helvetica Neue",
+          ui-sans-serif, system-ui, sans-serif;
         --font-serif: "Newsreader", "Lyon Text", "Instrument Serif", Georgia,
           serif;
         --font-mono: "Geist Mono", "SF Mono", "JetBrains Mono", ui-monospace,
           monospace;
+
+        /* ── Colour palette (iron-* / signal / copper utilities) ─── */
+        /* Backed by CSS vars in app.css — switches automatically on theme. */
         --color-iron-950: var(--v2-canvas-strong);
         --color-iron-900: var(--v2-surface);
         --color-iron-800: var(--v2-surface-soft);

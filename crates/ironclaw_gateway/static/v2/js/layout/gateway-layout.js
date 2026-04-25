@@ -6,57 +6,90 @@ import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
 import { html } from "../lib/html.js";
 import { useT } from "../lib/i18n.js";
 import { useThreads } from "../pages/chat/hooks/useThreads.js";
+import { cn } from "../utils/cn.js";
 
-const routeIcons = {
-  chat: "chat",
-  workspace: "folder",
-  projects: "layers",
-  jobs: "list",
-  missions: "flag",
-  extensions: "plug",
-  settings: "settings",
-  admin: "shield",
-};
+/* ─── Nav icon glyph ───────────────────────────────────────────────── */
 
-function RouteGlyph({ icon }) {
+function NavGlyph({ icon, isActive }) {
   return html`
     <span
-      className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-iron-700 bg-iron-800 text-iron-300 group-hover:border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] group-hover:bg-[var(--v2-accent-soft)] group-hover:text-signal"
+      className=${cn(
+        "grid h-8 w-8 shrink-0 place-items-center rounded-[10px] border transition-colors duration-150",
+        isActive
+          ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-accent-soft)] text-[var(--v2-accent-text)]"
+          : "border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] group-hover:border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] group-hover:bg-[var(--v2-accent-soft)] group-hover:text-[var(--v2-accent-text)]"
+      )}
     >
       <${Icon} name=${icon} className="h-4 w-4" />
     </span>
   `;
 }
 
+/* ─── Header nav tabs ──────────────────────────────────────────────── */
+
 function HeaderTabs() {
   const t = useT();
   return html`
     <nav
-      className="flex min-w-max items-center gap-2 overflow-x-auto xl:gap-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex min-w-max items-center gap-1.5 overflow-x-auto xl:gap-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       ${primaryRoutes
-        .filter((route) => route.id !== "settings")
+        .filter((r) => r.id !== "settings")
         .map((route) => {
-        const label = t(route.labelKey);
-        return html`
-          <${NavLink}
-            key=${route.id}
-            to=${route.path}
-            className=${({ isActive }) =>
-              [
-                "group flex items-center gap-2 rounded-md border px-2.5 py-2 text-sm xl:px-3",
-                isActive
-                  ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-panel)] text-iron-100"
-                  : "border-iron-700 bg-iron-800/60 text-iron-300 hover:border-iron-700 hover:bg-iron-800/80 hover:text-iron-100",
-              ].join(" ")}
-          >
-            <span className="min-w-0 truncate whitespace-nowrap">${label}</span>
-          <//>
-        `;
-      })}
+          const label = t(route.labelKey);
+          return html`
+            <${NavLink}
+              key=${route.id}
+              to=${route.path}
+              className=${({ isActive }) =>
+                cn(
+                  "group flex items-center gap-2 rounded-[10px] border px-2.5 py-1.5",
+                  "text-[13px] font-medium transition-colors duration-150",
+                  isActive
+                    ? "border-[color-mix(in_srgb,var(--v2-accent)_34%,var(--v2-panel-border))] bg-[var(--v2-card-bg)] text-[var(--v2-text-strong)]"
+                    : "border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] text-[var(--v2-text-muted)] hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]"
+                )}
+            >
+              <span className="min-w-0 truncate whitespace-nowrap">${label}</span>
+            <//>
+          `;
+        })}
     </nav>
   `;
 }
+
+/* ─── Header icon button ───────────────────────────────────────────── */
+
+function HeaderAction({ onClick, to, ariaLabel, title, children }) {
+  const cls = cn(
+    "grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[14px]",
+    "border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)]",
+    "text-[var(--v2-text-muted)] transition-colors duration-150",
+    "hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--v2-accent)]/50"
+  );
+
+  if (to) {
+    return html`
+      <${Link} to=${to} className=${cls} aria-label=${ariaLabel} title=${title}>
+        ${children}
+      <//>
+    `;
+  }
+  return html`
+    <button
+      type="button"
+      onClick=${onClick}
+      className=${cls}
+      aria-label=${ariaLabel}
+      title=${title}
+    >
+      ${children}
+    </button>
+  `;
+}
+
+/* ─── GatewayLayout ────────────────────────────────────────────────── */
 
 export function GatewayLayout({ token, onSignOut }) {
   const t = useT();
@@ -66,85 +99,86 @@ export function GatewayLayout({ token, onSignOut }) {
   const status = statusQuery.data;
 
   return html`
-    <div className="min-h-[100dvh] overflow-hidden">
+    <div className="min-h-[100dvh] overflow-hidden bg-[var(--v2-canvas)]">
+
+      <!-- ── Top bar ─────────────────────────────────────────────── -->
       <header
-        className="v2-topbar sticky top-0 z-30 border-b border-iron-700 bg-iron-950/88 backdrop-blur-xl"
+        className=${cn(
+          "sticky top-0 z-30 border-b border-[var(--v2-panel-border)]",
+          "bg-[color-mix(in_srgb,var(--v2-canvas-strong)_88%,transparent)]",
+          "backdrop-blur-xl"
+        )}
       >
         <div
-          className="mx-auto flex h-[84px] w-full max-w-[var(--layout-max-width-app)] items-center gap-3 px-4 sm:px-6 lg:px-8"
+          className="mx-auto flex h-16 w-full items-center gap-3 px-4 sm:px-6 lg:px-8"
         >
+          <!-- Wordmark -->
           <${Link}
             to="/chat"
-            className="flex shrink-0 items-center gap-3 text-iron-100"
+            className="flex shrink-0 items-center gap-2.5 text-[var(--v2-text-strong)] opacity-90 transition-opacity hover:opacity-100"
           >
-            <span className="text-2xl font-semibold tracking-[-0.02em]"
-              >IronClaw</span
-            >
+            <span className="text-xl font-semibold tracking-[-0.03em]">IronClaw</span>
             <span
-              className="hidden rounded-full border border-iron-700 px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.12em] text-iron-300 sm:inline-flex"
-            >
-              v2
-            </span>
+              className="hidden rounded-full border border-[var(--v2-panel-border)] px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-[var(--v2-text-muted)] sm:inline-flex"
+            >v2</span>
           <//>
 
-          <div
-            className="hidden min-w-0 flex-1 items-center justify-center md:flex"
-          >
+          <!-- Centre: nav tabs (md+) -->
+          <div className="hidden min-w-0 flex-1 items-center justify-center md:flex">
             <${HeaderTabs} />
           </div>
 
-          <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-            <button
-              type="button"
+          <!-- Right: actions -->
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <${HeaderAction}
               onClick=${toggleTheme}
-              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-iron-700 bg-iron-800/70 text-iron-300 hover:text-iron-100"
-              aria-label=${theme === "dark"
-                ? t("theme.switchToLight")
-                : t("theme.switchToDark")}
+              ariaLabel=${theme === "dark" ? t("theme.switchToLight") : t("theme.switchToDark")}
               title=${theme === "dark" ? t("theme.light") : t("theme.dark")}
             >
-              <${Icon}
-                name=${theme === "dark" ? "sun" : "moon"}
-                className="h-4 w-4"
-              />
-            </button>
-            <${Link}
+              <${Icon} name=${theme === "dark" ? "sun" : "moon"} className="h-4 w-4" />
+            <//>
+            <${HeaderAction}
               to="/settings"
-              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-iron-700 bg-iron-800/70 text-iron-300 hover:text-iron-100"
-              aria-label=${t("nav.settings")}
+              ariaLabel=${t("nav.settings")}
               title=${t("nav.settings")}
             >
-              <${Icon} name="settings" className="h-5 w-5" strokeWidth=${1.4} />
+              <${Icon} name="settings" className="h-[18px] w-[18px]" strokeWidth=${1.4} />
             <//>
-            <button
-              type="button"
+            <${HeaderAction}
               onClick=${onSignOut}
-              className="v2-button grid h-10 w-10 place-items-center rounded-md border border-iron-700 bg-iron-800/70 text-iron-300 hover:text-iron-100"
-              aria-label=${t("header.signOut")}
+              ariaLabel=${t("header.signOut")}
               title=${t("header.signOut")}
             >
               <${Icon} name="logout" className="h-4 w-4" />
-            </button>
+            <//>
           </div>
         </div>
 
-        <div className="border-t border-iron-700 px-3 py-2 md:hidden">
-          <div className="flex items-center gap-3 overflow-x-auto">
-            <${HeaderTabs} />
-          </div>
+        <!-- Mobile nav row -->
+        <div
+          className="border-t border-[var(--v2-panel-border)] px-3 py-2 md:hidden"
+        >
+          <${HeaderTabs} />
         </div>
       </header>
 
+      <!-- ── Page body ────────────────────────────────────────────── -->
       <div
-        className="mx-auto flex h-[calc(100dvh-84px)] min-h-0 w-full max-w-[var(--layout-max-width-app)] flex-col overflow-hidden"
+        className="mx-auto flex h-[calc(100dvh-4rem)] min-h-0 w-full flex-col overflow-hidden"
       >
         <main className="min-h-0 min-w-0 flex-1 overflow-hidden">
           ${statusQuery.error
-            ? html`<div
-                className="mb-4 rounded-md border border-[color-mix(in_srgb,var(--v2-danger-text)_36%,var(--v2-panel-border))] bg-[var(--v2-danger-soft)] px-4 py-3 text-sm text-[var(--v2-danger-text)]"
-              >
-                ${statusQuery.error.message || t("error.gatewayConnection")}
-              </div>`
+            ? html`
+                <div
+                  className=${cn(
+                    "m-4 rounded-[14px] border px-4 py-3 text-sm",
+                    "border-[color-mix(in_srgb,var(--v2-danger-text)_36%,var(--v2-panel-border))]",
+                    "bg-[var(--v2-danger-soft)] text-[var(--v2-danger-text)]"
+                  )}
+                >
+                  ${statusQuery.error.message || t("error.gatewayConnection")}
+                </div>
+              `
             : null}
           <${Outlet}
             context=${{
