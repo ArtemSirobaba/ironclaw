@@ -12,6 +12,7 @@ import { JobsPage } from "../pages/jobs/jobs-page.js";
 import { ExtensionsPage } from "../pages/extensions/extensions-page.js";
 import { SettingsPage } from "../pages/settings/settings-page.js";
 import { AdminPage } from "../pages/admin/admin-page.js";
+import { LogsPage } from "../pages/logs/logs-page.js";
 
 function LoginPage({ auth }) {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ export function App() {
           <${Route} path="jobs" element=${html`<${JobsPage} />`} />
           <${Route} path="jobs/:jobId" element=${html`<${JobsPage} />`} />
           <${Route} path="extensions" element=${html`<${ExtensionsPage} />`} />
+          <${Route} path="logs" element=${html`<${LogsPage} />`} />
           <${Route} path="settings" element=${html`<${SettingsPage} />`} />
           <${Route} path="admin" element=${html`<${AdminPage} />`} />
         <//>

@@ -11,7 +11,9 @@
 //! No feature handlers should depend on the private pieces here — only on
 //! the `pub(crate)` surface registered by `start_server()`.
 
-use std::sync::Arc;
+use std::borrow::Cow;
+use std::path::PathBuf;
+use std::sync::{Arc, OnceLock};
 
 use axum::{
     Json,
@@ -748,9 +750,17 @@ pub(crate) async fn favicon_handler() -> impl IntoResponse {
     )
 }
 
-fn v2_index_response() -> Response {
+/// Returns the `DEV_STATIC_V2_DIR` path when set, enabling live filesystem
+/// serving of v2 assets without a Rust recompile during development.
+fn dev_v2_dir() -> Option<&'static PathBuf> {
+    static DIR: OnceLock<Option<PathBuf>> = OnceLock::new();
+    DIR.get_or_init(|| std::env::var("DEV_STATIC_V2_DIR").ok().map(PathBuf::from))
+        .as_ref()
+}
+
+fn v2_index_response(html: &str) -> Response {
     let nonce = generate_csp_nonce();
-    let html = stamp_nonce_into_html(assets::V2_INDEX_HTML, &nonce);
+    let html = stamp_nonce_into_html(html, &nonce);
     let csp = build_csp_with_nonce(&nonce);
 
     (
@@ -768,7 +778,15 @@ fn v2_index_response() -> Response {
 }
 
 pub(crate) async fn v2_index_handler() -> Response {
-    v2_index_response()
+    let html: Cow<'static, str> = if let Some(dir) = dev_v2_dir() {
+        match tokio::fs::read_to_string(dir.join("index.html")).await {
+            Ok(s) => Cow::Owned(s),
+            Err(_) => Cow::Borrowed(assets::V2_INDEX_HTML),
+        }
+    } else {
+        Cow::Borrowed(assets::V2_INDEX_HTML)
+    };
+    v2_index_response(&html)
 }
 
 fn is_v2_spa_route(path: &str) -> bool {
@@ -780,7 +798,22 @@ fn is_v2_spa_route(path: &str) -> bool {
 
 pub(crate) async fn v2_asset_handler(Path(path): Path<String>) -> Response {
     if path == "index.html" || is_v2_spa_route(&path) {
-        return v2_index_response();
+        return v2_index_handler().await;
+    }
+
+    if let Some(dir) = dev_v2_dir() {
+        let file_path = dir.join(&path);
+        if let Ok(bytes) = tokio::fs::read(&file_path).await {
+            let content_type = assets::content_type_for_path(&path);
+            return (
+                [
+                    (header::CONTENT_TYPE, content_type),
+                    (header::CACHE_CONTROL, "no-cache"),
+                ],
+                bytes,
+            )
+                .into_response();
+        }
     }
 
     match assets::v2_asset(&path) {

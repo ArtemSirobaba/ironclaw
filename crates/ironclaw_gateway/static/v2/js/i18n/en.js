@@ -17,6 +17,8 @@ registerPack("en", {
   "nav.extensions": "Extensions",
   "nav.settings": "Settings",
   "nav.admin": "Admin",
+  "nav.logs": "Logs",
+  "nav.docs": "Documentation",
   "nav.sectionWork": "Work",
   "nav.sectionSystem": "System",
 
@@ -576,4 +578,22 @@ registerPack("en", {
   "admin.usage.input": "Input",
   "admin.usage.output": "Output",
   "admin.usage.cost": "Cost",
+
+  // Logs page
+  "logs.levelAll": "All levels",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "Filter by target…",
+  "logs.autoScroll": "Auto-scroll",
+  "logs.pause": "Pause",
+  "logs.resume": "Resume",
+  "logs.clear": "Clear",
+  "logs.confirmClear": "Clear all log entries?",
+  "logs.serverLevel": "Server level:",
+  "logs.entryCount": "{count} entries",
+  "logs.pausedBadge": "● paused",
+  "logs.empty": "Waiting for log entries…",
 });

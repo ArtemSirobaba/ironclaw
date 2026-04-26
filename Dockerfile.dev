@@ -33,7 +33,6 @@ CMD ["cargo", "watch", \
      "--why", \
      "-w", "src", \
      "-w", "crates", \
-     "-i", "crates/ironclaw_gateway/static/v2/**", \
      "-w", "Cargo.toml", \
      "-w", "Cargo.lock", \
      "-w", "build.rs", \

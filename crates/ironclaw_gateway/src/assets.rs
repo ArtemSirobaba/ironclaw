@@ -147,7 +147,7 @@ pub fn v2_asset(path: &str) -> Option<(&'static str, &'static [u8])> {
     v2_asset_bytes(path).map(|body| (content_type_for_path(path), body))
 }
 
-fn content_type_for_path(path: &str) -> &'static str {
+pub fn content_type_for_path(path: &str) -> &'static str {
     match path.rsplit('.').next().unwrap_or_default() {
         "css" => "text/css; charset=utf-8",
         "html" => "text/html; charset=utf-8",

@@ -57,6 +57,9 @@ services:
       # Bind to 0.0.0.0 so the port forward works
       HTTP_HOST: 0.0.0.0
       GATEWAY_HOST: 0.0.0.0
+      # Serve v2 static files directly from disk so JS/CSS edits are visible
+      # immediately without a Rust recompile (source is bind-mounted above).
+      DEV_STATIC_V2_DIR: /workspace/crates/ironclaw_gateway/static/v2
     depends_on:
       postgres:
         condition: service_healthy

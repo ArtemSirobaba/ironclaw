@@ -12,7 +12,7 @@ const ROUTE_ICONS = {
   jobs: "pulse",
   missions: "flag",
   extensions: "plug",
-  settings: "settings",
+settings: "settings",
   admin: "shield",
 };
 

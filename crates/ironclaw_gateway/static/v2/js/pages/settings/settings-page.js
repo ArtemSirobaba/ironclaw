@@ -55,7 +55,9 @@ export function SettingsPage() {
   return html`
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
       <!-- Sticky header: keep tab navigation visible -->
-      <div className="sticky top-0 z-20 border-b border-white/10 bg-[color-mix(in_srgb,var(--v2-canvas-strong)_88%,transparent)] backdrop-blur-xl">
+      <div
+        className="sticky top-0 z-20 border-b border-white/10 bg-[color-mix(in_srgb,var(--v2-canvas-strong)_88%,transparent)] backdrop-blur-xl xl:hidden"
+      >
         <div className="px-4 py-3 sm:px-6 sm:py-4">
           <div className="xl:hidden">
             <${SettingsTabsMobile}

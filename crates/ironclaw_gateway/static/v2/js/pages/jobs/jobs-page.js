@@ -205,11 +205,12 @@ export function JobsPage() {
 
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
-      <div className="flex-1 p-4 sm:p-6">
+      <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="space-y-5">
-          <div className="flex flex-wrap justify-end gap-2">
+          ${jobId &&
+          html`<div className="flex flex-wrap justify-end gap-2">
             ${headerActions}
-          </div>
+          </div>`}
           ${jobsState.error &&
           html`
             <div

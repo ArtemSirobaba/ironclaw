@@ -132,14 +132,14 @@ export function MissionsPage() {
     <div className="flex h-full flex-col overflow-y-auto">
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
         <div className="space-y-5">
-          <div className="flex flex-wrap justify-end gap-2">
-            ${missionId &&
-            html`<${Button}
+          ${missionId &&
+          html`<div className="flex flex-wrap justify-end gap-2">
+            <${Button}
               variant="ghost"
               onClick=${() => navigate("/missions")}
               >${t("missions.allMissions")}<//
-            >`}
-          </div>
+            >
+          </div>`}
 
           ${missionsState.error &&
           html`
