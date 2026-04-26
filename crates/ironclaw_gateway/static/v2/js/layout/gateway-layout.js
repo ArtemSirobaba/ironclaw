@@ -14,7 +14,7 @@ export function GatewayLayout({ token, onSignOut }) {
   const { theme, toggleTheme } = useInterfaceTheme();
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
-  const sidebar = useSidebar(threadsState);
+  const sidebar = useSidebar();
   const status = statusQuery.data;
 
   return html`

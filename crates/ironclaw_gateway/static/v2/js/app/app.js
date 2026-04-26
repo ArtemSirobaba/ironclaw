@@ -63,6 +63,7 @@ export function App() {
           <${Route} index element=${html`<${Navigate} to=${defaultRoute} replace />`} />
           <${Route} path="overview" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
           <${Route} path="chat" element=${html`<${ChatPage} />`} />
+          <${Route} path="chat/:threadId" element=${html`<${ChatPage} />`} />
           <${Route} path="workspace" element=${html`<${WorkspacePage} />`} />
           <${Route} path="workspace/*" element=${html`<${WorkspacePage} />`} />
           <${Route} path="projects" element=${html`<${ProjectsPage} />`} />

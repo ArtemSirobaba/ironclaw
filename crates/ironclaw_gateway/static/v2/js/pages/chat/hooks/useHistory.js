@@ -102,7 +102,7 @@ export function useHistory(threadId) {
       messages: [],
       hasMore: false,
       oldestTimestamp: null,
-      isLoading: false,
+      isLoading: Boolean(threadId),
       inProgress: null,
       pendingGate: null,
     });

@@ -41,7 +41,7 @@ export function useChat(threadId) {
 
   const { status: sseStatus } = useSSE({
     onEvent: handleEvent,
-    enabled: Boolean(threadId),
+    enabled: true,
   });
 
   const send = React.useCallback(
