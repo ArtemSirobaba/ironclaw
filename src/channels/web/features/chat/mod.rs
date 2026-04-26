@@ -98,11 +98,14 @@ pub(crate) async fn chat_send_handler(
         ));
     }
 
+    let effective_thread_id =
+        ensure_gateway_thread_for_send(&state, &user.user_id, req.thread_id.as_deref()).await?;
+
     let mut msg = web_incoming_message(
         "gateway",
         &user.user_id,
         &req.content,
-        req.thread_id.as_deref(),
+        effective_thread_id.as_deref(),
     );
     // Prefer timezone from JSON body, fall back to X-Timezone header
     let tz = req
@@ -159,6 +162,7 @@ pub(crate) async fn chat_send_handler(
         Json(SendMessageResponse {
             message_id: msg_id,
             status: "accepted",
+            thread_id: effective_thread_id,
         }),
     ))
 }
@@ -229,6 +233,7 @@ pub(crate) async fn chat_approval_handler(
         Json(SendMessageResponse {
             message_id: msg_id,
             status: "accepted",
+            thread_id: req.thread_id,
         }),
     ))
 }
@@ -802,18 +807,54 @@ pub(crate) async fn chat_new_thread_handler(
 
     // Persist the empty conversation row with thread_type metadata synchronously
     // so that the subsequent loadThreads() call from the frontend sees it.
+    persist_gateway_thread_metadata(&state, thread_id, &user.user_id).await;
+
+    Ok(Json(info))
+}
+
+// ── Slice-private helpers ─────────────────────────────────────────────
+
+async fn ensure_gateway_thread_for_send(
+    state: &GatewayState,
+    user_id: &str,
+    requested_thread_id: Option<&str>,
+) -> Result<Option<String>, (StatusCode, String)> {
+    if let Some(thread_id) = requested_thread_id {
+        return Ok(Some(thread_id.to_string()));
+    }
+
+    let Some(session_manager) = state.session_manager.as_ref() else {
+        tracing::warn!(
+            user = %user_id,
+            "Accepted gateway chat send without session manager; message will not be thread-scoped"
+        );
+        return Ok(None);
+    };
+
+    let session = session_manager.get_or_create_session(user_id).await;
+    let thread_id = {
+        let mut sess = session.lock().await;
+        sess.create_thread(Some("gateway")).id
+    };
+
+    persist_gateway_thread_metadata(state, thread_id, user_id).await;
+
+    Ok(Some(thread_id.to_string()))
+}
+
+async fn persist_gateway_thread_metadata(state: &GatewayState, thread_id: Uuid, user_id: &str) {
     if let Some(ref store) = state.store {
         match store
-            .ensure_conversation(thread_id, "gateway", &user.user_id, None, Some("gateway"))
+            .ensure_conversation(thread_id, "gateway", user_id, None, Some("gateway"))
             .await
         {
             Ok(true) => {}
             Ok(false) => tracing::warn!(
-                user = %user.user_id,
+                user = %user_id,
                 thread_id = %thread_id,
-                "Skipped persisting new thread due to ownership/channel conflict"
+                "Skipped persisting gateway thread due to ownership/channel conflict"
             ),
-            Err(e) => tracing::warn!("Failed to persist new thread: {}", e),
+            Err(e) => tracing::warn!("Failed to persist gateway thread: {}", e),
         }
         let metadata_val = serde_json::json!("thread");
         if let Err(e) = store
@@ -823,11 +864,7 @@ pub(crate) async fn chat_new_thread_handler(
             tracing::warn!("Failed to set thread_type metadata: {}", e);
         }
     }
-
-    Ok(Json(info))
 }
-
-// ── Slice-private helpers ─────────────────────────────────────────────
 
 #[derive(Debug, Deserialize, Default)]
 pub(crate) struct ChatEventsQuery {

@@ -50,7 +50,6 @@ export function useChat(threadId) {
       { images = [], attachments = [], threadId: targetThreadId } = {}
     ) => {
       const sendThreadId = targetThreadId || threadId;
-      if (!sendThreadId) return;
 
       const optimisticId = `pending-${Date.now()}`;
       setMessages((prev) => [
@@ -75,7 +74,7 @@ export function useChat(threadId) {
       setPendingGate(null);
 
       try {
-        await sendMessage({
+        const response = await sendMessage({
           content,
           threadId: sendThreadId,
           images: images.map((img) => ({
@@ -88,6 +87,7 @@ export function useChat(threadId) {
             data_base64: att.data_base64 || att.base64,
           })),
         });
+        return response;
       } catch (err) {
         setMessages((prev) =>
           prev.map((m) =>
@@ -102,6 +102,7 @@ export function useChat(threadId) {
           )
         );
         setIsProcessing(false);
+        throw err;
       }
     },
     [threadId, setMessages]

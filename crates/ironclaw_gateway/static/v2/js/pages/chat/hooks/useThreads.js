@@ -14,12 +14,6 @@ export function useThreads() {
   const [isCreating, setIsCreating] = React.useState(false);
   const createInFlightRef = React.useRef(null);
 
-  React.useEffect(() => {
-    if (query.data?.active_thread && !activeThreadId) {
-      setActiveThreadId(query.data.active_thread);
-    }
-  }, [query.data, activeThreadId]);
-
   const handleCreateThread = React.useCallback(async () => {
     const activeFromServer = query.data?.active_thread || null;
     const candidateId = activeThreadId || activeFromServer;

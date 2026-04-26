@@ -17,20 +17,24 @@ export function ChatPage() {
     }
   }, [urlThreadId]);
 
-  const handleCreateThread = React.useCallback(async () => {
-    const id = await threadsState.createThread();
-    if (id) {
-      navigate(`/chat/${id}`, { replace: true });
-    }
-    return id;
-  }, [threadsState, navigate]);
+  const handleSelectThread = React.useCallback(
+    (id, options = {}) => {
+      if (!id) {
+        threadsState.setActiveThreadId(null);
+        navigate("/chat", options);
+        return;
+      }
+      threadsState.setActiveThreadId(id);
+      navigate(`/chat/${id}`, options);
+    },
+    [threadsState, navigate]
+  );
 
   return html`
     <${Chat}
       threads=${threadsState.threads}
       activeThreadId=${threadsState.activeThreadId}
-      onSelectThread=${threadsState.setActiveThreadId}
-      onCreateThread=${handleCreateThread}
+      onSelectThread=${handleSelectThread}
       isCreatingThread=${threadsState.isCreating}
       composerDraft=${composerDraft}
       composerResetKey=${location.key}

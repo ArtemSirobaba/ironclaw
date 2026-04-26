@@ -62,6 +62,7 @@ export function EmptyState({
         ${suggestions.map(
           (item) => html`
             <button
+              type="button"
               key=${item.title}
               onClick=${() => onSuggestion(item.title)}
               className="v2-button group grid grid-cols-[auto_1fr_auto] items-center gap-3 border-t border-white/10 px-2 py-4 text-left hover:border-signal/35"

@@ -18,6 +18,7 @@ export function ChatInput({
   const t = useT();
   const isHero = variant === "hero";
   const [text, setText] = React.useState("");
+  const [isSending, setIsSending] = React.useState(false);
   const textareaRef = React.useRef(null);
   const {
     images,
@@ -53,17 +54,31 @@ export function ChatInput({
     });
   }, [initialText, resetKey]);
 
-  const handleSend = React.useCallback(() => {
+  const handleSend = React.useCallback(async () => {
     if (
       (!text.trim() && images.length === 0 && attachments.length === 0) ||
-      disabled
+      disabled ||
+      isSending
     )
       return;
-    onSend(text.trim(), { images, attachments });
-    setText("");
-    clearAttachments();
-    if (textareaRef.current) textareaRef.current.style.height = "auto";
-  }, [text, images, attachments, disabled, onSend, clearAttachments]);
+    setIsSending(true);
+    try {
+      await onSend(text.trim(), { images, attachments });
+      setText("");
+      clearAttachments();
+      if (textareaRef.current) textareaRef.current.style.height = "auto";
+    } finally {
+      setIsSending(false);
+    }
+  }, [
+    text,
+    images,
+    attachments,
+    disabled,
+    isSending,
+    onSend,
+    clearAttachments,
+  ]);
 
   const onKeyDown = React.useCallback(
     (e) => {
@@ -219,10 +234,11 @@ export function ChatInput({
               strong=${true}
             />
             <${Button}
+              type="button"
               variant="primary"
               size="icon-sm"
               onClick=${handleSend}
-              disabled=${disabled || !hasPayload}
+              disabled=${disabled || isSending || !hasPayload}
               aria-label=${t("chat.send")}
               className="rounded-full"
             >

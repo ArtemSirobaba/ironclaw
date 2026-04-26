@@ -1,7 +1,7 @@
 import { React } from "../lib/html.js";
 import { useNavigate } from "react-router";
 
-export function useSidebar() {
+export function useSidebar({ onNewChat } = {}) {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
@@ -9,9 +9,10 @@ export function useSidebar() {
   const toggle = React.useCallback(() => setOpen((v) => !v), []);
 
   const newChat = React.useCallback(() => {
+    onNewChat?.();
     navigate("/chat");
     close();
-  }, [navigate, close]);
+  }, [navigate, close, onNewChat]);
 
   const selectThread = React.useCallback(
     (id) => {

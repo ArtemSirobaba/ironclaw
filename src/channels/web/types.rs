@@ -43,6 +43,8 @@ pub struct SendMessageRequest {
 pub struct SendMessageResponse {
     pub message_id: Uuid,
     pub status: &'static str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub thread_id: Option<String>,
 }
 
 #[derive(Debug, Serialize)]

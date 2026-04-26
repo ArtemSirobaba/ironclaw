@@ -14,7 +14,9 @@ export function GatewayLayout({ token, onSignOut }) {
   const { theme, toggleTheme } = useInterfaceTheme();
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
-  const sidebar = useSidebar();
+  const sidebar = useSidebar({
+    onNewChat: () => threadsState.setActiveThreadId(null),
+  });
   const status = statusQuery.data;
 
   return html`

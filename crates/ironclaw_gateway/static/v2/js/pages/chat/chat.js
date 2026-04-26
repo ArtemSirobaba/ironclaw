@@ -12,7 +12,6 @@ export function Chat({
   threads,
   activeThreadId,
   onSelectThread,
-  onCreateThread,
   isCreatingThread,
   composerDraft = "",
   composerResetKey = "",
@@ -46,14 +45,18 @@ export function Chat({
 
   const handleSend = React.useCallback(
     async (content, { images = [], attachments = [] } = {}) => {
-      let targetThreadId = activeThreadId;
-      if (!targetThreadId && onCreateThread) {
-        targetThreadId = await onCreateThread();
+      const response = await send(content, {
+        images,
+        attachments,
+        threadId: activeThreadId,
+      });
+      const responseThreadId = response?.thread_id || activeThreadId;
+      if (!activeThreadId && responseThreadId && onSelectThread) {
+        onSelectThread(responseThreadId, { replace: true });
       }
-      if (!targetThreadId) return;
-      send(content, { images, attachments, threadId: targetThreadId });
+      return response;
     },
-    [activeThreadId, onCreateThread, send]
+    [activeThreadId, onSelectThread, send]
   );
 
   const handleSuggestion = React.useCallback(
