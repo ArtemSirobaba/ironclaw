@@ -5,7 +5,6 @@ import { ConnectionStatus } from "./components/connection-status.js";
 import { EmptyState } from "./components/empty-state.js";
 import { MessageList } from "./components/message-list.js";
 import { SuggestionChips } from "./components/suggestion-chips.js";
-import { ThreadSidebar } from "./components/thread-sidebar.js";
 import { TypingIndicator } from "./components/typing-indicator.js";
 import { useChat } from "./hooks/useChat.js";
 
@@ -67,29 +66,7 @@ export function Chat({
 
   return html`
     <div className="flex h-full min-h-0 overflow-hidden">
-      <div className="hidden w-[336px] shrink-0 md:block">
-        <${ThreadSidebar}
-          threads=${threads}
-          activeThreadId=${activeThreadId}
-          onSelect=${onSelectThread}
-          onCreate=${onCreateThread}
-          isCreating=${isCreatingThread}
-        />
-      </div>
-
       <div className="flex min-w-0 flex-1 flex-col">
-        <div
-          className="border-b border-white/10 bg-iron-950/76 px-3 py-2 md:hidden"
-        >
-          <${ThreadSidebar}
-            threads=${threads}
-            activeThreadId=${activeThreadId}
-            onSelect=${onSelectThread}
-            onCreate=${onCreateThread}
-            isCreating=${isCreatingThread}
-            compact=${true}
-          />
-        </div>
         <${ConnectionStatus} status=${sseStatus} />
 
         ${showLanding &&

@@ -77,6 +77,8 @@ const paths = {
   tool: html`<path
     d="M15.3 4.4a4.5 4.5 0 0 0-5.7 5.7L4.8 15a2.7 2.7 0 1 0 3.8 3.8l4.9-4.8a4.5 4.5 0 0 0 5.7-5.7l-3.3 3.3-3.2-3.2 2.6-4Z"
   />`,
+
+  chevron: html`<path d="m6 9 6 6 6-6" />`,
 };
 
 export function Icon({ name, className = "", strokeWidth = 1.7 }) {
