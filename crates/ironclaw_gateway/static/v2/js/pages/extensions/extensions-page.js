@@ -1,20 +1,15 @@
-import { useOutletContext } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { React, html } from "../../lib/html.js";
 import { ActionToast } from "./components/action-toast.js";
 import { ChannelsTab } from "./components/channels-tab.js";
 import { ConfigureModal } from "./components/configure-modal.js";
-import {
-  ExtensionsTabs,
-  ExtensionsTabsMobile,
-} from "./components/extensions-tabs.js";
 import { InstalledTab } from "./components/installed-tab.js";
 import { McpTab } from "./components/mcp-tab.js";
 import { RegistryTab } from "./components/registry-tab.js";
 import { useExtensions } from "./hooks/useExtensions.js";
 
 export function ExtensionsPage() {
-  const { gatewayStatus } = useOutletContext();
-  const [activeTab, setActiveTab] = React.useState("installed");
+  const { tab = "installed" } = useParams();
   const [configuring, setConfiguring] = React.useState(null);
 
   const {
@@ -40,50 +35,25 @@ export function ExtensionsPage() {
   const handleCloseModal = React.useCallback(() => setConfiguring(null), []);
   const handleSaved = React.useCallback(() => invalidate(), [invalidate]);
 
-  const counts = {
-    installed: extensions.length || null,
-    channels: channels.length || null,
-    mcp: mcpServers.length || null,
-    registry:
-      toolRegistry.length + channelRegistry.length + mcpRegistry.length || null,
-  };
-
   if (isLoading) {
     return html`
       <div className="flex h-full flex-col overflow-y-auto">
         <div className="v2-page-entrance flex-1 p-4 sm:p-6">
-          <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
-            <aside className="hidden xl:block">
-              <div className="space-y-2">
-                ${[1, 2, 3, 4].map(
-                  (i) => html`
-                    <div
-                      key=${i}
-                      className="v2-skeleton h-10 w-full rounded-md"
-                    />
-                  `
-                )}
-              </div>
-            </aside>
-            <div className="space-y-5">
-              <div className="v2-panel rounded-[18px] p-5 sm:p-6">
-                <div className="v2-skeleton mb-4 h-3 w-28 rounded" />
-                ${[1, 2, 3].map(
-                  (i) => html`
-                    <div
-                      key=${i}
-                      className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0"
-                    >
-                      <div>
-                        <div className="v2-skeleton h-4 w-40 rounded" />
-                        <div className="v2-skeleton mt-2 h-3 w-56 rounded" />
-                      </div>
-                      <div className="v2-skeleton h-7 w-16 rounded-full" />
-                    </div>
-                  `
-                )}
-              </div>
-            </div>
+          <div className="space-y-5">
+            ${[1, 2, 3].map(
+              (i) => html`
+                <div
+                  key=${i}
+                  className="flex items-center justify-between border-t border-white/[0.06] py-4 first:border-0"
+                >
+                  <div>
+                    <div className="v2-skeleton h-4 w-40 rounded" />
+                    <div className="v2-skeleton mt-2 h-3 w-56 rounded" />
+                  </div>
+                  <div className="v2-skeleton h-7 w-16 rounded-full" />
+                </div>
+              `
+            )}
           </div>
         </div>
       </div>
@@ -126,32 +96,16 @@ export function ExtensionsPage() {
     />`,
   };
 
+  if (!tabContent[tab]) {
+    return html`<${Navigate} to="/extensions/installed" replace />`;
+  }
+
   return html`
     <div className="flex h-full flex-col overflow-y-auto">
       <div className="v2-page-entrance flex-1 p-4 sm:p-6">
-        <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
-          <aside className="hidden xl:block">
-            <div className="sticky top-6">
-              <${ExtensionsTabs}
-                activeTab=${activeTab}
-                onTabChange=${setActiveTab}
-                counts=${counts}
-              />
-            </div>
-          </aside>
-
-          <div className="xl:hidden">
-            <${ExtensionsTabsMobile}
-              activeTab=${activeTab}
-              onTabChange=${setActiveTab}
-              counts=${counts}
-            />
-          </div>
-
-          <div className="min-w-0 space-y-5">
-            <${ActionToast} result=${actionResult} onDismiss=${clearResult} />
-            ${tabContent[activeTab] || tabContent.installed}
-          </div>
+        <div className="space-y-5">
+          <${ActionToast} result=${actionResult} onDismiss=${clearResult} />
+          ${tabContent[tab]}
         </div>
       </div>
 

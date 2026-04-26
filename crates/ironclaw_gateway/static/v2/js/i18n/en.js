@@ -105,6 +105,12 @@ registerPack("en", {
   "error.saveFailed": "Save failed: {message}",
   "error.loadFailed": "Failed to load {what}: {message}",
 
+  // Extensions tabs
+  "extensions.installed": "Installed",
+  "extensions.channels": "Channels",
+  "extensions.mcp": "MCP Servers",
+  "extensions.registry": "Registry",
+
   // Settings tabs
   "settings.inference": "Inference",
   "settings.agent": "Agent",

@@ -74,9 +74,12 @@ export function App() {
           <${Route} path="jobs" element=${html`<${JobsPage} />`} />
           <${Route} path="jobs/:jobId" element=${html`<${JobsPage} />`} />
           <${Route} path="extensions" element=${html`<${ExtensionsPage} />`} />
+          <${Route} path="extensions/:tab" element=${html`<${ExtensionsPage} />`} />
           <${Route} path="logs" element=${html`<${LogsPage} />`} />
           <${Route} path="settings" element=${html`<${SettingsPage} />`} />
+          <${Route} path="settings/:tab" element=${html`<${SettingsPage} />`} />
           <${Route} path="admin" element=${html`<${AdminPage} />`} />
+          <${Route} path="admin/:tab" element=${html`<${AdminPage} />`} />
         <//>
         <${Route} path="*" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
       <//>

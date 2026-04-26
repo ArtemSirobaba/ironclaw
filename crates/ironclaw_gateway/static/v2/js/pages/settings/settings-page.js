@@ -1,5 +1,5 @@
-import { useOutletContext } from "react-router";
-import { React, html } from "../../lib/html.js";
+import { Navigate, useOutletContext, useParams } from "react-router";
+import { html } from "../../lib/html.js";
 import { useT } from "../../lib/i18n.js";
 import { AgentTab } from "./components/agent-tab.js";
 import { ChannelsTab } from "./components/channels-tab.js";
@@ -7,10 +7,6 @@ import { InferenceTab } from "./components/inference-tab.js";
 import { LanguageTab } from "./components/language-tab.js";
 import { NetworkingTab } from "./components/networking-tab.js";
 import { RestartBanner } from "./components/restart-banner.js";
-import {
-  SettingsTabs,
-  SettingsTabsMobile,
-} from "./components/settings-tabs.js";
 import { SkillsTab } from "./components/skills-tab.js";
 import { ToolsTab } from "./components/tools-tab.js";
 import { UsersTab } from "./components/users-tab.js";
@@ -18,8 +14,8 @@ import { useSettings } from "./hooks/useSettings.js";
 
 export function SettingsPage() {
   const t = useT();
+  const { tab = "inference" } = useParams();
   const { gatewayStatus } = useOutletContext();
-  const [activeTab, setActiveTab] = React.useState("inference");
   const { settings, query, save, savedKeys, needsRestart, saveError } =
     useSettings();
 
@@ -52,48 +48,27 @@ export function SettingsPage() {
     language: html`<${LanguageTab} />`,
   };
 
+  if (!tabContent[tab]) {
+    return html`<${Navigate} to="/settings/inference" replace />`;
+  }
+
   return html`
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <!-- Sticky header: keep tab navigation visible -->
-      <div
-        className="sticky top-0 z-20 border-b border-white/10 bg-[color-mix(in_srgb,var(--v2-canvas-strong)_88%,transparent)] backdrop-blur-xl xl:hidden"
-      >
-        <div className="px-4 py-3 sm:px-6 sm:py-4">
-          <div className="xl:hidden">
-            <${SettingsTabsMobile}
-              activeTab=${activeTab}
-              onTabChange=${setActiveTab}
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Scroll region: everything below tabs -->
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="v2-page-entrance flex-1 p-4 sm:p-6">
-          <div className="grid gap-6 xl:grid-cols-[220px_minmax(0,1fr)]">
-            <aside className="hidden xl:block">
-              <div className="sticky top-6">
-                <${SettingsTabs}
-                  activeTab=${activeTab}
-                  onTabChange=${setActiveTab}
-                />
+          <div className="space-y-5">
+            <${RestartBanner} visible=${needsRestart} />
+
+            ${saveError &&
+            html`
+              <div
+                className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+              >
+                ${t("error.saveFailed", { message: saveError.message })}
               </div>
-            </aside>
+            `}
 
-            <div className="min-w-0 space-y-5">
-              <${RestartBanner} visible=${needsRestart} />
-
-              ${saveError &&
-              html`
-                <div
-                  className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
-                >
-                  ${t("error.saveFailed", { message: saveError.message })}
-                </div>
-              `}
-              ${tabContent[activeTab] || tabContent.inference}
-            </div>
+            ${tabContent[tab]}
           </div>
         </div>
       </div>
