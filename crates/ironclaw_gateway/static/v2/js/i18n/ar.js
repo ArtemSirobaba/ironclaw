@@ -495,5 +495,53 @@ registerPack("ar", {
   "projects.card.failures24h": "{count} خلال 24 ساعة",
   "projects.card.spendToday": "الإنفاق اليوم {value}",
   "projects.explorer": "المستكشف",
-});
 
+  // Navigation — new v2 keys
+  "nav.routines": "الروتينات",
+  "nav.logs": "السجلات",
+  "nav.docs": "الوثائق",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "مرحبًا، بماذا تحتاج إلى المساعدة؟",
+  "chat.heroDesc":
+    "ابدأ بهدف، أو سؤال عن المستودع، أو طلب مراجعة، أو ملفات تحتاج إلى عمل.",
+  "chat.suggestion1Desc": "افحص حالة وقت التشغيل والقنوات والأدوات والعمل المفتوح.",
+  "chat.suggestion2Desc": "ابحث عن مخاطر الصحة والموافقات المحظورة والمتابعات.",
+  "chat.suggestion3Desc": "تحقق من الإعداد والمصادقة والإقران والقدرات المتاحة.",
+  "chat.heroPlaceholder": "اسأل IronClaw أي شيء.",
+  "chat.followUpPlaceholder": "اطلب تغييرات متابعة",
+  "chat.attachFiles": "إرفاق ملفات",
+  "chat.modeAutoReview": "مراجعة تلقائية",
+  "chat.runtimeLocal": "العمل محليًا",
+  "chat.statusWorking": "جارٍ العمل",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "مثبتة",
+  "extensions.channels": "القنوات",
+  "extensions.mcp": "خوادم MCP",
+  "extensions.registry": "السجل",
+
+  // Routines — new v2 keys
+  "routines.explorer": "المهام",
+  "routines.title": "الروتينات",
+  "routines.description":
+    "ابحث في الروتينات المحفوظة، وافحص جدولها أو المشغل، وشغلها أو أوقفها مؤقتًا دون مغادرة v2.",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "كل المستويات",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "تصفية حسب الهدف…",
+  "logs.autoScroll": "تمرير تلقائي",
+  "logs.pause": "إيقاف مؤقت",
+  "logs.resume": "استئناف",
+  "logs.clear": "مسح",
+  "logs.confirmClear": "مسح كل إدخالات السجل؟",
+  "logs.serverLevel": "مستوى الخادم:",
+  "logs.entryCount": "{count} إدخالات",
+  "logs.pausedBadge": "● متوقف مؤقتًا",
+  "logs.empty": "بانتظار إدخالات السجل…",
+});

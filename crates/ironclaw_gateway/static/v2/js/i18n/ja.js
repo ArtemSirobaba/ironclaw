@@ -495,5 +495,53 @@ registerPack("ja", {
   "projects.card.failures24h": "24時間で {count}",
   "projects.card.spendToday": "今日の支出 {value}",
   "projects.explorer": "エクスプローラー",
-});
 
+  // Navigation — new v2 keys
+  "nav.routines": "ルーチン",
+  "nav.logs": "ログ",
+  "nav.docs": "ドキュメント",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "こんにちは。何を手伝いましょうか?",
+  "chat.heroDesc":
+    "目標、リポジトリの質問、レビュー依頼、作業が必要なファイルから始められます。",
+  "chat.suggestion1Desc": "ランタイムの状態、チャネル、ツール、未完了の作業を確認します。",
+  "chat.suggestion2Desc": "正確性のリスク、ブロックされた承認、フォローアップを探します。",
+  "chat.suggestion3Desc": "セットアップ、認証、ペアリング、利用可能な機能を確認します。",
+  "chat.heroPlaceholder": "IronClaw に何でも聞いてください。",
+  "chat.followUpPlaceholder": "フォローアップ変更を依頼",
+  "chat.attachFiles": "ファイルを添付",
+  "chat.modeAutoReview": "自動レビュー",
+  "chat.runtimeLocal": "ローカルで作業",
+  "chat.statusWorking": "作業中",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "インストール済み",
+  "extensions.channels": "チャネル",
+  "extensions.mcp": "MCP サーバー",
+  "extensions.registry": "レジストリ",
+
+  // Routines — new v2 keys
+  "routines.explorer": "タスク",
+  "routines.title": "ルーチン",
+  "routines.description":
+    "保存済みルーチンを検索し、スケジュールやトリガーを確認して、v2 を離れずに実行または一時停止できます。",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "すべてのレベル",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "ターゲットでフィルター…",
+  "logs.autoScroll": "自動スクロール",
+  "logs.pause": "一時停止",
+  "logs.resume": "再開",
+  "logs.clear": "クリア",
+  "logs.confirmClear": "すべてのログエントリをクリアしますか?",
+  "logs.serverLevel": "サーバーレベル:",
+  "logs.entryCount": "{count} 件",
+  "logs.pausedBadge": "● 一時停止中",
+  "logs.empty": "ログエントリを待機中…",
+});

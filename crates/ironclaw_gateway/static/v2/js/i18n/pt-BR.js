@@ -495,5 +495,53 @@ registerPack("pt-BR", {
   "projects.card.failures24h": "{count} em 24h",
   "projects.card.spendToday": "{value} gastos hoje",
   "projects.explorer": "Explorador",
-});
 
+  // Navegacao — novas chaves v2
+  "nav.routines": "Rotinas",
+  "nav.logs": "Logs",
+  "nav.docs": "Documentacao",
+
+  // Chat — novas chaves v2
+  "chat.heroTitle": "Ola, em que voce precisa de ajuda?",
+  "chat.heroDesc":
+    "Comece com uma meta, uma pergunta sobre o repositorio, um pedido de revisao ou arquivos que precisam de trabalho.",
+  "chat.suggestion1Desc": "Inspecionar a saude do runtime, canais, ferramentas e trabalho aberto.",
+  "chat.suggestion2Desc": "Procurar riscos de correcao, aprovacoes bloqueadas e acompanhamentos.",
+  "chat.suggestion3Desc": "Verificar configuracao, autenticacao, pareamento e capacidades disponiveis.",
+  "chat.heroPlaceholder": "Pergunte qualquer coisa ao IronClaw.",
+  "chat.followUpPlaceholder": "Peca alteracoes de acompanhamento",
+  "chat.attachFiles": "Anexar arquivos",
+  "chat.modeAutoReview": "Revisao automatica",
+  "chat.runtimeLocal": "Trabalhar localmente",
+  "chat.statusWorking": "Trabalhando",
+
+  // Abas de extensoes — novas chaves v2
+  "extensions.installed": "Instaladas",
+  "extensions.channels": "Canais",
+  "extensions.mcp": "Servidores MCP",
+  "extensions.registry": "Registro",
+
+  // Rotinas — novas chaves v2
+  "routines.explorer": "Tarefas",
+  "routines.title": "Rotinas",
+  "routines.description":
+    "Pesquise rotinas salvas, inspecione a agenda ou o gatilho e execute ou pause sem sair do v2.",
+
+  // Logs — novas chaves v2
+  "logs.levelAll": "Todos os niveis",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "Filtrar por alvo…",
+  "logs.autoScroll": "Rolagem automatica",
+  "logs.pause": "Pausar",
+  "logs.resume": "Retomar",
+  "logs.clear": "Limpar",
+  "logs.confirmClear": "Limpar todas as entradas de log?",
+  "logs.serverLevel": "Nivel do servidor:",
+  "logs.entryCount": "{count} entradas",
+  "logs.pausedBadge": "● pausado",
+  "logs.empty": "Aguardando entradas de log…",
+});

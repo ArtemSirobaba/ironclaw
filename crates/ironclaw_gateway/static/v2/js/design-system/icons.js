@@ -15,6 +15,10 @@ const paths = {
 
   close: html`<path d="m6.5 6.5 11 11M17.5 6.5l-11 11" />`,
 
+  clock: html`<path d="M12 3.5a8.5 8.5 0 1 1 0 17 8.5 8.5 0 0 1 0-17Z" /><path
+      d="M12 7.5v5l3.2 2"
+    />`,
+
   file: html`<path d="M6.5 3.5h7.2L18 7.8v12.7H6.5v-17Z" /><path
       d="M13.7 3.5V8H18"
     />`,

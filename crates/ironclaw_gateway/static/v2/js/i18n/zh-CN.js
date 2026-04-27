@@ -498,4 +498,53 @@ registerPack("zh-CN", {
   "projects.card.failures24h": "24 小时内 {count}",
   "projects.card.spendToday": "今日花费 {value}",
   "projects.explorer": "浏览",
+
+  // Navigation — new v2 keys
+  "nav.routines": "例程",
+  "nav.logs": "日志",
+  "nav.docs": "文档",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "你好，需要我帮你做什么？",
+  "chat.heroDesc":
+    "可以从一个目标、仓库问题、审查请求，或需要处理的文件开始。",
+  "chat.suggestion1Desc": "检查运行时状态、渠道、工具和未完成工作。",
+  "chat.suggestion2Desc": "查找正确性风险、被阻塞的审批和后续事项。",
+  "chat.suggestion3Desc": "验证设置、认证、配对和可用能力。",
+  "chat.heroPlaceholder": "向 IronClaw 提问。",
+  "chat.followUpPlaceholder": "请求后续修改",
+  "chat.attachFiles": "附加文件",
+  "chat.modeAutoReview": "自动审查",
+  "chat.runtimeLocal": "本地工作",
+  "chat.statusWorking": "正在工作",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "已安装",
+  "extensions.channels": "渠道",
+  "extensions.mcp": "MCP 服务器",
+  "extensions.registry": "注册表",
+
+  // Routines — new v2 keys
+  "routines.explorer": "任务",
+  "routines.title": "例程",
+  "routines.description":
+    "搜索已保存的例程，检查其计划或触发器，并在不离开 v2 的情况下运行或暂停。",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "所有级别",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "按目标筛选…",
+  "logs.autoScroll": "自动滚动",
+  "logs.pause": "暂停",
+  "logs.resume": "继续",
+  "logs.clear": "清除",
+  "logs.confirmClear": "清除所有日志条目？",
+  "logs.serverLevel": "服务器级别：",
+  "logs.entryCount": "{count} 条目",
+  "logs.pausedBadge": "● 已暂停",
+  "logs.empty": "等待日志条目…",
 });

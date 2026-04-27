@@ -495,5 +495,53 @@ registerPack("fr", {
   "projects.card.failures24h": "{count} sur 24 h",
   "projects.card.spendToday": "{value} dépensés aujourd’hui",
   "projects.explorer": "Explorateur",
-});
 
+  // Navigation — nouvelles cles v2
+  "nav.routines": "Routines",
+  "nav.logs": "Journaux",
+  "nav.docs": "Documentation",
+
+  // Chat — nouvelles cles v2
+  "chat.heroTitle": "Bonjour, de quoi avez-vous besoin ?",
+  "chat.heroDesc":
+    "Commencez par un objectif, une question sur le depot, une demande de revue ou des fichiers a traiter.",
+  "chat.suggestion1Desc": "Inspecter l'etat du runtime, les canaux, les outils et le travail ouvert.",
+  "chat.suggestion2Desc": "Rechercher les risques de justesse, les approbations bloquees et les suivis.",
+  "chat.suggestion3Desc": "Verifier la configuration, l'authentification, l'appairage et les capacites disponibles.",
+  "chat.heroPlaceholder": "Demandez n'importe quoi a IronClaw.",
+  "chat.followUpPlaceholder": "Demander des modifications de suivi",
+  "chat.attachFiles": "Joindre des fichiers",
+  "chat.modeAutoReview": "Revue automatique",
+  "chat.runtimeLocal": "Travailler localement",
+  "chat.statusWorking": "Travail en cours",
+
+  // Onglets extensions — nouvelles cles v2
+  "extensions.installed": "Installees",
+  "extensions.channels": "Canaux",
+  "extensions.mcp": "Serveurs MCP",
+  "extensions.registry": "Registre",
+
+  // Routines — nouvelles cles v2
+  "routines.explorer": "Taches",
+  "routines.title": "Routines",
+  "routines.description":
+    "Rechercher les routines enregistrees, inspecter leur planification ou leur declencheur, puis les lancer ou les mettre en pause sans quitter v2.",
+
+  // Journaux — nouvelles cles v2
+  "logs.levelAll": "Tous les niveaux",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "Filtrer par cible…",
+  "logs.autoScroll": "Defilement automatique",
+  "logs.pause": "Pause",
+  "logs.resume": "Reprendre",
+  "logs.clear": "Effacer",
+  "logs.confirmClear": "Effacer toutes les entrees du journal ?",
+  "logs.serverLevel": "Niveau serveur :",
+  "logs.entryCount": "{count} entrees",
+  "logs.pausedBadge": "● en pause",
+  "logs.empty": "En attente d'entrees de journal…",
+});

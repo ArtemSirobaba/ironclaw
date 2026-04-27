@@ -5,6 +5,7 @@ export const primaryRoutes = [
   { id: "workspace", path: "/workspace", labelKey: "nav.workspace" },
   { id: "projects", path: "/projects", labelKey: "nav.projects" },
   { id: "jobs", path: "/jobs", labelKey: "nav.jobs" },
+  { id: "routines", path: "/routines", labelKey: "nav.routines" },
   { id: "missions", path: "/missions", labelKey: "nav.missions" },
   { id: "extensions", path: "/extensions", labelKey: "nav.extensions" },
   { id: "settings", path: "/settings", labelKey: "nav.settings" },
@@ -14,7 +15,7 @@ export const primaryRoutes = [
 export const routeSectionDefs = [
   {
     labelKey: "nav.sectionWork",
-    ids: ["chat", "workspace", "projects", "jobs", "missions"],
+    ids: ["chat", "workspace", "projects", "jobs", "routines", "missions"],
   },
   {
     labelKey: "nav.sectionSystem",

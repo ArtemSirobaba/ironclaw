@@ -10,6 +10,7 @@ const ROUTE_ICONS = {
   workspace: "layers",
   projects: "folder",
   jobs: "pulse",
+  routines: "clock",
   missions: "flag",
   extensions: "plug",
   settings: "settings",

@@ -498,4 +498,53 @@ registerPack("ko", {
   "projects.card.failures24h": "24시간 내 {count}",
   "projects.card.spendToday": "오늘 지출 {value}",
   "projects.explorer": "탐색기",
+
+  // Navigation — new v2 keys
+  "nav.routines": "루틴",
+  "nav.logs": "로그",
+  "nav.docs": "문서",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "안녕하세요, 무엇을 도와드릴까요?",
+  "chat.heroDesc":
+    "목표, 저장소 질문, 리뷰 요청 또는 작업이 필요한 파일로 시작하세요.",
+  "chat.suggestion1Desc": "런타임 상태, 채널, 도구, 열려 있는 작업을 점검합니다.",
+  "chat.suggestion2Desc": "정확성 위험, 막힌 승인, 후속 조치를 확인합니다.",
+  "chat.suggestion3Desc": "설정, 인증, 페어링, 사용 가능한 기능을 확인합니다.",
+  "chat.heroPlaceholder": "IronClaw에 무엇이든 물어보세요.",
+  "chat.followUpPlaceholder": "후속 변경 요청",
+  "chat.attachFiles": "파일 첨부",
+  "chat.modeAutoReview": "자동 리뷰",
+  "chat.runtimeLocal": "로컬에서 작업",
+  "chat.statusWorking": "작업 중",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "설치됨",
+  "extensions.channels": "채널",
+  "extensions.mcp": "MCP 서버",
+  "extensions.registry": "레지스트리",
+
+  // Routines — new v2 keys
+  "routines.explorer": "작업",
+  "routines.title": "루틴",
+  "routines.description":
+    "저장된 루틴을 검색하고 일정 또는 트리거를 확인한 뒤 v2를 떠나지 않고 실행하거나 일시 중지합니다.",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "모든 수준",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "대상으로 필터…",
+  "logs.autoScroll": "자동 스크롤",
+  "logs.pause": "일시 중지",
+  "logs.resume": "재개",
+  "logs.clear": "지우기",
+  "logs.confirmClear": "모든 로그 항목을 지울까요?",
+  "logs.serverLevel": "서버 수준:",
+  "logs.entryCount": "{count}개 항목",
+  "logs.pausedBadge": "● 일시 중지됨",
+  "logs.empty": "로그 항목 대기 중…",
 });

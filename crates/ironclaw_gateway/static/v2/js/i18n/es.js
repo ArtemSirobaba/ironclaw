@@ -547,4 +547,53 @@ registerPack("es", {
   "projects.card.failures24h": "{count} en 24 h",
   "projects.card.spendToday": "{value} gastados hoy",
   "projects.explorer": "Explorador",
+
+  // Navegacion — claves nuevas de v2
+  "nav.routines": "Rutinas",
+  "nav.logs": "Registros",
+  "nav.docs": "Documentacion",
+
+  // Chat — claves nuevas de v2
+  "chat.heroTitle": "Hola, ¿en que necesitas ayuda?",
+  "chat.heroDesc":
+    "Empieza con un objetivo, una pregunta sobre el repositorio, una solicitud de revision o archivos que necesiten trabajo.",
+  "chat.suggestion1Desc": "Inspecciona el estado del runtime, canales, herramientas y trabajo abierto.",
+  "chat.suggestion2Desc": "Busca riesgos de correccion, aprobaciones bloqueadas y seguimientos.",
+  "chat.suggestion3Desc": "Verifica configuracion, autenticacion, emparejamiento y capacidades disponibles.",
+  "chat.heroPlaceholder": "Pregunta cualquier cosa a IronClaw.",
+  "chat.followUpPlaceholder": "Pide cambios de seguimiento",
+  "chat.attachFiles": "Adjuntar archivos",
+  "chat.modeAutoReview": "Revision automatica",
+  "chat.runtimeLocal": "Trabajar localmente",
+  "chat.statusWorking": "Trabajando",
+
+  // Pestañas de extensiones — claves nuevas de v2
+  "extensions.installed": "Instaladas",
+  "extensions.channels": "Canales",
+  "extensions.mcp": "Servidores MCP",
+  "extensions.registry": "Registro",
+
+  // Rutinas — claves nuevas de v2
+  "routines.explorer": "Tareas",
+  "routines.title": "Rutinas",
+  "routines.description":
+    "Busca rutinas guardadas, inspecciona su programacion o disparador y ejecutalas o pausales sin salir de v2.",
+
+  // Registros — claves nuevas de v2
+  "logs.levelAll": "Todos los niveles",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "Filtrar por destino…",
+  "logs.autoScroll": "Desplazamiento automatico",
+  "logs.pause": "Pausar",
+  "logs.resume": "Reanudar",
+  "logs.clear": "Borrar",
+  "logs.confirmClear": "¿Borrar todas las entradas de registro?",
+  "logs.serverLevel": "Nivel del servidor:",
+  "logs.entryCount": "{count} entradas",
+  "logs.pausedBadge": "● pausado",
+  "logs.empty": "Esperando entradas de registro…",
 });

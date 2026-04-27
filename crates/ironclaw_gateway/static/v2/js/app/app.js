@@ -9,6 +9,7 @@ import { WorkspacePage } from "../pages/workspace/workspace-page.js";
 import { ProjectsPage } from "../pages/projects/projects-page.js";
 import { MissionsPage } from "../pages/missions/missions-page.js";
 import { JobsPage } from "../pages/jobs/jobs-page.js";
+import { RoutinesPage } from "../pages/routines/routines-page.js";
 import { ExtensionsPage } from "../pages/extensions/extensions-page.js";
 import { SettingsPage } from "../pages/settings/settings-page.js";
 import { AdminPage } from "../pages/admin/admin-page.js";
@@ -74,6 +75,8 @@ export function App() {
           <${Route} path="missions/:missionId" element=${html`<${MissionsPage} />`} />
           <${Route} path="jobs" element=${html`<${JobsPage} />`} />
           <${Route} path="jobs/:jobId" element=${html`<${JobsPage} />`} />
+          <${Route} path="routines" element=${html`<${RoutinesPage} />`} />
+          <${Route} path="routines/:routineId" element=${html`<${RoutinesPage} />`} />
           <${Route} path="extensions" element=${html`<${ExtensionsPage} />`} />
           <${Route} path="extensions/:tab" element=${html`<${ExtensionsPage} />`} />
           <${Route} path="logs" element=${html`<${LogsPage} />`} />

@@ -496,5 +496,53 @@ registerPack("uk", {
   "projects.card.failures24h": "{count} за 24 год",
   "projects.card.spendToday": "{value} витрачено сьогодні",
   "projects.explorer": "Оглядач",
-});
 
+  // Navigation — new v2 keys
+  "nav.routines": "Рутини",
+  "nav.logs": "Журнали",
+  "nav.docs": "Документація",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "Привіт, з чим потрібна допомога?",
+  "chat.heroDesc":
+    "Почніть з цілі, питання про репозиторій, запиту на ревʼю або файлів, які потребують роботи.",
+  "chat.suggestion1Desc": "Перевірити стан runtime, канали, інструменти та відкриту роботу.",
+  "chat.suggestion2Desc": "Знайти ризики коректності, заблоковані погодження та подальші дії.",
+  "chat.suggestion3Desc": "Перевірити налаштування, автентифікацію, спарювання та доступні можливості.",
+  "chat.heroPlaceholder": "Запитайте IronClaw про що завгодно.",
+  "chat.followUpPlaceholder": "Попросіть подальші зміни",
+  "chat.attachFiles": "Прикріпити файли",
+  "chat.modeAutoReview": "Авторевʼю",
+  "chat.runtimeLocal": "Працювати локально",
+  "chat.statusWorking": "Працює",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "Встановлені",
+  "extensions.channels": "Канали",
+  "extensions.mcp": "MCP-сервери",
+  "extensions.registry": "Реєстр",
+
+  // Routines — new v2 keys
+  "routines.explorer": "Завдання",
+  "routines.title": "Рутини",
+  "routines.description":
+    "Шукайте збережені рутини, переглядайте їхній розклад або тригер і запускайте чи призупиняйте їх, не виходячи з v2.",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "Усі рівні",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "Фільтрувати за ціллю…",
+  "logs.autoScroll": "Автопрокручування",
+  "logs.pause": "Пауза",
+  "logs.resume": "Продовжити",
+  "logs.clear": "Очистити",
+  "logs.confirmClear": "Очистити всі записи журналу?",
+  "logs.serverLevel": "Рівень сервера:",
+  "logs.entryCount": "{count} записів",
+  "logs.pausedBadge": "● пауза",
+  "logs.empty": "Очікування записів журналу…",
+});

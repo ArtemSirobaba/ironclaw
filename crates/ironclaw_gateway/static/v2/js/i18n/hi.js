@@ -495,5 +495,53 @@ registerPack("hi", {
   "projects.card.failures24h": "24h में {count}",
   "projects.card.spendToday": "आज खर्च {value}",
   "projects.explorer": "एक्सप्लोरर",
-});
 
+  // Navigation — new v2 keys
+  "nav.routines": "रूटीन",
+  "nav.logs": "लॉग",
+  "nav.docs": "दस्तावेज़",
+
+  // Chat — new v2 keys
+  "chat.heroTitle": "नमस्ते, आपको किसमें मदद चाहिए?",
+  "chat.heroDesc":
+    "किसी लक्ष्य, रेपो प्रश्न, समीक्षा अनुरोध या काम की जरूरत वाली फाइलों से शुरू करें.",
+  "chat.suggestion1Desc": "रनटाइम स्थिति, चैनल, टूल और खुले काम की जांच करें.",
+  "chat.suggestion2Desc": "सहीपन के जोखिम, रुकी हुई स्वीकृतियां और फॉलो-अप देखें.",
+  "chat.suggestion3Desc": "सेटअप, ऑथ, पेयरिंग और उपलब्ध क्षमताओं की पुष्टि करें.",
+  "chat.heroPlaceholder": "IronClaw से कुछ भी पूछें.",
+  "chat.followUpPlaceholder": "फॉलो-अप बदलाव मांगें",
+  "chat.attachFiles": "फाइलें संलग्न करें",
+  "chat.modeAutoReview": "ऑटो-रिव्यू",
+  "chat.runtimeLocal": "स्थानीय रूप से काम करें",
+  "chat.statusWorking": "काम हो रहा है",
+
+  // Extensions tabs — new v2 keys
+  "extensions.installed": "इंस्टॉल किए गए",
+  "extensions.channels": "चैनल",
+  "extensions.mcp": "MCP सर्वर",
+  "extensions.registry": "रजिस्ट्री",
+
+  // Routines — new v2 keys
+  "routines.explorer": "कार्य",
+  "routines.title": "रूटीन",
+  "routines.description":
+    "सहेजे गए रूटीन खोजें, उनका शेड्यूल या ट्रिगर देखें, और v2 छोड़े बिना उन्हें चलाएं या रोकें.",
+
+  // Logs — new v2 keys
+  "logs.levelAll": "सभी स्तर",
+  "logs.level.trace": "TRACE",
+  "logs.level.debug": "DEBUG",
+  "logs.level.info": "INFO",
+  "logs.level.warn": "WARN",
+  "logs.level.error": "ERROR",
+  "logs.filterTarget": "लक्ष्य से फिल्टर करें…",
+  "logs.autoScroll": "ऑटो-स्क्रॉल",
+  "logs.pause": "रोकें",
+  "logs.resume": "फिर शुरू करें",
+  "logs.clear": "साफ करें",
+  "logs.confirmClear": "सभी लॉग प्रविष्टियां साफ करें?",
+  "logs.serverLevel": "सर्वर स्तर:",
+  "logs.entryCount": "{count} प्रविष्टियां",
+  "logs.pausedBadge": "● रुका हुआ",
+  "logs.empty": "लॉग प्रविष्टियों की प्रतीक्षा है…",
+});

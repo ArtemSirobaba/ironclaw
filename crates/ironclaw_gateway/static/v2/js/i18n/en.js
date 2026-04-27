@@ -13,6 +13,7 @@ registerPack("en", {
   "nav.workspace": "Workspace",
   "nav.projects": "Projects",
   "nav.jobs": "Jobs",
+  "nav.routines": "Routines",
   "nav.missions": "Missions",
   "nav.extensions": "Extensions",
   "nav.settings": "Settings",
@@ -402,6 +403,12 @@ registerPack("en", {
   "missions.summary.spawnedThreads": "Spawned threads",
   "missions.summary.completedFailed": "{completed} completed / {failed} failed",
   "missions.summary.acrossProjects": "Across every project workspace",
+
+  // Routines page
+  "routines.explorer": "Tasks",
+  "routines.title": "Routines",
+  "routines.description":
+    "Search saved routines, inspect their schedule or trigger, and run or pause them without leaving v2.",
 
   // Extensions page
   "ext.installed": "Installed",
