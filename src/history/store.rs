@@ -2138,6 +2138,43 @@ impl Store {
         Ok(row.is_some())
     }
 
+    /// Delete a conversation owned by the given user.
+    ///
+    /// Durable job and LLM usage rows are preserved, but detached from the
+    /// conversation before the row is removed so foreign keys remain valid.
+    pub async fn delete_conversation_for_user(
+        &self,
+        conversation_id: Uuid,
+        user_id: &str,
+    ) -> Result<bool, DatabaseError> {
+        let mut conn = self.pool.get().await?;
+        let tx = conn.transaction().await?;
+
+        tx.execute(
+            "UPDATE agent_jobs SET conversation_id = NULL \
+             WHERE conversation_id = $1 \
+               AND EXISTS (SELECT 1 FROM conversations WHERE id = $1 AND user_id = $2)",
+            &[&conversation_id, &user_id],
+        )
+        .await?;
+        tx.execute(
+            "UPDATE llm_calls SET conversation_id = NULL \
+             WHERE conversation_id = $1 \
+               AND EXISTS (SELECT 1 FROM conversations WHERE id = $1 AND user_id = $2)",
+            &[&conversation_id, &user_id],
+        )
+        .await?;
+        let deleted = tx
+            .execute(
+                "DELETE FROM conversations WHERE id = $1 AND user_id = $2",
+                &[&conversation_id, &user_id],
+            )
+            .await?;
+
+        tx.commit().await?;
+        Ok(deleted > 0)
+    }
+
     /// Get the source_channel for a conversation.
     pub async fn get_conversation_source_channel(
         &self,
@@ -3015,6 +3052,7 @@ impl Store {
                 LEFT JOIN agent_jobs j ON l.job_id = j.id
                 LEFT JOIN conversations c ON l.conversation_id = c.id
                 WHERE l.created_at >= $1
+                  AND COALESCE(j.user_id, c.user_id) IS NOT NULL
                 GROUP BY COALESCE(j.user_id, c.user_id), l.model
                 ORDER BY total_cost DESC
                 "#,
@@ -3074,6 +3112,7 @@ impl Store {
                 FROM llm_calls l
                 LEFT JOIN agent_jobs j ON l.job_id = j.id
                 LEFT JOIN conversations c ON l.conversation_id = c.id
+                WHERE COALESCE(j.user_id, c.user_id) IS NOT NULL
                 GROUP BY COALESCE(j.user_id, c.user_id)
                 "#,
                 &[],

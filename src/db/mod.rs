@@ -487,6 +487,11 @@ pub trait ConversationStore: Send + Sync {
         conversation_id: Uuid,
         user_id: &str,
     ) -> Result<bool, DatabaseError>;
+    async fn delete_conversation_for_user(
+        &self,
+        conversation_id: Uuid,
+        user_id: &str,
+    ) -> Result<bool, DatabaseError>;
     /// Get the source_channel for a conversation (the channel that created it).
     async fn get_conversation_source_channel(
         &self,

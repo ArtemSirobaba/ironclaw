@@ -643,6 +643,7 @@ impl UserStore for LibSqlBackend {
                 LEFT JOIN agent_jobs j ON l.job_id = j.id
                 LEFT JOIN conversations c ON l.conversation_id = c.id
                 WHERE l.created_at >= ?1
+                  AND COALESCE(j.user_id, c.user_id) IS NOT NULL
                 GROUP BY COALESCE(j.user_id, c.user_id), l.model
                 ORDER BY total_cost DESC
                 "#,
@@ -822,6 +823,7 @@ impl UserStore for LibSqlBackend {
                 FROM llm_calls l
                 LEFT JOIN agent_jobs j ON l.job_id = j.id
                 LEFT JOIN conversations c ON l.conversation_id = c.id
+                WHERE COALESCE(j.user_id, c.user_id) IS NOT NULL
                 GROUP BY COALESCE(j.user_id, c.user_id)
                 "#,
                 (),

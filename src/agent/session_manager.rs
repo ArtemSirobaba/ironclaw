@@ -297,6 +297,41 @@ impl SessionManager {
         mgr
     }
 
+    /// Remove a user's thread from live session state and associated indexes.
+    ///
+    /// Returns whether the in-memory thread existed.
+    pub async fn remove_thread_for_user(&self, user_id: &str, thread_id: Uuid) -> bool {
+        let removed = {
+            let sessions = self.sessions.read().await;
+            if let Some(session) = sessions.get(user_id) {
+                let mut sess = session.lock().await;
+                if sess.active_thread == Some(thread_id) {
+                    sess.active_thread = None;
+                }
+                sess.threads.remove(&thread_id).is_some()
+            } else {
+                false
+            }
+        };
+
+        {
+            let thread_id_string = thread_id.to_string();
+            let mut thread_map = self.thread_map.write().await;
+            thread_map.retain(|key, mapped_id| {
+                key.user_id != user_id
+                    || (*mapped_id != thread_id
+                        && key.external_thread_id.as_deref() != Some(thread_id_string.as_str()))
+            });
+        }
+
+        {
+            let mut undo_managers = self.undo_managers.write().await;
+            undo_managers.remove(&thread_id);
+        }
+
+        removed
+    }
+
     /// Remove sessions that have been idle for longer than the given duration.
     ///
     /// Returns the number of sessions pruned.

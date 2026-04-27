@@ -2,7 +2,7 @@ import { React, html } from "../lib/html.js";
 import { Icon } from "../design-system/icons.js";
 import { cn } from "../utils/cn.js";
 
-function formatTime(iso) {
+function formatRelativeTime(iso) {
   if (!iso) return "";
   const d = new Date(iso);
   const now = new Date();
@@ -11,34 +11,97 @@ function formatTime(iso) {
   return d.toLocaleDateString([], { month: "short", day: "numeric" });
 }
 
-function ThreadItem({ thread, isActive, onSelect }) {
+function formatExactTime(iso) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function threadTimeLabel(thread) {
+  const started = formatRelativeTime(thread.created_at);
+  const updated = formatRelativeTime(thread.updated_at);
+  if (!started && !updated) return "";
+  if (!updated || started === updated) return `Started ${started}`;
+  return `Started ${started} · Last ${updated}`;
+}
+
+function threadTimeTitle(thread) {
+  const started = formatExactTime(thread.created_at);
+  const updated = formatExactTime(thread.updated_at);
+  if (!started && !updated) return "";
+  if (!updated || started === updated) return `Started ${started}`;
+  return `Started ${started}\nLast activity ${updated}`;
+}
+
+function ThreadItem({ thread, isActive, onSelect, onDelete }) {
+  const isProcessing = thread.state === "Processing";
+  const timeLabel = threadTimeLabel(thread);
+  const timeTitle = threadTimeTitle(thread);
+  const handleDelete = React.useCallback(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (isProcessing || !window.confirm("Delete this chat?")) return;
+      Promise.resolve(onDelete?.(thread.id)).catch((err) => {
+        window.alert(err?.message || "Unable to delete chat");
+      });
+    },
+    [isProcessing, onDelete, thread.id]
+  );
+
   return html`
-    <button
-      onClick=${() => onSelect(thread.id)}
+    <div
       className=${cn(
-        "flex w-full flex-col items-start gap-0.5 rounded-[8px] px-3 py-2 text-left",
+        "group flex w-full items-stretch rounded-[8px]",
         isActive
           ? "bg-[var(--v2-accent-soft)] text-[var(--v2-accent-text)]"
           : "text-[var(--v2-text-muted)] hover:bg-[var(--v2-surface-muted)] hover:text-[var(--v2-text-strong)]"
       )}
     >
-      <div className="flex w-full items-center gap-1.5">
-        <span className="min-w-0 flex-1 truncate text-[13px] font-medium leading-snug">
-          ${thread.title || `Thread ${thread.id.slice(0, 8)}`}
-        </span>
-        ${thread.state === "Processing" &&
-        html`<span
-          className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--v2-accent)]"
-        />`}
-      </div>
-      <span className="text-[11px] text-[var(--v2-text-faint)]">
-        ${formatTime(thread.updated_at)}
-      </span>
-    </button>
+      <button
+        onClick=${() => onSelect(thread.id)}
+        className="min-w-0 flex-1 px-3 py-2 text-left"
+        title=${timeTitle || undefined}
+      >
+        <div className="flex w-full items-center gap-1.5">
+          <span className="min-w-0 flex-1 truncate text-[13px] font-medium leading-snug">
+            ${thread.title || `Thread ${thread.id.slice(0, 8)}`}
+          </span>
+          ${isProcessing &&
+          html`<span
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--v2-accent)]"
+          />`}
+        </div>
+        ${timeLabel &&
+        html`<span className="block truncate text-[11px] text-[var(--v2-text-faint)]">
+          ${timeLabel}
+        </span>`}
+      </button>
+      <button
+        type="button"
+        onClick=${handleDelete}
+        disabled=${isProcessing}
+        title=${isProcessing ? "Cannot delete while processing" : "Delete chat"}
+        aria-label="Delete chat"
+        className=${cn(
+          "my-1 mr-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px]",
+          "opacity-0 transition group-hover:opacity-100 focus:opacity-100",
+          isProcessing
+            ? "cursor-not-allowed text-[var(--v2-text-faint)]"
+            : "text-[var(--v2-text-faint)] hover:bg-[var(--v2-danger-soft)] hover:text-[var(--v2-danger-text)]"
+        )}
+      >
+        <${Icon} name="trash" className="h-3.5 w-3.5" strokeWidth=${2} />
+      </button>
+    </div>
   `;
 }
 
-export function SidebarThreads({ threads, activeThreadId, onSelect }) {
+export function SidebarThreads({ threads, activeThreadId, onSelect, onDelete }) {
   const [collapsed, setCollapsed] = React.useState(false);
 
   return html`
@@ -78,6 +141,7 @@ export function SidebarThreads({ threads, activeThreadId, onSelect }) {
                 thread=${thread}
                 isActive=${thread.id === activeThreadId}
                 onSelect=${onSelect}
+                onDelete=${onDelete}
               />
             `
           )}

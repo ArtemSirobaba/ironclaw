@@ -45,7 +45,7 @@ The `Database` supertrait is composed of seven sub-traits. Leaf consumers can de
 
 | Sub-trait | Methods | Covers |
 |-----------|---------|--------|
-| `ConversationStore` | 12 | Conversations, messages |
+| `ConversationStore` | 13 | Conversations, messages |
 | `JobStore` | 13 | Agent jobs, actions, LLM calls, estimation |
 | `SandboxStore` | 13 | Sandbox jobs, job events |
 | `RoutineStore` | 15 | Routines, routine runs |

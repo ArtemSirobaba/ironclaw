@@ -665,6 +665,58 @@ impl ConversationStore for LibSqlBackend {
         Ok(found.is_some())
     }
 
+    async fn delete_conversation_for_user(
+        &self,
+        conversation_id: Uuid,
+        user_id: &str,
+    ) -> Result<bool, DatabaseError> {
+        let conn = self.connect().await?;
+        let conversation_id = conversation_id.to_string();
+
+        conn.execute("BEGIN IMMEDIATE", ())
+            .await
+            .map_err(|e| DatabaseError::Query(e.to_string()))?;
+
+        let result = async {
+            conn.execute(
+                "UPDATE agent_jobs SET conversation_id = NULL \
+                 WHERE conversation_id = ?1 \
+                   AND EXISTS (SELECT 1 FROM conversations WHERE id = ?1 AND user_id = ?2)",
+                params![conversation_id.as_str(), user_id],
+            )
+            .await
+            .map_err(|e| DatabaseError::Query(e.to_string()))?;
+            conn.execute(
+                "UPDATE llm_calls SET conversation_id = NULL \
+                 WHERE conversation_id = ?1 \
+                   AND EXISTS (SELECT 1 FROM conversations WHERE id = ?1 AND user_id = ?2)",
+                params![conversation_id.as_str(), user_id],
+            )
+            .await
+            .map_err(|e| DatabaseError::Query(e.to_string()))?;
+            conn.execute(
+                "DELETE FROM conversations WHERE id = ?1 AND user_id = ?2",
+                params![conversation_id.as_str(), user_id],
+            )
+            .await
+            .map_err(|e| DatabaseError::Query(e.to_string()))
+        }
+        .await;
+
+        match result {
+            Ok(deleted) => {
+                conn.execute("COMMIT", ())
+                    .await
+                    .map_err(|e| DatabaseError::Query(e.to_string()))?;
+                Ok(deleted > 0)
+            }
+            Err(err) => {
+                let _ = conn.execute("ROLLBACK", ()).await;
+                Err(err)
+            }
+        }
+    }
+
     async fn get_conversation_source_channel(
         &self,
         conversation_id: Uuid,

@@ -23,7 +23,7 @@ use axum::{
     extract::DefaultBodyLimit,
     http::header,
     middleware,
-    routing::{get, post, put},
+    routing::{delete, get, post, put},
 };
 use tokio::sync::oneshot;
 use tower_http::cors::{AllowHeaders, CorsLayer};
@@ -73,9 +73,10 @@ use crate::channels::web::platform::static_files::{
 // webhooks). No feature handler lives in `server.rs` — that file is a
 // backward-compat re-export shim waiting on stage 6 deletion.
 use crate::channels::web::features::chat::{
-    chat_approval_handler, chat_auth_cancel_handler, chat_auth_token_handler, chat_events_handler,
-    chat_gate_resolve_handler, chat_history_handler, chat_new_thread_handler, chat_send_handler,
-    chat_threads_handler, chat_ws_handler,
+    chat_approval_handler, chat_auth_cancel_handler, chat_auth_token_handler,
+    chat_delete_thread_handler, chat_events_handler, chat_gate_resolve_handler,
+    chat_history_handler, chat_new_thread_handler, chat_send_handler, chat_threads_handler,
+    chat_ws_handler,
 };
 use crate::channels::web::features::extensions::{
     extensions_activate_handler, extensions_install_handler, extensions_list_handler,
@@ -182,6 +183,10 @@ pub async fn start_server(
         .route("/api/chat/history", get(chat_history_handler))
         .route("/api/chat/threads", get(chat_threads_handler))
         .route("/api/chat/thread/new", post(chat_new_thread_handler))
+        .route(
+            "/api/chat/thread/{thread_id}",
+            delete(chat_delete_thread_handler),
+        )
         // Memory
         .route("/api/memory/tree", get(memory_tree_handler))
         .route("/api/memory/list", get(memory_list_handler))

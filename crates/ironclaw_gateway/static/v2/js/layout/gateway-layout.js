@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { useInterfaceTheme } from "../design-system/theme.js";
 import { useGatewayStatus } from "../hooks/useGatewayStatus.js";
 import { useSidebar } from "../hooks/useSidebar.js";
@@ -11,6 +11,7 @@ import { cn } from "../utils/cn.js";
 
 export function GatewayLayout({ token, onSignOut }) {
   const t = useT();
+  const navigate = useNavigate();
   const { theme, toggleTheme } = useInterfaceTheme();
   const statusQuery = useGatewayStatus(token);
   const threadsState = useThreads();
@@ -18,6 +19,16 @@ export function GatewayLayout({ token, onSignOut }) {
     onNewChat: () => threadsState.setActiveThreadId(null),
   });
   const status = statusQuery.data;
+  const handleDeleteThread = React.useCallback(
+    async (threadId) => {
+      const wasActive = threadsState.activeThreadId === threadId;
+      await threadsState.deleteThread(threadId);
+      if (wasActive) {
+        navigate("/chat", { replace: true });
+      }
+    },
+    [navigate, threadsState]
+  );
 
   return html`
     <div className="flex h-[100dvh] overflow-hidden bg-[var(--v2-canvas)]">
@@ -43,6 +54,7 @@ export function GatewayLayout({ token, onSignOut }) {
           onClose=${sidebar.close}
           onNewChat=${sidebar.newChat}
           onSelectThread=${sidebar.selectThread}
+          onDeleteThread=${handleDeleteThread}
         />
       </div>
 

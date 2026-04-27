@@ -365,6 +365,14 @@ mod tests {
             unimplemented!()
         }
 
+        async fn delete_conversation_for_user(
+            &self,
+            _conversation_id: Uuid,
+            _user_id: &str,
+        ) -> Result<bool, crate::error::DatabaseError> {
+            unimplemented!()
+        }
+
         async fn get_conversation_source_channel(
             &self,
             _conversation_id: Uuid,

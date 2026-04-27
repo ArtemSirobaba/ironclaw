@@ -21,6 +21,7 @@
 //! | GET | `/api/chat/history` | [`chat_history_handler`] |
 //! | GET | `/api/chat/threads` | [`chat_threads_handler`] |
 //! | POST | `/api/chat/thread/new` | [`chat_new_thread_handler`] |
+//! | DELETE | `/api/chat/thread/{thread_id}` | [`chat_delete_thread_handler`] |
 //!
 //! # Dependency boundary
 //!
@@ -57,7 +58,7 @@ use std::sync::Arc;
 
 use axum::{
     Json,
-    extract::{Query, State, WebSocketUpgrade},
+    extract::{Path, Query, State, WebSocketUpgrade},
     http::{HeaderMap, HeaderName, StatusCode},
     response::IntoResponse,
 };
@@ -810,6 +811,58 @@ pub(crate) async fn chat_new_thread_handler(
     persist_gateway_thread_metadata(&state, thread_id, &user.user_id).await;
 
     Ok(Json(info))
+}
+
+pub(crate) async fn chat_delete_thread_handler(
+    State(state): State<Arc<GatewayState>>,
+    AuthenticatedUser(user): AuthenticatedUser,
+    Path(thread_id): Path<Uuid>,
+) -> Result<Json<ActionResponse>, (StatusCode, String)> {
+    if let Some(ref store) = state.store {
+        let belongs_to_user = store
+            .conversation_belongs_to_user(thread_id, &user.user_id)
+            .await
+            .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        if belongs_to_user {
+            if let Some(metadata) = store
+                .get_conversation_metadata(thread_id)
+                .await
+                .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?
+                && metadata
+                    .get("thread_type")
+                    .and_then(|v| v.as_str())
+                    .is_some_and(|kind| kind == "assistant")
+            {
+                return Err((
+                    StatusCode::BAD_REQUEST,
+                    "Assistant thread cannot be deleted.".to_string(),
+                ));
+            }
+        }
+    }
+
+    let memory_deleted = if let Some(session_manager) = state.session_manager.as_ref() {
+        session_manager
+            .remove_thread_for_user(&user.user_id, thread_id)
+            .await
+    } else {
+        false
+    };
+
+    let persisted_deleted = if let Some(ref store) = state.store {
+        store
+            .delete_conversation_for_user(thread_id, &user.user_id)
+            .await
+            .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?
+    } else {
+        false
+    };
+
+    if !memory_deleted && !persisted_deleted {
+        return Err((StatusCode::NOT_FOUND, "Thread not found.".to_string()));
+    }
+
+    Ok(Json(ActionResponse::ok("Thread deleted.")))
 }
 
 // ── Slice-private helpers ─────────────────────────────────────────────
@@ -2186,6 +2239,73 @@ mod tests {
         assert!(
             convs.iter().any(|c| c.id == info.id),
             "new thread must be persisted to the conversation store"
+        );
+    }
+
+    #[cfg(feature = "libsql")]
+    #[tokio::test]
+    async fn test_chat_delete_thread_handler_removes_persisted_and_live_thread() {
+        let (db, _tmp) = crate::testing::test_db().await;
+        let session_manager = Arc::new(SessionManager::new());
+        let state =
+            test_gateway_state_with_store_and_session_manager(Arc::clone(&db), session_manager);
+        fn alice() -> crate::channels::web::auth::AuthenticatedUser {
+            crate::channels::web::auth::AuthenticatedUser(UserIdentity {
+                user_id: "alice".to_string(),
+                role: "member".to_string(),
+                workspace_read_scopes: Vec::new(),
+            })
+        }
+
+        let info = chat_new_thread_handler(axum::extract::State(Arc::clone(&state)), alice())
+            .await
+            .expect("create thread")
+            .0;
+
+        db.add_conversation_message(info.id, "user", "delete me")
+            .await
+            .expect("seed conversation message");
+
+        let response = chat_delete_thread_handler(
+            axum::extract::State(Arc::clone(&state)),
+            alice(),
+            axum::extract::Path(info.id),
+        )
+        .await
+        .expect("delete thread")
+        .0;
+
+        assert!(response.success);
+
+        let session_manager = state.session_manager.as_ref().expect("session manager");
+        let session = session_manager.get_or_create_session("alice").await;
+        let sess = session.lock().await;
+        assert!(
+            !sess.threads.contains_key(&info.id),
+            "deleted thread must be removed from live session state"
+        );
+        assert_ne!(
+            sess.active_thread,
+            Some(info.id),
+            "deleted thread must not remain active"
+        );
+        drop(sess);
+
+        let convs = db
+            .list_conversations_all_channels("alice", 50)
+            .await
+            .expect("list conversations");
+        assert!(
+            convs.iter().all(|c| c.id != info.id),
+            "deleted conversation must no longer appear in the recent list"
+        );
+        let messages = db
+            .list_conversation_messages(info.id)
+            .await
+            .expect("list deleted conversation messages");
+        assert!(
+            messages.is_empty(),
+            "conversation messages should be removed with the conversation"
         );
     }
 

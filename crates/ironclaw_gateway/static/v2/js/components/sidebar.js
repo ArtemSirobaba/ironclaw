@@ -12,6 +12,7 @@ export function Sidebar({
   onClose,
   onNewChat,
   onSelectThread,
+  onDeleteThread,
 }) {
   return html`
     <aside
@@ -39,6 +40,7 @@ export function Sidebar({
           threads=${threadsState.threads}
           activeThreadId=${threadsState.activeThreadId}
           onSelect=${onSelectThread}
+          onDelete=${onDeleteThread}
         />
       </div>
 

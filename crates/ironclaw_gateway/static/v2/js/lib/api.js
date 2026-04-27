@@ -48,6 +48,12 @@ export function createThread() {
   return apiFetch("/api/chat/thread/new", { method: "POST" });
 }
 
+export function deleteThread(threadId) {
+  return apiFetch(`/api/chat/thread/${encodeURIComponent(threadId)}`, {
+    method: "DELETE",
+  });
+}
+
 // --- History ---
 
 export function fetchHistory({ threadId, limit = 50, before } = {}) {

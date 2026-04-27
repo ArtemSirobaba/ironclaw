@@ -291,6 +291,16 @@ impl ConversationStore for PgBackend {
             .await
     }
 
+    async fn delete_conversation_for_user(
+        &self,
+        conversation_id: Uuid,
+        user_id: &str,
+    ) -> Result<bool, DatabaseError> {
+        self.store
+            .delete_conversation_for_user(conversation_id, user_id)
+            .await
+    }
+
     async fn get_conversation_source_channel(
         &self,
         conversation_id: Uuid,
