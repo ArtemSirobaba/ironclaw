@@ -18,6 +18,13 @@ export function updateSetting(key, value) {
   });
 }
 
+export function importSettings(payload) {
+  return apiFetch("/api/settings/import", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function fetchTools() {
   return apiFetch("/api/settings/tools");
 }

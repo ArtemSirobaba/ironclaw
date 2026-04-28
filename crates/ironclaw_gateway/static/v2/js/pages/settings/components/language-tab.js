@@ -1,12 +1,25 @@
 import { html } from "../../../lib/html.js";
 import { Card } from "../../../design-system/card.js";
 import { AVAILABLE_LANGUAGES, useI18n, useT } from "../../../lib/i18n.js";
+import { matchesSearch } from "../lib/settings-search.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
-export function LanguageTab() {
+export function LanguageTab({ searchQuery = "" }) {
   const t = useT();
   const { lang, setLang } = useI18n();
 
   const current = AVAILABLE_LANGUAGES.find((l) => l.code === lang) || AVAILABLE_LANGUAGES[0];
+  const languages = AVAILABLE_LANGUAGES.filter((language) =>
+    matchesSearch(searchQuery, [
+      language.code,
+      language.name,
+      language.native,
+    ])
+  );
+
+  if (languages.length === 0) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
 
   return html`
     <${Card} padding="md">
@@ -26,7 +39,7 @@ export function LanguageTab() {
       </div>
 
       <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        ${AVAILABLE_LANGUAGES.map(
+        ${languages.map(
           (l) => html`
             <button
               key=${l.code}

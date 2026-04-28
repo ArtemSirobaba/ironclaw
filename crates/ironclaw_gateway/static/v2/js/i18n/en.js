@@ -122,6 +122,20 @@ registerPack("en", {
   "settings.users": "Users",
   "settings.language": "Language",
 
+  // Settings — toolbar
+  "settings.back": "Back",
+  "settings.searchPlaceholder": "Search settings...",
+  "settings.clearSearch": "Clear search",
+  "settings.noMatchingSettings": "No settings match \"{query}\"",
+  "settings.manageJson": "Settings JSON",
+  "settings.export": "Export",
+  "settings.import": "Import",
+  "settings.importing": "Importing...",
+  "settings.exportSuccess": "Settings exported",
+  "settings.importSuccess": "Settings imported",
+  "settings.importInvalid": "Selected file must contain a settings object",
+  "settings.importFailed": "Import failed: {message}",
+
   // Settings — restart banner
   "settings.restartRequired": "Some changes require a restart to take effect.",
 

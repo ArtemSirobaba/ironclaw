@@ -1,6 +1,10 @@
 import { React } from "../../../lib/html.js";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchSettingsExport, updateSetting } from "../lib/settings-api.js";
+import {
+  fetchSettingsExport,
+  importSettings as importSettingsPayload,
+  updateSetting,
+} from "../lib/settings-api.js";
 import { RESTART_REQUIRED_KEYS } from "../lib/settings-schema.js";
 
 export function useSettings() {
@@ -44,5 +48,30 @@ export function useSettings() {
     [mutation]
   );
 
-  return { settings, query, save, savedKeys, needsRestart, saveError: mutation.error };
+  const importMutation = useMutation({
+    mutationFn: importSettingsPayload,
+    onSuccess: (_data, payload) => {
+      queryClient.invalidateQueries({ queryKey: ["settings-export"] });
+      const importedKeys = Object.keys(payload?.settings || {});
+      if (importedKeys.some((key) => RESTART_REQUIRED_KEYS.has(key))) {
+        setNeedsRestart(true);
+      }
+    },
+  });
+
+  const importSettings = React.useCallback(
+    (payload) => importMutation.mutateAsync(payload),
+    [importMutation]
+  );
+
+  return {
+    settings,
+    query,
+    save,
+    savedKeys,
+    needsRestart,
+    importSettings,
+    isImporting: importMutation.isPending,
+    saveError: mutation.error || importMutation.error,
+  };
 }

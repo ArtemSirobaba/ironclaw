@@ -3,6 +3,8 @@ import { Card } from "../../../design-system/card.js";
 import { html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { useChannels } from "../hooks/useChannels.js";
+import { matchesSearch } from "../lib/settings-search.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
 function BuiltinChannelCard({ name, description, enabled, detail }) {
   const t = useT();
@@ -78,7 +80,113 @@ function ExtensionChannelCard({ channel, registryEntry }) {
   `;
 }
 
-export function ChannelsTab() {
+function buildBuiltInChannels(status, t) {
+  const enabledChannels = status.enabled_channels || [];
+  return [
+    {
+      id: "web",
+      name: t("channels.webGateway"),
+      description: t("channels.webGatewayDesc"),
+      enabled: true,
+      detail:
+        "SSE: " +
+        (status.sse_connections || 0) +
+        " · WS: " +
+        (status.ws_connections || 0),
+    },
+    {
+      id: "http",
+      name: t("channels.httpWebhook"),
+      description: t("channels.httpWebhookDesc"),
+      enabled: enabledChannels.includes("http"),
+      detail: "ENABLE_HTTP=true",
+    },
+    {
+      id: "cli",
+      name: t("channels.cli"),
+      description: t("channels.cliDesc"),
+      enabled: enabledChannels.includes("cli"),
+      detail: "ironclaw run --cli",
+    },
+    {
+      id: "repl",
+      name: t("channels.repl"),
+      description: t("channels.replDesc"),
+      enabled: enabledChannels.includes("repl"),
+      detail: "ironclaw run --repl",
+    },
+  ];
+}
+
+function deriveVisibleChannelGroups({
+  status,
+  channels,
+  channelRegistry,
+  mcpServers,
+  mcpRegistry,
+  searchQuery,
+  t,
+}) {
+  const builtInChannels = buildBuiltInChannels(status, t).filter((channel) =>
+    matchesSearch(searchQuery, [
+      t("channels.builtIn"),
+      channel.id,
+      channel.name,
+      channel.description,
+      channel.detail,
+    ])
+  );
+  const installedNames = new Set(channels.map((c) => c.name));
+  const visibleChannels = channels.filter((channel) =>
+    matchesSearch(searchQuery, [
+      t("channels.messaging"),
+      channel.name,
+      channel.display_name,
+      channel.description,
+      channel.onboarding_state,
+    ])
+  );
+  const availableRegistry = channelRegistry
+    .filter((r) => !installedNames.has(r.name))
+    .filter((entry) =>
+      matchesSearch(searchQuery, [
+        t("channels.messaging"),
+        entry.name,
+        entry.display_name,
+        entry.description,
+      ])
+    );
+  const installedMcpNames = new Set(mcpServers.map((m) => m.name));
+  const visibleMcpServers = mcpServers.filter((server) =>
+    matchesSearch(searchQuery, [
+      t("channels.mcpServers"),
+      server.name,
+      server.display_name,
+      server.description,
+      server.active ? t("channels.active") : t("channels.inactive"),
+    ])
+  );
+  const availableMcp = mcpRegistry
+    .filter((r) => !installedMcpNames.has(r.name))
+    .filter((entry) =>
+      matchesSearch(searchQuery, [
+        t("channels.mcpServers"),
+        entry.name,
+        entry.display_name,
+        entry.description,
+      ])
+    );
+
+  return {
+    builtInChannels,
+    visibleChannels,
+    availableRegistry,
+    visibleMcpServers,
+    availableMcp,
+  };
+}
+
+export function ChannelsTab({ searchQuery = "" }) {
   const t = useT();
   const {
     status,
@@ -110,54 +218,57 @@ export function ChannelsTab() {
     `;
   }
 
-  const enabledChannels = status.enabled_channels || [];
-  const installedNames = new Set(channels.map((c) => c.name));
-  const availableRegistry = channelRegistry.filter(
-    (r) => !installedNames.has(r.name)
-  );
-  const installedMcpNames = new Set(mcpServers.map((m) => m.name));
-  const availableMcp = mcpRegistry.filter(
-    (r) => !installedMcpNames.has(r.name)
-  );
+  const {
+    builtInChannels,
+    visibleChannels,
+    availableRegistry,
+    visibleMcpServers,
+    availableMcp,
+  } = deriveVisibleChannelGroups({
+    status,
+    channels,
+    channelRegistry,
+    mcpServers,
+    mcpRegistry,
+    searchQuery,
+    t,
+  });
+
+  if (
+    builtInChannels.length === 0 &&
+    visibleChannels.length === 0 &&
+    availableRegistry.length === 0 &&
+    visibleMcpServers.length === 0 &&
+    availableMcp.length === 0
+  ) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
 
   return html`
     <div className="space-y-5">
+      ${builtInChannels.length > 0 &&
+      html`
       <${Card} padding="md">
         <h3
           className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
         >
           ${t("channels.builtIn")}
         </h3>
-        <${BuiltinChannelCard}
-          name=${t("channels.webGateway")}
-          description=${t("channels.webGatewayDesc")}
-          enabled=${true}
-          detail=${"SSE: " +
-          (status.sse_connections || 0) +
-          " · WS: " +
-          (status.ws_connections || 0)}
-        />
-        <${BuiltinChannelCard}
-          name=${t("channels.httpWebhook")}
-          description=${t("channels.httpWebhookDesc")}
-          enabled=${enabledChannels.includes("http")}
-          detail="ENABLE_HTTP=true"
-        />
-        <${BuiltinChannelCard}
-          name=${t("channels.cli")}
-          description=${t("channels.cliDesc")}
-          enabled=${enabledChannels.includes("cli")}
-          detail="ironclaw run --cli"
-        />
-        <${BuiltinChannelCard}
-          name=${t("channels.repl")}
-          description=${t("channels.replDesc")}
-          enabled=${enabledChannels.includes("repl")}
-          detail="ironclaw run --repl"
-        />
+        ${builtInChannels.map(
+          (channel) => html`
+            <${BuiltinChannelCard}
+              key=${channel.id}
+              name=${channel.name}
+              description=${channel.description}
+              enabled=${channel.enabled}
+              detail=${channel.detail}
+            />
+          `
+        )}
       <//>
+      `}
 
-      ${(channels.length > 0 || availableRegistry.length > 0) &&
+      ${(visibleChannels.length > 0 || availableRegistry.length > 0) &&
       html`
         <${Card} padding="md">
           <h3
@@ -165,7 +276,7 @@ export function ChannelsTab() {
           >
             ${t("channels.messaging")}
           </h3>
-          ${channels.map(
+          ${visibleChannels.map(
             (ch) => html`
               <${ExtensionChannelCard}
                 key=${ch.name}
@@ -181,7 +292,7 @@ export function ChannelsTab() {
           )}
         <//>
       `}
-      ${(mcpServers.length > 0 || availableMcp.length > 0) &&
+      ${(visibleMcpServers.length > 0 || availableMcp.length > 0) &&
       html`
         <${Card} padding="md">
           <h3
@@ -189,7 +300,7 @@ export function ChannelsTab() {
           >
             ${t("channels.mcpServers")}
           </h3>
-          ${mcpServers.map(
+          ${visibleMcpServers.map(
             (m) =>
               html`
                 <div

@@ -3,9 +3,18 @@ import { Badge } from "../../../design-system/badge.js";
 import { Card } from "../../../design-system/card.js";
 import { useT } from "../../../lib/i18n.js";
 import { INFERENCE_FIELDS } from "../lib/settings-schema.js";
+import { filterSettingsSections, matchesSearch } from "../lib/settings-search.js";
 import { SettingsGroup } from "./settings-field.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
-export function InferenceTab({ settings, gatewayStatus, onSave, savedKeys, isLoading }) {
+export function InferenceTab({
+  settings,
+  gatewayStatus,
+  onSave,
+  savedKeys,
+  isLoading,
+  searchQuery = "",
+}) {
   const t = useT();
   if (isLoading) {
     return html`<${SettingsSkeleton} />`;
@@ -13,9 +22,23 @@ export function InferenceTab({ settings, gatewayStatus, onSave, savedKeys, isLoa
 
   const backend = settings.llm_backend || gatewayStatus?.llm_backend || "nearai";
   const model = settings.selected_model || gatewayStatus?.llm_model || "";
+  const sections = filterSettingsSections(INFERENCE_FIELDS, settings, searchQuery, t);
+  const showProvider = matchesSearch(searchQuery, [
+    t("inference.provider"),
+    t("inference.backend"),
+    backend,
+    t("inference.model"),
+    model,
+  ]);
+
+  if (!showProvider && sections.length === 0) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
 
   return html`
     <div className="space-y-5">
+      ${showProvider &&
+      html`
       <${Card} padding="none" className="p-4 sm:p-5">
         <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">${t("inference.provider")}</h3>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -34,8 +57,9 @@ export function InferenceTab({ settings, gatewayStatus, onSave, savedKeys, isLoa
           </div>
         </div>
       <//>
+      `}
 
-      ${INFERENCE_FIELDS.map(
+      ${sections.map(
         (section) =>
           html`
             <${SettingsGroup}

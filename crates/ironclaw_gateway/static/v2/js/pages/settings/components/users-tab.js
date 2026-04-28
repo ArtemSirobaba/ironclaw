@@ -6,6 +6,7 @@ import { Input, FormField, Label } from "../../../design-system/input.js";
 import { React, html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { useUsers } from "../hooks/useUsers.js";
+import { matchesSearch } from "../lib/settings-search.js";
 
 function CreateUserForm({ onCreate, isCreating, error }) {
   const t = useT();
@@ -134,7 +135,7 @@ function UserRow({ user }) {
   `;
 }
 
-export function UsersTab() {
+export function UsersTab({ searchQuery = "" }) {
   const t = useT();
   const { users, query, isForbidden, createUser, createError, isCreating } =
     useUsers();
@@ -184,6 +185,17 @@ export function UsersTab() {
     `;
   }
 
+  const filteredUsers = users.filter((user) =>
+    matchesSearch(searchQuery, [
+      user.id,
+      user.display_name,
+      user.email,
+      user.role,
+      user.status,
+      user.last_active,
+    ])
+  );
+
   return html`
     <div className="space-y-5">
       <${CreateUserForm}
@@ -196,13 +208,17 @@ export function UsersTab() {
         <h3
           className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]"
         >
-          ${t("users.title", { count: users.length })}
+          ${t("users.title", { count: filteredUsers.length })}
         </h3>
         ${users.length === 0
           ? html`<p className="py-4 text-sm text-[var(--v2-text-muted)]">
               ${t("users.noUsers")}
             </p>`
-          : users.map(
+          : filteredUsers.length === 0
+          ? html`<p className="py-4 text-sm text-[var(--v2-text-muted)]">
+              ${t("settings.noMatchingSettings", { query: searchQuery })}
+            </p>`
+          : filteredUsers.map(
               (user) => html`<${UserRow} key=${user.id} user=${user} />`
             )}
       <//>

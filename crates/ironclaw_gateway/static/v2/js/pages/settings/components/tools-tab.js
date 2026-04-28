@@ -1,9 +1,10 @@
 import { Icon } from "../../../design-system/icons.js";
 import { Badge } from "../../../design-system/badge.js";
 import { Card } from "../../../design-system/card.js";
-import { React, html } from "../../../lib/html.js";
+import { html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { useTools } from "../hooks/useTools.js";
+import { matchesSearch } from "../lib/settings-search.js";
 
 function ToolRow({ tool, onPermissionChange, isSaved }) {
   const t = useT();
@@ -80,10 +81,9 @@ function ToolRow({ tool, onPermissionChange, isSaved }) {
   `;
 }
 
-export function ToolsTab() {
+export function ToolsTab({ searchQuery = "" }) {
   const t = useT();
   const { tools, query, setPermission, savedTools } = useTools();
-  const [filter, setFilter] = React.useState("");
 
   if (query.isLoading) {
     return html`
@@ -114,24 +114,26 @@ export function ToolsTab() {
     `;
   }
 
-  const filtered = filter
-    ? tools.filter((t) => t.name.toLowerCase().includes(filter.toLowerCase()))
-    : tools;
+  const filtered = tools.filter((tool) =>
+    matchesSearch(searchQuery, [
+      tool.name,
+      tool.description,
+      tool.state,
+      tool.default_state,
+      tool.locked ? t("tools.disabled") : "",
+    ])
+  );
 
   return html`
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <input
-          type="text"
-          value=${filter}
-          onChange=${(e) => setFilter(e.target.value)}
-          placeholder=${t("tools.filterPlaceholder")}
-          className="h-9 flex-1 rounded-md border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-3 text-sm text-[var(--v2-text-strong)] outline-none placeholder:text-[var(--v2-text-faint)] focus:border-[color-mix(in_srgb,var(--v2-accent)_45%,var(--v2-panel-border))]"
-        />
-        <span className="font-mono text-[11px] text-[var(--v2-text-faint)]">
-          ${filtered.length} / ${tools.length}
-        </span>
-      </div>
+      ${searchQuery &&
+      html`
+        <div className="flex justify-end">
+          <span className="font-mono text-[11px] text-[var(--v2-text-faint)]">
+            ${filtered.length} / ${tools.length}
+          </span>
+        </div>
+      `}
 
       <${Card} padding="md">
         <h3

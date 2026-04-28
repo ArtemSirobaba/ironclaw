@@ -10,6 +10,11 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 4. Extension onboarding and widget API.
 5. Active work, TEE, restart, and polish.
 
+## Recently Completed
+
+- 2026-04-28: Settings import/export JSON toolbar in V2, backed by `/api/settings/export` and `/api/settings/import`.
+- 2026-04-28: Settings toolbar search and back-to-inference navigation in V2.
+
 ## Missing Items
 
 ### Auth Parity
@@ -32,9 +37,6 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 
 ### Settings Utilities
 
-- Settings import/export JSON.
-- Settings search.
-- Settings back/toolbar UX.
 - Restart banner action. V2 shows restart-needed UI, but does not actually trigger restart.
 
 ### Restart And TEE UI

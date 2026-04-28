@@ -3,8 +3,10 @@ import { Badge } from "../../../design-system/badge.js";
 import { Card } from "../../../design-system/card.js";
 import { useT } from "../../../lib/i18n.js";
 import { useSkills } from "../hooks/useSkills.js";
+import { matchesSearch } from "../lib/settings-search.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
-export function SkillsTab() {
+export function SkillsTab({ searchQuery = "" }) {
   const t = useT();
   const { skills, query } = useSkills();
 
@@ -33,6 +35,17 @@ export function SkillsTab() {
     `;
   }
 
+  const filteredSkills = skills.filter((skill) =>
+    matchesSearch(searchQuery, [
+      skill.name,
+      skill.id,
+      skill.description,
+      skill.keywords,
+      skill.trust_level,
+      skill.version,
+    ])
+  );
+
   if (skills.length === 0) {
     return html`
       <${Card} padding="lg">
@@ -44,12 +57,16 @@ export function SkillsTab() {
     `;
   }
 
+  if (filteredSkills.length === 0) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
+
   return html`
     <${Card} padding="md">
       <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">
         ${t("skills.installed")}
       </h3>
-      ${skills.map(
+      ${filteredSkills.map(
         (skill) => html`
           <div
             key=${skill.name || skill.id}

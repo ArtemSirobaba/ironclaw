@@ -1,5 +1,5 @@
-import { Navigate, useOutletContext, useParams } from "react-router";
-import { html } from "../../lib/html.js";
+import { Navigate, useNavigate, useOutletContext, useParams } from "react-router";
+import { React, html } from "../../lib/html.js";
 import { useT } from "../../lib/i18n.js";
 import { AgentTab } from "./components/agent-tab.js";
 import { ChannelsTab } from "./components/channels-tab.js";
@@ -8,6 +8,7 @@ import { LanguageTab } from "./components/language-tab.js";
 import { NetworkingTab } from "./components/networking-tab.js";
 import { RestartBanner } from "./components/restart-banner.js";
 import { SkillsTab } from "./components/skills-tab.js";
+import { SettingsToolbar } from "./components/settings-toolbar.js";
 import { ToolsTab } from "./components/tools-tab.js";
 import { UsersTab } from "./components/users-tab.js";
 import { useSettings } from "./hooks/useSettings.js";
@@ -15,9 +16,27 @@ import { useSettings } from "./hooks/useSettings.js";
 export function SettingsPage() {
   const t = useT();
   const { tab = "inference" } = useParams();
+  const navigate = useNavigate();
   const { gatewayStatus } = useOutletContext();
-  const { settings, query, save, savedKeys, needsRestart, saveError } =
-    useSettings();
+  const {
+    settings,
+    query,
+    save,
+    savedKeys,
+    needsRestart,
+    importSettings,
+    isImporting,
+    saveError,
+  } = useSettings();
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  React.useEffect(() => {
+    setSearchQuery("");
+  }, [tab]);
+
+  const handleBack = React.useCallback(() => {
+    navigate("/settings/inference");
+  }, [navigate]);
 
   const isLoading = query.isLoading;
 
@@ -28,24 +47,27 @@ export function SettingsPage() {
       onSave=${save}
       savedKeys=${savedKeys}
       isLoading=${isLoading}
+      searchQuery=${searchQuery}
     />`,
     agent: html`<${AgentTab}
       settings=${settings}
       onSave=${save}
       savedKeys=${savedKeys}
       isLoading=${isLoading}
+      searchQuery=${searchQuery}
     />`,
-    channels: html`<${ChannelsTab} />`,
+    channels: html`<${ChannelsTab} searchQuery=${searchQuery} />`,
     networking: html`<${NetworkingTab}
       settings=${settings}
       onSave=${save}
       savedKeys=${savedKeys}
       isLoading=${isLoading}
+      searchQuery=${searchQuery}
     />`,
-    tools: html`<${ToolsTab} />`,
-    skills: html`<${SkillsTab} />`,
-    users: html`<${UsersTab} />`,
-    language: html`<${LanguageTab} />`,
+    tools: html`<${ToolsTab} searchQuery=${searchQuery} />`,
+    skills: html`<${SkillsTab} searchQuery=${searchQuery} />`,
+    users: html`<${UsersTab} searchQuery=${searchQuery} />`,
+    language: html`<${LanguageTab} searchQuery=${searchQuery} />`,
   };
 
   if (!tabContent[tab]) {
@@ -58,6 +80,17 @@ export function SettingsPage() {
         <div className="v2-page-entrance flex-1 p-4 sm:p-6">
           <div className="space-y-5">
             <${RestartBanner} visible=${needsRestart} />
+
+            <${SettingsToolbar}
+              settingsExport=${query.data}
+              onImport=${importSettings}
+              isImporting=${isImporting}
+              searchQuery=${searchQuery}
+              onSearchChange=${setSearchQuery}
+              onSearchClear=${() => setSearchQuery("")}
+              onBack=${handleBack}
+              canGoBack=${tab !== "inference"}
+            />
 
             ${saveError &&
             html`

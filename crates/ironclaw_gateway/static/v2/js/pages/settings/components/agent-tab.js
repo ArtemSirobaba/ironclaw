@@ -1,16 +1,31 @@
 import { html } from "../../../lib/html.js";
 import { Card } from "../../../design-system/card.js";
 import { AGENT_FIELDS } from "../lib/settings-schema.js";
+import { filterSettingsSections } from "../lib/settings-search.js";
 import { SettingsGroup } from "./settings-field.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
+import { useT } from "../../../lib/i18n.js";
 
-export function AgentTab({ settings, onSave, savedKeys, isLoading }) {
+export function AgentTab({
+  settings,
+  onSave,
+  savedKeys,
+  isLoading,
+  searchQuery = "",
+}) {
+  const t = useT();
   if (isLoading) {
     return html`<${AgentSkeleton} />`;
   }
 
+  const sections = filterSettingsSections(AGENT_FIELDS, settings, searchQuery, t);
+  if (sections.length === 0) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
+
   return html`
     <div className="space-y-5">
-      ${AGENT_FIELDS.map(
+      ${sections.map(
         (section) =>
           html`
             <${SettingsGroup}

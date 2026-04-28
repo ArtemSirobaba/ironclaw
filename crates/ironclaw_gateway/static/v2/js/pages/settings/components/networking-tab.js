@@ -1,9 +1,19 @@
 import { html } from "../../../lib/html.js";
 import { Card } from "../../../design-system/card.js";
 import { NETWORKING_FIELDS } from "../lib/settings-schema.js";
+import { filterSettingsSections } from "../lib/settings-search.js";
 import { SettingsGroup } from "./settings-field.js";
+import { SettingsSearchEmpty } from "./settings-search-empty.js";
+import { useT } from "../../../lib/i18n.js";
 
-export function NetworkingTab({ settings, onSave, savedKeys, isLoading }) {
+export function NetworkingTab({
+  settings,
+  onSave,
+  savedKeys,
+  isLoading,
+  searchQuery = "",
+}) {
+  const t = useT();
   if (isLoading) {
     return html`
       <div className="space-y-5">
@@ -28,9 +38,14 @@ export function NetworkingTab({ settings, onSave, savedKeys, isLoading }) {
     `;
   }
 
+  const sections = filterSettingsSections(NETWORKING_FIELDS, settings, searchQuery, t);
+  if (sections.length === 0) {
+    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+  }
+
   return html`
     <div className="space-y-5">
-      ${NETWORKING_FIELDS.map(
+      ${sections.map(
         (section) =>
           html`
             <${SettingsGroup}
