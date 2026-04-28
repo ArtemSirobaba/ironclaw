@@ -12,6 +12,7 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 
 ## Recently Completed
 
+- 2026-04-28: V2 auth parity pass for OAuth provider buttons, URL `?token=` auto-login, cookie/OIDC session probing, `/auth/logout` cleanup, and `/api/profile` avatar/account/admin-role UI filtering.
 - 2026-04-28: Settings import/export JSON toolbar in V2, backed by `/api/settings/export` and `/api/settings/import`.
 - 2026-04-28: Settings toolbar search and back-to-inference navigation in V2.
 
@@ -19,11 +20,7 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 
 ### Auth Parity
 
-- OAuth provider discovery/buttons: Google, GitHub, Apple.
-- OIDC/reverse-proxy cookie auth auto-login.
-- URL `?token=` auto-login.
-- `/auth/logout` cookie cleanup.
-- `/api/profile` user avatar/account menu/admin-role UI filtering.
+Auth parity items currently tracked here are complete. Re-open this section if V1-only auth behavior is found during manual browser testing.
 
 ### LLM Provider Management
 

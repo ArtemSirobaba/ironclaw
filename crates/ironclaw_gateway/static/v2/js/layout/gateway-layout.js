@@ -9,7 +9,7 @@ import { Sidebar } from "../components/sidebar.js";
 import { PageHeader } from "../components/page-header.js";
 import { cn } from "../utils/cn.js";
 
-export function GatewayLayout({ token, onSignOut }) {
+export function GatewayLayout({ token, profile, isAdmin, onSignOut }) {
   const t = useT();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useInterfaceTheme();
@@ -50,6 +50,8 @@ export function GatewayLayout({ token, onSignOut }) {
           threadsState=${threadsState}
           theme=${theme}
           toggleTheme=${toggleTheme}
+          profile=${profile}
+          isAdmin=${isAdmin}
           onSignOut=${onSignOut}
           onClose=${sidebar.close}
           onNewChat=${sidebar.newChat}
@@ -80,6 +82,8 @@ export function GatewayLayout({ token, onSignOut }) {
             context=${{
               gatewayStatus: status,
               gatewayStatusQuery: statusQuery,
+              currentUser: profile,
+              isAdmin,
               threadsState,
             }}
           />

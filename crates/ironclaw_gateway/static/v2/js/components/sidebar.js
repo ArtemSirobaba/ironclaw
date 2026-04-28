@@ -8,6 +8,8 @@ export function Sidebar({
   threadsState,
   theme,
   toggleTheme,
+  profile,
+  isAdmin,
   onSignOut,
   onClose,
   onNewChat,
@@ -32,6 +34,7 @@ export function Sidebar({
       <${SidebarNav}
         onNewChat=${onNewChat}
         isCreating=${threadsState.isCreating}
+        isAdmin=${isAdmin}
         onNavigate=${onClose}
       />
 
@@ -47,6 +50,7 @@ export function Sidebar({
       <${SidebarFooter}
         theme=${theme}
         toggleTheme=${toggleTheme}
+        profile=${profile}
         onSignOut=${onSignOut}
       />
     </aside>

@@ -23,13 +23,33 @@ export async function apiFetch(path, options = {}) {
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(path, { ...options, headers });
+  const response = await fetch(path, { credentials: "same-origin", ...options, headers });
   if (!response.ok) {
     const message = await response.text().catch(() => response.statusText);
     throw new Error(message || response.statusText);
   }
   const contentType = response.headers.get("content-type") || "";
   return contentType.includes("application/json") ? response.json() : response.text();
+}
+
+export function fetchAuthProviders() {
+  return apiFetch("/auth/providers");
+}
+
+export function fetchProfile() {
+  return apiFetch("/api/profile");
+}
+
+export async function logoutSession() {
+  const response = await fetch("/auth/logout", {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    const message = await response.text().catch(() => response.statusText);
+    throw new Error(message || response.statusText);
+  }
+  return response.text();
 }
 
 // --- Gateway status ---

@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router";
 import { primaryRoutes, EXPANDABLE_SUB_ROUTES } from "../app/routes.js";
 import { Icon } from "../design-system/icons.js";
-import { html } from "../lib/html.js";
+import { React, html } from "../lib/html.js";
 import { useT } from "../lib/i18n.js";
 import { cn } from "../utils/cn.js";
 
@@ -101,8 +101,12 @@ function ExpandableNavItem({ route, label, subRoutes, onNavigate }) {
   `;
 }
 
-export function SidebarNav({ onNewChat, isCreating, onNavigate }) {
+export function SidebarNav({ onNewChat, isCreating, isAdmin = true, onNavigate }) {
   const t = useT();
+  const visibleRoutes = React.useMemo(
+    () => navRoutes.filter((route) => isAdmin || route.id !== "admin"),
+    [isAdmin]
+  );
 
   return html`
     <div className="flex flex-col px-3 py-2">
@@ -121,9 +125,11 @@ export function SidebarNav({ onNewChat, isCreating, onNavigate }) {
       </button>
 
       <nav className="mt-2 flex flex-col gap-1">
-        ${navRoutes.map((route) => {
-          const subRoutes = EXPANDABLE_SUB_ROUTES[route.id];
-          if (subRoutes) {
+        ${visibleRoutes.map((route) => {
+          const subRoutes = (EXPANDABLE_SUB_ROUTES[route.id] || []).filter(
+            (subRoute) => isAdmin || !(route.id === "settings" && subRoute.id === "users")
+          );
+          if (subRoutes.length > 0) {
             return html`
               <${ExpandableNavItem}
                 key=${route.id}

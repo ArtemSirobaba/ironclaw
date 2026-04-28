@@ -1,13 +1,21 @@
 import { Icon } from "../../../design-system/icons.js";
-import { html } from "../../../lib/html.js";
+import { React, html } from "../../../lib/html.js";
 import { useT } from "../../../lib/i18n.js";
 import { SETTINGS_TABS } from "../lib/settings-schema.js";
 
-export function SettingsTabs({ activeTab, onTabChange }) {
+function useVisibleTabs(isAdmin) {
+  return React.useMemo(
+    () => SETTINGS_TABS.filter((tab) => isAdmin || tab.id !== "users"),
+    [isAdmin]
+  );
+}
+
+export function SettingsTabs({ activeTab, onTabChange, isAdmin = true }) {
   const t = useT();
+  const tabs = useVisibleTabs(isAdmin);
   return html`
     <div className="flex flex-col gap-1">
-      ${SETTINGS_TABS.map(
+      ${tabs.map(
         (tab) => html`
           <button
             key=${tab.id}
@@ -37,9 +45,10 @@ export function SettingsTabs({ activeTab, onTabChange }) {
   `;
 }
 
-export function SettingsTabsMobile({ activeTab, onTabChange }) {
+export function SettingsTabsMobile({ activeTab, onTabChange, isAdmin = true }) {
   const t = useT();
-  const active = SETTINGS_TABS.find((tab) => tab.id === activeTab) || SETTINGS_TABS[0];
+  const tabs = useVisibleTabs(isAdmin);
+  const active = tabs.find((tab) => tab.id === activeTab) || tabs[0];
   return html`
     <details className="group">
       <summary
@@ -57,7 +66,7 @@ export function SettingsTabsMobile({ activeTab, onTabChange }) {
         </span>
       </summary>
       <div className="mt-2 grid gap-1 rounded-[14px] border border-white/10 bg-white/[0.03] p-1">
-        ${SETTINGS_TABS.map(
+        ${tabs.map(
           (tab) => html`
             <button
               key=${tab.id}

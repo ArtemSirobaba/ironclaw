@@ -15,10 +15,22 @@ import { SettingsPage } from "../pages/settings/settings-page.js";
 import { AdminPage } from "../pages/admin/admin-page.js";
 import { LogsPage } from "../pages/logs/logs-page.js";
 
+function AuthLoading() {
+  return html`
+    <main className="grid min-h-[100dvh] place-items-center bg-[var(--v2-canvas)] px-6">
+      <div className="text-sm text-[var(--v2-text-muted)]">Checking session...</div>
+    </main>
+  `;
+}
+
 function LoginPage({ auth }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || defaultRoute;
+  const fromLocation = location.state?.from;
+  const from = fromLocation
+    ? `${fromLocation.pathname || defaultRoute}${fromLocation.search || ""}${fromLocation.hash || ""}`
+    : defaultRoute;
+  const redirectAfter = `/v2${from === "/" ? "" : from}`;
 
   const handleSubmit = React.useCallback(
     (token) => {
@@ -28,15 +40,28 @@ function LoginPage({ auth }) {
     [auth, from, navigate]
   );
 
+  if (auth.isChecking) {
+    return html`<${AuthLoading} />`;
+  }
+
   if (auth.isAuthenticated) {
     return html`<${Navigate} to=${from} replace />`;
   }
 
-  return html`<${LoginView} initialToken=${auth.token} error=${auth.error} onSubmit=${handleSubmit} />`;
+  return html`<${LoginView}
+    initialToken=${auth.token}
+    error=${auth.error}
+    oauthRedirectAfter=${redirectAfter}
+    onSubmit=${handleSubmit}
+  />`;
 }
 
 function RequireAuth({ auth, children }) {
   const location = useLocation();
+
+  if (auth.isChecking) {
+    return html`<${AuthLoading} />`;
+  }
 
   if (!auth.isAuthenticated) {
     return html`<${Navigate} to="/login" replace state=${{ from: location }} />`;
@@ -48,9 +73,21 @@ function RequireAuth({ auth, children }) {
 function AuthenticatedLayout({ auth }) {
   return html`
     <${RequireAuth} auth=${auth}>
-      <${GatewayLayout} token=${auth.token} onSignOut=${auth.signOut} />
+      <${GatewayLayout}
+        token=${auth.token}
+        profile=${auth.profile}
+        isAdmin=${auth.isAdmin}
+        onSignOut=${auth.signOut}
+      />
     <//>
   `;
+}
+
+function AdminRoute({ auth }) {
+  if (!auth.isAdmin) {
+    return html`<${Navigate} to=${defaultRoute} replace />`;
+  }
+  return html`<${AdminPage} />`;
 }
 
 export function App() {
@@ -82,8 +119,8 @@ export function App() {
           <${Route} path="logs" element=${html`<${LogsPage} />`} />
           <${Route} path="settings" element=${html`<${SettingsPage} />`} />
           <${Route} path="settings/:tab" element=${html`<${SettingsPage} />`} />
-          <${Route} path="admin" element=${html`<${AdminPage} />`} />
-          <${Route} path="admin/:tab" element=${html`<${AdminPage} />`} />
+          <${Route} path="admin" element=${html`<${AdminRoute} auth=${auth} />`} />
+          <${Route} path="admin/:tab" element=${html`<${AdminRoute} auth=${auth} />`} />
         <//>
         <${Route} path="*" element=${html`<${Navigate} to=${defaultRoute} replace />`} />
       <//>

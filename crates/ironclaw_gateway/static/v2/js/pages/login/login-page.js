@@ -1,16 +1,19 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../../design-system/button.js";
 import { Card } from "../../design-system/card.js";
-import { Input, FormField, Label } from "../../design-system/input.js";
+import { Input, FormField } from "../../design-system/input.js";
 import { Icon } from "../../design-system/icons.js";
 import { useInterfaceTheme } from "../../design-system/theme.js";
 import { html } from "../../lib/html.js";
 import { useT } from "../../lib/i18n.js";
 import { cn } from "../../utils/cn.js";
+import { OAuthProviderButtons } from "./components/oauth-provider-buttons.js";
+import { useOAuthProviders } from "./hooks/useOAuthProviders.js";
 
-export function LoginPage({ initialToken, error, onSubmit }) {
+export function LoginPage({ initialToken, error, oauthRedirectAfter = "/v2", onSubmit }) {
   const t = useT();
   const { theme, toggleTheme } = useInterfaceTheme();
+  const oauthProviders = useOAuthProviders();
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -97,6 +100,11 @@ export function LoginPage({ initialToken, error, onSubmit }) {
             ${t("login.connect")}
           <//>
         </form>
+
+        <${OAuthProviderButtons}
+          providers=${oauthProviders}
+          redirectAfter=${oauthRedirectAfter}
+        />
       <//>
     </main>
   `;

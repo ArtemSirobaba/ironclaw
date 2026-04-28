@@ -52,6 +52,8 @@ registerPack("en", {
   "login.tokenPlaceholder": "Paste your auth token",
   "login.tokenHint": "Use the token printed by the local gateway process.",
   "login.connect": "Connect",
+  "login.oauthDivider": "or continue with",
+  "login.oauthProvider": "Continue with {provider}",
 
   // Chat — empty state
   "chat.heroTitle": "Hello, what do you need help with?",

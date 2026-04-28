@@ -17,7 +17,7 @@ export function SettingsPage() {
   const t = useT();
   const { tab = "inference" } = useParams();
   const navigate = useNavigate();
-  const { gatewayStatus } = useOutletContext();
+  const { gatewayStatus, isAdmin = true } = useOutletContext();
   const {
     settings,
     query,
@@ -70,7 +70,7 @@ export function SettingsPage() {
     language: html`<${LanguageTab} searchQuery=${searchQuery} />`,
   };
 
-  if (!tabContent[tab]) {
+  if (!tabContent[tab] || (!isAdmin && tab === "users")) {
     return html`<${Navigate} to="/settings/inference" replace />`;
   }
 
