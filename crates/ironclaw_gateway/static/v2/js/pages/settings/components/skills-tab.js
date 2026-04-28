@@ -1,37 +1,69 @@
-import { html } from "../../../lib/html.js";
-import { Badge } from "../../../design-system/badge.js";
+import { React, html } from "../../../lib/html.js";
 import { Card } from "../../../design-system/card.js";
 import { useT } from "../../../lib/i18n.js";
 import { useSkills } from "../hooks/useSkills.js";
 import { matchesSearch } from "../lib/settings-search.js";
+import { SkillCard } from "./skill-card.js";
+import { SkillInstallPanel } from "./skill-install-panel.js";
 import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
 export function SkillsTab({ searchQuery = "" }) {
   const t = useT();
-  const { skills, query } = useSkills();
+  const {
+    skills,
+    query,
+    installSkill,
+    removeSkill,
+    isInstalling,
+    isRemoving,
+  } = useSkills();
+  const [actionError, setActionError] = React.useState("");
+  const [actionResult, setActionResult] = React.useState("");
+
+  const handleRemove = React.useCallback(async (name) => {
+    if (!window.confirm(t("skills.confirmRemove", { name }))) return;
+    setActionError("");
+    setActionResult("");
+    try {
+      const response = await removeSkill(name);
+      if (!response?.success) {
+        setActionError(response?.message || t("skills.removeFailed"));
+        return;
+      }
+      setActionResult(response.message || t("skills.removed", { name }));
+    } catch (err) {
+      setActionError(err.message || t("skills.removeFailed"));
+    }
+  }, [removeSkill, t]);
 
   if (query.isLoading) {
     return html`
-      <${Card} padding="md">
-        <div className="mb-4 h-3 w-24 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
-        ${[1, 2, 3].map((i) => html`
-          <div key=${i} className="flex items-center justify-between border-t border-[var(--v2-panel-border)] py-4 first:border-0">
-            <div>
-              <div className="h-4 w-32 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
-              <div className="mt-1 h-3 w-48 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+      <div className="space-y-4">
+        <${SkillInstallPanel} onInstall=${installSkill} isInstalling=${isInstalling} />
+        <${Card} padding="md">
+          <div className="mb-4 h-3 w-24 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+          ${[1, 2, 3].map((i) => html`
+            <div key=${i} className="flex items-center justify-between border-t border-[var(--v2-panel-border)] py-4 first:border-0">
+              <div>
+                <div className="h-4 w-32 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+                <div className="mt-1 h-3 w-48 animate-pulse rounded bg-[var(--v2-surface-muted)]" />
+              </div>
+              <div className="h-6 w-20 animate-pulse rounded-full bg-[var(--v2-surface-muted)]" />
             </div>
-            <div className="h-6 w-20 animate-pulse rounded-full bg-[var(--v2-surface-muted)]" />
-          </div>
-        `)}
-      <//>
+          `)}
+        <//>
+      </div>
     `;
   }
 
   if (query.error) {
     return html`
-      <${Card} padding="md">
-        <p className="text-sm text-[var(--v2-danger-text)]">${t("skills.failedLoad", { message: query.error.message })}</p>
-      <//>
+      <div className="space-y-4">
+        <${SkillInstallPanel} onInstall=${installSkill} isInstalling=${isInstalling} />
+        <${Card} padding="md">
+          <p className="text-sm text-[var(--v2-danger-text)]">${t("skills.failedLoad", { message: query.error.message })}</p>
+        <//>
+      </div>
     `;
   }
 
@@ -48,63 +80,59 @@ export function SkillsTab({ searchQuery = "" }) {
 
   if (skills.length === 0) {
     return html`
-      <${Card} padding="lg">
-        <h3 className="text-lg font-semibold text-[var(--v2-text-strong)]">${t("skills.noInstalled")}</h3>
-        <p className="mt-2 max-w-md text-sm leading-6 text-[var(--v2-text-muted)]">
-          ${t("skills.noInstalledDesc")}
-        </p>
-      <//>
+      <div className="space-y-4">
+        <${SkillInstallPanel} onInstall=${installSkill} isInstalling=${isInstalling} />
+        <${Card} padding="lg">
+          <h3 className="text-lg font-semibold text-[var(--v2-text-strong)]">${t("skills.noInstalled")}</h3>
+          <p className="mt-2 max-w-md text-sm leading-6 text-[var(--v2-text-muted)]">
+            ${t("skills.noInstalledDesc")}
+          </p>
+        <//>
+      </div>
     `;
   }
 
   if (filteredSkills.length === 0) {
-    return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
+    return html`
+      <div className="space-y-4">
+        <${SkillInstallPanel} onInstall=${installSkill} isInstalling=${isInstalling} />
+        <${SettingsSearchEmpty} query=${searchQuery} />
+      </div>
+    `;
   }
 
   return html`
-    <${Card} padding="md">
-      <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">
-        ${t("skills.installed")}
-      </h3>
-      ${filteredSkills.map(
-        (skill) => html`
-          <div
-            key=${skill.name || skill.id}
-            className="flex items-start justify-between gap-4 border-t border-[var(--v2-panel-border)] py-4 first:border-0 first:pt-0"
-          >
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[var(--v2-text)]">${skill.name || skill.id}</span>
-                <${Badge}
-                  tone=${skill.trust_level === "trusted" ? "positive" : "muted"}
-                  label=${skill.trust_level || "installed"}
-                  size="sm"
-                />
-              </div>
-              ${skill.description && html`
-                <div className="mt-1 text-xs text-[var(--v2-text-muted)]">${skill.description}</div>
-              `}
-              ${skill.keywords?.length > 0 && html`
-                <div className="mt-2 flex flex-wrap gap-1">
-                  ${skill.keywords.map(
-                    (kw) => html`
-                      <span
-                        key=${kw}
-                        className="rounded border border-[var(--v2-panel-border)] bg-[var(--v2-surface-soft)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--v2-text-muted)]"
-                      >
-                        ${kw}
-                      </span>
-                    `
-                  )}
-                </div>
-              `}
-            </div>
-            ${skill.version && html`
-              <span className="shrink-0 font-mono text-[11px] text-[var(--v2-text-faint)]">v${skill.version}</span>
-            `}
-          </div>
-        `
-      )}
-    <//>
+    <div className="space-y-4">
+      <${SkillInstallPanel} onInstall=${installSkill} isInstalling=${isInstalling} />
+      <${SkillActionResult} error=${actionError} result=${actionResult} />
+      <${Card} padding="md">
+        <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">
+          ${t("skills.installed")}
+        </h3>
+        ${filteredSkills.map(
+          (skill) => html`
+            <${SkillCard}
+              key=${skill.name || skill.id}
+              skill=${skill}
+              onRemove=${handleRemove}
+              isRemoving=${isRemoving}
+            />
+          `
+        )}
+      <//>
+    </div>
+  `;
+}
+
+function SkillActionResult({ error, result }) {
+  if (!error && !result) return null;
+  return html`
+    <div
+      className=${error
+        ? "rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+        : "rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200"}
+    >
+      ${error || result}
+    </div>
   `;
 }

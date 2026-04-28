@@ -19,6 +19,9 @@ Use this as the working checklist. Each task should leave the frontend usable, u
 - [x] 2026-04-28: Settings toolbar search and back-to-inference navigation.
 - [x] 2026-04-28: LLM provider management for provider listing, custom provider add/edit/delete, built-in provider configuration, atomic activation, connection tests, model fetching, and provider override persistence.
 - [x] 2026-04-28: Restart-needed banner action with Docker-gated availability, confirmation, `/restart` chat dispatch, reconnect progress, and rejection/timeout feedback.
+- [x] 2026-04-28: TEE shield with attestation discovery, summary popover, and copy-report feedback.
+- [x] 2026-04-28: Skills import/remove management for HTTPS URL and pasted `SKILL.md` content, installed metadata, activation triggers, and no-reload refresh.
+- [x] 2026-04-28: Chat send reliability and history rendering parity for pending-message reinjection, retry/cooldown UI, done-without-response recovery, visibility-aware SSE reconnect, persisted attachment parsing, grouped tool activity, and generated-image cache fallback.
 
 ## P0: Verify Completed High-Risk Parity
 
@@ -109,14 +112,14 @@ Light checks:
 
 ### TEE Shield And Attestation
 
-Status: Not started.
+Status: Completed.
 
 Build:
-- [ ] Port V1 TEE status display into V2 top-level layout.
-- [ ] Show shield state from gateway status or TEE endpoint data.
-- [ ] Add attestation popover with report summary.
-- [ ] Add copy-attestation-report action.
-- [ ] Keep missing/unavailable attestation quiet and non-blocking.
+- [x] Port V1 TEE status display into V2 top-level layout.
+- [x] Show shield state from gateway status or TEE endpoint data.
+- [x] Add attestation popover with report summary.
+- [x] Add copy-attestation-report action.
+- [x] Keep missing/unavailable attestation quiet and non-blocking.
 
 Likely files:
 - `js/layout/gateway-layout.js`
@@ -128,21 +131,22 @@ V1 reference:
 - `static/js/core/gateway-tee.js`
 
 Acceptance:
-- [ ] Shield renders only when data is available.
-- [ ] Popover content does not expose secrets.
-- [ ] Copy action writes the report and gives user feedback.
+- [x] Shield renders only when data is available.
+- [x] Popover content does not expose secrets.
+- [x] Copy action writes the report and gives user feedback.
 
 ## P1: Skills Management
 
-Status: Not started.
+Status: Completed without ClawHub search per current scope.
 
 Build:
-- [ ] Add ClawHub search UI.
-- [ ] Add install skill by name.
-- [ ] Add install skill by HTTPS URL.
-- [ ] Add remove/uninstall if backend support remains active.
-- [ ] Refresh installed skills after install/remove.
-- [ ] Render activation triggers and metadata comparable to V1.
+- [ ] Add ClawHub search UI. Skipped by request.
+- [ ] Add install skill by name. Skipped with ClawHub/catalog flow by request.
+- [x] Add install skill by HTTPS URL.
+- [x] Add direct `SKILL.md` content import.
+- [x] Add remove/uninstall if backend support remains active.
+- [x] Refresh installed skills after install/remove.
+- [x] Render activation triggers and metadata comparable to V1.
 
 Likely files:
 - `js/pages/settings/components/skills-tab.js`
@@ -160,28 +164,28 @@ V1 reference:
 - `static/js/surfaces/skills.js`
 
 Acceptance:
-- [ ] Searching shows loading, empty, error, and result states.
-- [ ] Installing by registry result works.
-- [ ] Installing by URL validates HTTPS before submit.
-- [ ] Removing asks for confirmation.
-- [ ] Installed list updates without full page reload.
+- [ ] Searching shows loading, empty, error, and result states. Skipped by request.
+- [ ] Installing by registry result works. Skipped by request.
+- [x] Installing by URL validates HTTPS before submit.
+- [x] Removing asks for confirmation.
+- [x] Installed list updates without full page reload.
 
 Light checks:
-- `node --check` on changed JS files.
+- [x] `node --check` on changed JS files.
 - Browser smoke against a local gateway if available.
 
 ## P1: Chat Reliability And History
 
 ### Send Reliability
 
-Status: Not started.
+Status: Completed.
 
 Build:
-- [ ] Reinject pending user message if DB persistence races history reload.
-- [ ] Show retry action when send fails.
-- [ ] Add 429 cooldown handling with visible countdown or disabled send state.
-- [ ] Detect "done without response" and offer reload/recover.
-- [ ] Close/reconnect SSE based on document visibility without losing active turn state.
+- [x] Reinject pending user message if DB persistence races history reload.
+- [x] Show retry action when send fails.
+- [x] Add 429 cooldown handling with visible countdown or disabled send state.
+- [x] Detect "done without response" and offer reload/recover.
+- [x] Close/reconnect SSE based on document visibility without losing active turn state.
 
 Likely files:
 - `js/pages/chat/hooks/useChat.js`
@@ -196,20 +200,20 @@ V1 references:
 - `static/js/core/history.js`
 
 Acceptance:
-- [ ] Failed sends do not silently disappear.
-- [ ] Retried sends preserve thread id and attachments.
-- [ ] 429 responses do not allow rapid repeat submits.
-- [ ] SSE reconnect does not duplicate assistant messages.
+- [x] Failed sends do not silently disappear.
+- [x] Retried sends preserve thread id and attachments.
+- [x] 429 responses do not allow rapid repeat submits.
+- [x] SSE reconnect does not duplicate assistant messages.
 
 ### History And Rendering
 
-Status: Not started.
+Status: Completed.
 
 Build:
-- [ ] Parse persisted `<attachments>...</attachments>` in historical user messages.
-- [ ] Render all historical tool calls, not only the first.
-- [ ] Add V1-style expandable grouped tool activity.
-- [ ] Improve generated-image fallback/cache when history lacks `data_url`.
+- [x] Parse persisted `<attachments>...</attachments>` in historical user messages.
+- [x] Render all historical tool calls, not only the first.
+- [x] Add V1-style expandable grouped tool activity.
+- [x] Improve generated-image fallback/cache when history lacks `data_url`.
 
 Likely files:
 - `js/pages/chat/hooks/useHistory.js`
@@ -219,10 +223,15 @@ Likely files:
 - `js/pages/chat/lib/useChatEvents.js`
 
 Acceptance:
-- [ ] Historical user attachments match live attachment rendering.
-- [ ] Multiple tool calls in one turn are visible.
-- [ ] Grouped tool activity can be expanded/collapsed.
-- [ ] Generated images remain visible after reload when recoverable.
+- [x] Historical user attachments match live attachment rendering.
+- [x] Multiple tool calls in one turn are visible.
+- [x] Grouped tool activity can be expanded/collapsed.
+- [x] Generated images remain visible after reload when recoverable.
+
+Light checks:
+- [x] `node --check` on changed chat JS files.
+- [x] `git diff --check`.
+- [ ] Browser smoke against a local gateway if available.
 
 ## P1: Thread Sidebar Parity
 

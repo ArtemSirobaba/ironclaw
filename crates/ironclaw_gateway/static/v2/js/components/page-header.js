@@ -4,6 +4,7 @@ import { primaryRoutes, EXPANDABLE_SUB_ROUTES } from "../app/routes.js";
 import { Icon } from "../design-system/icons.js";
 import { useT } from "../lib/i18n.js";
 import { cn } from "../utils/cn.js";
+import { TeeShield } from "./tee-shield.js";
 
 const DOCS_URL = "https://docs.ironclaw.com";
 
@@ -87,6 +88,7 @@ export function PageHeader({ threadsState, onToggleSidebar }) {
           `}
 
       <div className="ml-auto flex shrink-0 items-center gap-1">
+        <${TeeShield} />
         <${NavLink}
           to="/logs"
           className=${({ isActive }) =>

@@ -4,9 +4,11 @@ import { ChatInput } from "./components/chat-input.js";
 import { ConnectionStatus } from "./components/connection-status.js";
 import { EmptyState } from "./components/empty-state.js";
 import { MessageList } from "./components/message-list.js";
+import { RecoveryNotice } from "./components/recovery-notice.js";
 import { SuggestionChips } from "./components/suggestion-chips.js";
 import { TypingIndicator } from "./components/typing-indicator.js";
 import { useChat } from "./hooks/useChat.js";
+import { buildRuntimeContext } from "./lib/runtime-context.js";
 
 export function Chat({
   threads,
@@ -25,8 +27,12 @@ export function Chat({
     sseStatus,
     historyLoading,
     hasMore,
+    cooldownSeconds,
+    recoveryNotice,
     send,
+    retryMessage,
     approve,
+    recoverHistory,
     loadMore,
     setSuggestions,
   } = useChat(activeThreadId);
@@ -42,6 +48,9 @@ export function Chat({
   const hasMessages =
     messages.length > 0 || isProcessing || Boolean(pendingGate);
   const showLanding = !historyLoading && !hasMessages;
+  const composerDisabled = (isProcessing && !pendingGate) || cooldownSeconds > 0;
+  const composerStatusText =
+    cooldownSeconds > 0 ? `Retry in ${cooldownSeconds}s` : undefined;
 
   const handleSend = React.useCallback(
     async (content, { images = [], attachments = [] } = {}) => {
@@ -77,10 +86,11 @@ export function Chat({
           <${EmptyState}
             onSuggestion=${handleSuggestion}
             onSend=${handleSend}
-            disabled=${isProcessing && !pendingGate}
+            disabled=${composerDisabled}
             initialText=${composerDraft}
             resetKey=${composerResetKey}
             context=${runtimeContext}
+            statusText=${composerStatusText}
           />
         `}
         ${!showLanding &&
@@ -90,7 +100,15 @@ export function Chat({
             isLoading=${historyLoading}
             hasMore=${hasMore}
             onLoadMore=${loadMore}
+            onRetryMessage=${retryMessage}
           >
+            ${recoveryNotice &&
+            html`
+              <${RecoveryNotice}
+                notice=${recoveryNotice}
+                onRecover=${recoverHistory}
+              />
+            `}
             ${isProcessing && !pendingGate && html`<${TypingIndicator} />`}
             ${pendingGate &&
             html`
@@ -113,37 +131,14 @@ export function Chat({
 
           <${ChatInput}
             onSend=${handleSend}
-            disabled=${isProcessing && !pendingGate}
+            disabled=${composerDisabled}
             initialText=${composerDraft}
             resetKey=${composerResetKey}
             context=${runtimeContext}
+            statusText=${composerStatusText}
           />
         `}
       </div>
     </div>
   `;
-}
-
-function buildRuntimeContext({ gatewayStatus, activeThread }) {
-  const turnCount = activeThread?.turn_count || 0;
-  const connections = gatewayStatus?.total_connections;
-  const engineLabel =
-    gatewayStatus?.engine_v2_enabled === false ? "Engine v1" : "Engine v2";
-
-  return {
-    mode: "Auto-review",
-    runtime: "Work locally",
-    workspace: "ironclaw",
-    model: gatewayStatus?.llm_model,
-    backend: gatewayStatus?.llm_backend,
-    threadLabel: activeThread?.title || "New thread",
-    turnCountLabel: `${turnCount} ${turnCount === 1 ? "turn" : "turns"}`,
-    engineLabel,
-    connectionLabel:
-      typeof connections === "number"
-        ? `${connections} live ${
-            connections === 1 ? "connection" : "connections"
-          }`
-        : null,
-  };
 }

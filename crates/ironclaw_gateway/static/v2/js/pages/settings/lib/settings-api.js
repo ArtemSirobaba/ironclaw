@@ -66,6 +66,21 @@ export function fetchSkills() {
   return apiFetch("/api/skills");
 }
 
+export function installSkill(payload) {
+  return apiFetch("/api/skills/install", {
+    method: "POST",
+    headers: { "X-Confirm-Action": "true" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function removeSkill(name) {
+  return apiFetch(`/api/skills/${encodeURIComponent(name)}`, {
+    method: "DELETE",
+    headers: { "X-Confirm-Action": "true" },
+  });
+}
+
 export function fetchUsers() {
   return apiFetch("/api/admin/users");
 }

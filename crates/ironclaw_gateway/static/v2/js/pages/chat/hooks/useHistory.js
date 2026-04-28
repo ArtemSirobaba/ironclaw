@@ -1,53 +1,12 @@
 import { React } from "../../../lib/html.js";
 import { fetchHistory } from "../../../lib/api.js";
+import {
+  appendInProgressMessage,
+  turnsToMessages,
+} from "../lib/history-messages.js";
 
-function turnsToMessages(turns) {
-  const messages = [];
-  for (const turn of turns) {
-    if (turn.user_input) {
-      messages.push({
-        id: `turn-${turn.turn_number}-user`,
-        role: "user",
-        content: turn.user_input,
-        timestamp: turn.started_at,
-        turnNumber: turn.turn_number,
-      });
-    }
-    if (turn.tool_calls && turn.tool_calls.length > 0) {
-      messages.push({
-        id: `turn-${turn.turn_number}-tools`,
-        role: "tool_activity",
-        content: "",
-        timestamp: turn.started_at,
-        turnNumber: turn.turn_number,
-        toolCalls: turn.tool_calls,
-      });
-    }
-    if (turn.generated_images && turn.generated_images.length > 0) {
-      for (const img of turn.generated_images) {
-        messages.push({
-          id: `turn-${turn.turn_number}-img-${img.event_id || Math.random().toString(36).slice(2)}`,
-          role: "image",
-          content: "",
-          timestamp: turn.started_at,
-          generatedImages: [{ data_url: img.data_url || img.url, path: img.path }],
-        });
-      }
-    }
-    if (turn.response) {
-      messages.push({
-        id: `turn-${turn.turn_number}-assistant`,
-        role: "assistant",
-        content: turn.response,
-        timestamp: turn.completed_at || turn.started_at,
-        turnNumber: turn.turn_number,
-      });
-    }
-  }
-  return messages;
-}
-
-export function useHistory(threadId) {
+export function useHistory(threadId, options = {}) {
+  const { getPendingMessages, setPendingMessages } = options;
   const [state, setState] = React.useState({
     messages: [],
     hasMore: false,
@@ -73,13 +32,28 @@ export function useHistory(threadId) {
       setState((s) => ({ ...s, isLoading: true }));
       try {
         const data = await fetchHistory({ threadId, limit: 50, before });
-        const newMessages = turnsToMessages(data.turns || []);
+        const pendingMessages = before ? [] : getPendingMessages?.() || [];
+        const result = turnsToMessages(data.turns || [], {
+          threadId,
+          pendingMessages,
+        });
+        const newMessages = before
+          ? result.messages
+          : appendInProgressMessage(
+              result.messages,
+              data.in_progress,
+              result.remainingPending
+            );
+
+        if (!before) {
+          setPendingMessages?.(result.remainingPending);
+        }
 
         setState((prev) => {
           const existingIds = new Set(prev.messages.map((m) => m.id));
           const deduped = before
             ? newMessages.filter((m) => !existingIds.has(m.id))
-            : newMessages.filter((m) => !existingIds.has(m.id));
+            : newMessages;
           return {
             messages: before ? [...deduped, ...prev.messages] : deduped,
             hasMore: data.has_more,
@@ -94,7 +68,7 @@ export function useHistory(threadId) {
         console.error("Failed to load history:", err);
       }
     },
-    [threadId]
+    [threadId, getPendingMessages, setPendingMessages]
   );
 
   React.useEffect(() => {

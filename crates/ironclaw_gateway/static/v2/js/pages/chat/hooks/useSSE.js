@@ -41,6 +41,10 @@ export function useSSE({ onEvent, enabled }) {
     const maxReconnectDelay = 30000;
 
     function connect() {
+      if (document.visibilityState === "hidden") {
+        setStatus("paused");
+        return;
+      }
       setStatus(reconnectAttempts > 0 ? "reconnecting" : "connecting");
 
       const token = readStoredToken();
@@ -82,9 +86,31 @@ export function useSSE({ onEvent, enabled }) {
       });
     }
 
+    function disconnectForHiddenTab() {
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+      }
+      if (es) {
+        es.close();
+        es = null;
+      }
+      setStatus("paused");
+    }
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === "hidden") {
+        disconnectForHiddenTab();
+      } else if (!es) {
+        connect();
+      }
+    }
+
     connect();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (reconnectTimer) clearTimeout(reconnectTimer);
       if (es) es.close();
     };

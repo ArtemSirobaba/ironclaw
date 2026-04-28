@@ -8,6 +8,60 @@ const STATUS_STYLE = {
 };
 
 export function ToolActivity({ activity }) {
+  if (activity.toolCalls && activity.toolCalls.length > 0) {
+    return html`<${ToolActivityGroup} toolCalls=${activity.toolCalls} />`;
+  }
+  return html`<${ToolActivityCard} activity=${activity} />`;
+}
+
+function ToolActivityGroup({ toolCalls }) {
+  const hasError = toolCalls.some((tool) => tool.toolStatus === "error");
+  const [expanded, setExpanded] = React.useState(hasError);
+  const toolWord = toolCalls.length === 1 ? "tool" : "tools";
+
+  return html`
+    <div className="flex gap-3">
+      <div
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-iron-800 text-iron-100"
+      >
+        <${Icon} name="tool" className="h-4 w-4" />
+      </div>
+      <div className="min-w-0 max-w-[85%] flex-1">
+        <button
+          onClick=${() => setExpanded((value) => !value)}
+          aria-expanded=${expanded ? "true" : "false"}
+          className=${[
+            "v2-button flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm",
+            hasError ? STATUS_STYLE.error : STATUS_STYLE.success,
+          ].join(" ")}
+        >
+          <${Icon}
+            name="chevron"
+            className=${["h-4 w-4 shrink-0 transition-transform", expanded ? "rotate-180" : ""].join(" ")}
+          />
+          <span className="font-medium">Used ${toolCalls.length} ${toolWord}</span>
+        </button>
+
+        ${expanded &&
+        html`
+          <div className="mt-2 flex flex-col gap-2">
+            ${toolCalls.map(
+              (tool, index) => html`
+                <${ToolActivityCard}
+                  key=${tool.callId || `${tool.toolName}-${index}`}
+                  activity=${tool}
+                  nested=${true}
+                />
+              `
+            )}
+          </div>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function ToolActivityCard({ activity, nested = false }) {
   const [expanded, setExpanded] = React.useState(false);
   const {
     toolName,
@@ -20,13 +74,16 @@ export function ToolActivity({ activity }) {
   } = activity;
 
   return html`
-    <div className="flex gap-3">
-      <div
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-iron-800 text-iron-100"
-      >
-        <${Icon} name="tool" className="h-4 w-4" />
-      </div>
-      <div className="min-w-0 max-w-[85%] flex-1">
+    <div className=${nested ? "" : "flex gap-3"}>
+      ${!nested &&
+      html`
+        <div
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-iron-800 text-iron-100"
+        >
+          <${Icon} name="tool" className="h-4 w-4" />
+        </div>
+      `}
+      <div className=${nested ? "min-w-0 flex-1" : "min-w-0 max-w-[85%] flex-1"}>
         <button
           onClick=${() => setExpanded((v) => !v)}
           className=${[

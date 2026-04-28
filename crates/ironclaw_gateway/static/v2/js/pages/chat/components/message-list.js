@@ -7,6 +7,7 @@ export function MessageList({
   isLoading,
   hasMore,
   onLoadMore,
+  onRetryMessage,
   children,
 }) {
   const t = useT();
@@ -53,7 +54,7 @@ export function MessageList({
           </div>
         `}
         ${messages.map(
-          (msg) => html`<${MessageBubble} key=${msg.id} message=${msg} />`
+          (msg) => html`<${MessageBubble} key=${msg.id} message=${msg} onRetry=${onRetryMessage} />`
         )}
         ${children}
       </div>

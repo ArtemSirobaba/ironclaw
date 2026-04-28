@@ -1,5 +1,16 @@
 const TOKEN_KEY = "ironclaw_token";
 
+export class ApiError extends Error {
+  constructor(message, { status, statusText, body, headers } = {}) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.statusText = statusText;
+    this.body = body;
+    this.headers = headers;
+  }
+}
+
 export function readStoredToken() {
   return sessionStorage.getItem(TOKEN_KEY) || "";
 }
@@ -25,8 +36,13 @@ export async function apiFetch(path, options = {}) {
 
   const response = await fetch(path, { credentials: "same-origin", ...options, headers });
   if (!response.ok) {
-    const message = await response.text().catch(() => response.statusText);
-    throw new Error(message || response.statusText);
+    const body = await response.text().catch(() => "");
+    throw new ApiError(body || response.statusText, {
+      status: response.status,
+      statusText: response.statusText,
+      body,
+      headers: response.headers,
+    });
   }
   const contentType = response.headers.get("content-type") || "";
   return contentType.includes("application/json") ? response.json() : response.text();

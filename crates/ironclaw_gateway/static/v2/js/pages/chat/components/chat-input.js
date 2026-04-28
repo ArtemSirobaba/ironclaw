@@ -14,6 +14,7 @@ export function ChatInput({
   resetKey = "",
   variant = "dock",
   context = {},
+  statusText = "",
 }) {
   const t = useT();
   const isHero = variant === "hero";
@@ -67,6 +68,8 @@ export function ChatInput({
       setText("");
       clearAttachments();
       if (textareaRef.current) textareaRef.current.style.height = "auto";
+    } catch {
+      // The failed optimistic message renders retry details in the thread.
     } finally {
       setIsSending(false);
     }
@@ -225,7 +228,7 @@ export function ChatInput({
                 <span
                   className="h-2 w-2 rounded-full bg-[var(--v2-accent)]"
                 />
-                ${t("chat.statusWorking")}
+                ${statusText || t("chat.statusWorking")}
               </span>
             `}
             <${ComposerPill}

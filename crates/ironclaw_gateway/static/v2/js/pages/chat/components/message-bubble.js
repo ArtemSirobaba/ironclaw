@@ -10,7 +10,7 @@ const ROLE_STYLES = {
   error: "mx-auto bg-red-500/10 text-red-200 border-red-400/20 text-center",
 };
 
-export function MessageBubble({ message }) {
+export function MessageBubble({ message, onRetry }) {
   const { role, content, images, attachments, generatedImages, isOptimistic, status, error, toolCalls } = message;
   const isUser = role === "user";
 
@@ -18,11 +18,7 @@ export function MessageBubble({ message }) {
     const activity = (toolCalls && toolCalls.length > 0)
       ? {
           id: message.id,
-          toolName: toolCalls[0]?.name || "tool",
-          toolStatus: toolCalls[0]?.has_error ? "error" : toolCalls[0]?.has_result ? "success" : "running",
-          toolError: toolCalls[0]?.error,
-          toolResultPreview: toolCalls[0]?.result_preview,
-          toolParameters: toolCalls[0]?.parameters,
+          toolCalls,
         }
       : message;
     return html`<${ToolActivity} activity=${activity} />`;
@@ -33,7 +29,16 @@ export function MessageBubble({ message }) {
     return html`
       <div className="flex">
         <div className="flex flex-wrap gap-2">
-          ${imgs.map((img, i) => html`<img key=${i} src=${img.data_url} className="max-h-64 rounded-lg border border-iron-700 object-cover" alt="Generated result" />`)}
+          ${imgs.map((img, i) =>
+            img.data_url
+              ? html`<img key=${i} src=${img.data_url} className="max-h-64 rounded-lg border border-iron-700 object-cover" alt="Generated result" />`
+              : html`
+                  <div key=${i} className="rounded-lg border border-iron-700 bg-iron-900/70 px-4 py-3 text-sm text-iron-200">
+                    <div>Generated image unavailable in history payload</div>
+                    ${img.path && html`<div className="mt-1 font-mono text-xs text-iron-300">${img.path}</div>`}
+                  </div>
+                `
+          )}
         </div>
       </div>
     `;
@@ -53,7 +58,20 @@ export function MessageBubble({ message }) {
             ? html`<${MarkdownRenderer} content=${content} />`
             : html`<div className="whitespace-pre-wrap">${content}</div>`}
 
-          ${status === "error" && html`<div className="mt-2 text-xs text-red-300">${error}</div>`}
+          ${status === "error" && html`
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-red-300">
+              <span>${error}</span>
+              ${onRetry && html`
+                <button
+                  type="button"
+                  onClick=${() => onRetry(message)}
+                  className="rounded-md border border-red-300/30 px-2 py-1 text-red-100 hover:bg-red-500/10"
+                >
+                  Retry
+                </button>
+              `}
+            </div>
+          `}
 
           ${images && images.length > 0 && html`
             <div className="mt-2 flex flex-wrap gap-2">

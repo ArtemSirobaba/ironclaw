@@ -6,6 +6,7 @@ const STYLES = {
   reconnecting: "bg-copper/20 text-copper border-copper/30",
   disconnected: "bg-red-500/20 text-red-200 border-red-400/30",
   connecting: "bg-iron-700/50 text-iron-200 border-iron-700/50",
+  paused: "bg-iron-700/50 text-iron-200 border-iron-700/50",
   idle: "hidden",
 };
 

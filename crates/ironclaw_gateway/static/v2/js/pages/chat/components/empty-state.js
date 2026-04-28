@@ -10,6 +10,7 @@ export function EmptyState({
   initialText,
   resetKey,
   context,
+  statusText,
 }) {
   const t = useT();
   const suggestions = [
@@ -55,6 +56,7 @@ export function EmptyState({
           resetKey=${resetKey}
           variant="hero"
           context=${context}
+          statusText=${statusText}
         />
       </div>
 

@@ -102,6 +102,7 @@ registerPack("en", {
   "connection.reconnecting": "Reconnecting...",
   "connection.disconnected": "Disconnected",
   "connection.connecting": "Connecting...",
+  "connection.paused": "Paused while tab is hidden",
 
   // Chat — approval
   "approval.title": "Approval required",
@@ -156,6 +157,18 @@ registerPack("en", {
   "restart.cancel": "Cancel",
   "restart.confirm": "Confirm restart",
   "restart.progressTitle": "Restarting IronClaw",
+
+  // TEE attestation
+  "tee.title": "TEE Attestation",
+  "tee.verified": "Verified runtime attestation available",
+  "tee.imageDigest": "Image digest",
+  "tee.tlsFingerprint": "TLS certificate fingerprint",
+  "tee.reportData": "Report data",
+  "tee.vmConfig": "VM config",
+  "tee.loading": "Loading attestation report...",
+  "tee.loadFailed": "Could not load attestation report",
+  "tee.copyReport": "Copy report",
+  "tee.copied": "Copied",
 
   // Settings — LLM providers
   "llm.active": "Active",
@@ -341,8 +354,31 @@ registerPack("en", {
   "skills.installed": "Installed skills",
   "skills.noInstalled": "No skills installed",
   "skills.noInstalledDesc":
-    "Skills extend the agent with domain-specific instructions. Install them from the ClawHub registry or place SKILL.md files in your workspace.",
+    "Skills extend the agent with domain-specific instructions. Import a SKILL.md bundle or place SKILL.md files in your workspace.",
   "skills.failedLoad": "Failed to load skills: {message}",
+  "skills.import": "Import skill",
+  "skills.importDesc": "Install from an HTTPS SKILL.md URL or paste SKILL.md content directly.",
+  "skills.name": "Skill name",
+  "skills.namePlaceholder": "skill-name",
+  "skills.url": "HTTPS URL",
+  "skills.urlHint": "Use a direct HTTPS link to SKILL.md or a supported skill bundle.",
+  "skills.urlPlaceholder": "https://example.com/SKILL.md",
+  "skills.content": "SKILL.md content",
+  "skills.contentHint": "Use this instead of URL when importing local or copied skill content.",
+  "skills.contentPlaceholder": "---\\nname: example\\ndescription: ...\\n---\\n",
+  "skills.install": "Import",
+  "skills.installing": "Importing...",
+  "skills.installFailed": "Import failed.",
+  "skills.installedSuccess": "Imported skill \"{name}\"",
+  "skills.nameRequired": "Skill name is required.",
+  "skills.importSourceRequired": "Provide an HTTPS URL or SKILL.md content.",
+  "skills.httpsRequired": "URL must use HTTPS.",
+  "skills.remove": "Remove",
+  "skills.confirmRemove": "Remove skill \"{name}\"?",
+  "skills.removeFailed": "Remove failed.",
+  "skills.removed": "Removed skill \"{name}\"",
+  "skills.activatesOn": "Activates on",
+  "skills.imported": "imported",
 
   // Settings — users tab
   "users.title": "Users ({count})",

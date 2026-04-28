@@ -1,27 +1,44 @@
 import { React } from "../../../lib/html.js";
+import { rememberGeneratedImage } from "./history-messages.js";
 
-export function useChatEvents({ threadId, setMessages, setIsProcessing, setPendingGate, setSuggestions }) {
+export function useChatEvents({
+  threadId,
+  setMessages,
+  setIsProcessing,
+  setPendingGate,
+  setSuggestions,
+  onDoneWithoutResponse,
+  onResponseComplete,
+}) {
   const streamingIdRef = React.useRef(null);
+  const seenEventIdsRef = React.useRef([]);
+  const turnResponseReceivedRef = React.useRef(false);
 
   return React.useCallback(
     (event) => {
       const { type, data } = event;
-      if (data.thread_id && data.thread_id !== threadId) return;
+      if (event.lastEventId && rememberSeenEvent(seenEventIdsRef, event.lastEventId)) {
+        return;
+      }
+      if (data.thread_id && threadId && data.thread_id !== threadId) return;
 
       if (type === "stream_chunk") {
+        turnResponseReceivedRef.current = true;
         setMessages((prev) => upsertStreamingMessage(prev, data, streamingIdRef));
         setIsProcessing(true);
         return;
       }
 
       if (type === "response") {
+        turnResponseReceivedRef.current = true;
         setMessages((prev) => finishStreamingMessage(prev, data, streamingIdRef));
         setIsProcessing(false);
+        onResponseComplete?.(data.thread_id);
         return;
       }
 
       if (type === "tool_started") {
-        setMessages((prev) => [...prev, toolStartedMessage(data)]);
+        setMessages((prev) => upsertToolStartedMessage(prev, data));
         setIsProcessing(true);
         return;
       }
@@ -45,10 +62,12 @@ export function useChatEvents({ threadId, setMessages, setIsProcessing, setPendi
       if (type === "error") {
         setMessages((prev) => [...prev, errorMessage(data)]);
         setIsProcessing(false);
+        turnResponseReceivedRef.current = false;
         return;
       }
 
       if (type === "image_generated") {
+        rememberGeneratedImage(data.thread_id || threadId, data.event_id, data.data_url, data.path);
         setMessages((prev) => [...prev, generatedImageMessage(data)]);
         return;
       }
@@ -58,12 +77,35 @@ export function useChatEvents({ threadId, setMessages, setIsProcessing, setPendi
         return;
       }
 
-      if (type === "status" && ["Done", "Idle"].includes(data.content)) {
-        setIsProcessing(false);
+      if (type === "status") {
+        const message = data.message || data.content;
+        if (message === "Done" && !turnResponseReceivedRef.current) {
+          onDoneWithoutResponse?.();
+        }
+        if (["Done", "Idle", "Interrupted", "Rejected", "Tool call denied."].includes(message)) {
+          setIsProcessing(false);
+          turnResponseReceivedRef.current = false;
+        }
       }
     },
-    [threadId, setMessages, setIsProcessing, setPendingGate, setSuggestions]
+    [
+      threadId,
+      setMessages,
+      setIsProcessing,
+      setPendingGate,
+      setSuggestions,
+      onDoneWithoutResponse,
+      onResponseComplete,
+    ]
   );
+}
+
+function rememberSeenEvent(seenEventIdsRef, eventId) {
+  const seen = seenEventIdsRef.current;
+  if (seen.includes(eventId)) return true;
+  seen.push(eventId);
+  if (seen.length > 400) seen.splice(0, seen.length - 400);
+  return false;
 }
 
 function upsertStreamingMessage(messages, data, streamingIdRef) {
@@ -106,6 +148,14 @@ function toolStartedMessage(data) {
     callId: data.call_id,
     timestamp: new Date().toISOString(),
   };
+}
+
+function upsertToolStartedMessage(messages, data) {
+  if (!data.call_id) return [...messages, toolStartedMessage(data)];
+  const exists = messages.some(
+    (message) => message.role === "tool_activity" && message.callId === data.call_id
+  );
+  return exists ? messages : [...messages, toolStartedMessage(data)];
 }
 
 function updateToolMessage(messages, data, type) {
