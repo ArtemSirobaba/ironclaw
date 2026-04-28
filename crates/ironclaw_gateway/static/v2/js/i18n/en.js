@@ -146,6 +146,16 @@ registerPack("en", {
 
   // Settings — restart banner
   "settings.restartRequired": "Some changes require a restart to take effect.",
+  "settings.restartNow": "Restart now",
+  "settings.restartStarting": "Restarting...",
+
+  // Restart dialog
+  "restart.title": "Restart IronClaw",
+  "restart.description": "Restart the gateway process to apply pending changes.",
+  "restart.warning": "Running tasks may be interrupted while the gateway restarts.",
+  "restart.cancel": "Cancel",
+  "restart.confirm": "Confirm restart",
+  "restart.progressTitle": "Restarting IronClaw",
 
   // Settings — LLM providers
   "llm.active": "Active",

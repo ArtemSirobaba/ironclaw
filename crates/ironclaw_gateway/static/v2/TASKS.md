@@ -18,6 +18,7 @@ Use this as the working checklist. Each task should leave the frontend usable, u
 - [x] 2026-04-28: Settings import/export JSON toolbar, backed by `/api/settings/export` and `/api/settings/import`.
 - [x] 2026-04-28: Settings toolbar search and back-to-inference navigation.
 - [x] 2026-04-28: LLM provider management for provider listing, custom provider add/edit/delete, built-in provider configuration, atomic activation, connection tests, model fetching, and provider override persistence.
+- [x] 2026-04-28: Restart-needed banner action with Docker-gated availability, confirmation, `/restart` chat dispatch, reconnect progress, and rejection/timeout feedback.
 
 ## P0: Verify Completed High-Risk Parity
 
@@ -75,15 +76,15 @@ Light checks:
 
 ### Restart Banner Action
 
-Status: Not started.
+Status: Completed.
 
 Build:
-- [ ] Add a restart action button to `RestartBanner`.
-- [ ] Read `gatewayStatus.restart_enabled` from outlet context or status hook.
-- [ ] Disable or explain restart when `restart_enabled` is false.
-- [ ] On confirm, send `/restart` through the gateway chat/system-command path used by V1.
-- [ ] Show progress state while the gateway drops and reconnects.
-- [ ] Keep restart UI unavailable for non-gateway or non-Docker contexts.
+- [x] Add a restart action button to `RestartBanner`.
+- [x] Read `gatewayStatus.restart_enabled` from outlet context or status hook.
+- [x] Disable or explain restart when `restart_enabled` is false.
+- [x] On confirm, send `/restart` through the gateway chat/system-command path used by V1.
+- [x] Show progress state while the gateway drops and reconnects.
+- [x] Keep restart UI unavailable for non-gateway or non-Docker contexts.
 
 Likely files:
 - `js/pages/settings/components/restart-banner.js`
@@ -97,14 +98,14 @@ Backend/API to inspect before changing:
 - Restart command behavior in `src/agent/commands.rs`.
 
 Acceptance:
-- [ ] Restart-needed banner has an actionable button.
-- [ ] Button is hidden or disabled when `restart_enabled` is false.
-- [ ] User gets confirmation before restart.
-- [ ] Failure message is visible if restart is rejected.
+- [x] Restart-needed banner has an actionable button.
+- [x] Button is hidden or disabled when `restart_enabled` is false.
+- [x] User gets confirmation before restart.
+- [x] Failure message is visible if restart is rejected.
 
 Light checks:
-- `node --check` on changed JS files.
-- Manual browser click with restart disabled.
+- [x] `node --check` on changed JS files.
+- [ ] Manual browser click with restart disabled.
 
 ### TEE Shield And Attestation
 

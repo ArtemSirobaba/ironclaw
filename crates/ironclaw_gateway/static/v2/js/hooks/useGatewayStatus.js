@@ -6,5 +6,6 @@ export function useGatewayStatus(token) {
     enabled: Boolean(token),
     queryKey: ["gateway-status", token],
     queryFn: gatewayStatus,
+    refetchInterval: 30_000,
   });
 }

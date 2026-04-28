@@ -17,7 +17,7 @@ export function SettingsPage() {
   const t = useT();
   const { tab = "inference" } = useParams();
   const navigate = useNavigate();
-  const { gatewayStatus, isAdmin = true } = useOutletContext();
+  const { gatewayStatus, gatewayStatusQuery, isAdmin = true } = useOutletContext();
   const {
     settings,
     query,
@@ -79,7 +79,11 @@ export function SettingsPage() {
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="v2-page-entrance flex-1 p-4 sm:p-6">
           <div className="space-y-5">
-            <${RestartBanner} visible=${needsRestart} />
+            <${RestartBanner}
+              visible=${needsRestart}
+              gatewayStatus=${gatewayStatus}
+              gatewayStatusQuery=${gatewayStatusQuery}
+            />
 
             <${SettingsToolbar}
               settingsExport=${query.data}
