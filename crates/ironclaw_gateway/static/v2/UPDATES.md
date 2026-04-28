@@ -15,6 +15,7 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 - 2026-04-28: V2 auth parity pass for OAuth provider buttons, URL `?token=` auto-login, cookie/OIDC session probing, `/auth/logout` cleanup, and `/api/profile` avatar/account/admin-role UI filtering.
 - 2026-04-28: Settings import/export JSON toolbar in V2, backed by `/api/settings/export` and `/api/settings/import`.
 - 2026-04-28: Settings toolbar search and back-to-inference navigation in V2.
+- 2026-04-28: V2 LLM provider management for provider listing, custom provider add/edit/delete, built-in provider configuration, atomic activation, connection tests, model fetching, and provider override persistence.
 
 ## Missing Items
 
@@ -24,13 +25,7 @@ Auth parity items currently tracked here are complete. Re-open this section if V
 
 ### LLM Provider Management
 
-- Provider list from `/api/llm/providers`.
-- Add/edit/delete custom providers.
-- Configure built-in providers.
-- Set active provider atomically.
-- Test connection.
-- Fetch available models.
-- Persist `llm_custom_providers` and `llm_builtin_overrides`.
+LLM provider management items currently tracked here are complete. Re-open this section if V1-only provider behavior is found during manual browser testing.
 
 ### Settings Utilities
 
@@ -46,7 +41,6 @@ Auth parity items currently tracked here are complete. Re-open this section if V
 
 ### Skills Management
 
-- ClawHub search.
 - Install skill by name/URL.
 - Remove/uninstall skill flow if still supported by backend.
 - V2 currently only lists installed skills.

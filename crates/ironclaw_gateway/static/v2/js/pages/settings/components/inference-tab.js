@@ -4,6 +4,7 @@ import { Card } from "../../../design-system/card.js";
 import { useT } from "../../../lib/i18n.js";
 import { INFERENCE_FIELDS } from "../lib/settings-schema.js";
 import { filterSettingsSections, matchesSearch } from "../lib/settings-search.js";
+import { ProviderManagement } from "./provider-management.js";
 import { SettingsGroup } from "./settings-field.js";
 import { SettingsSearchEmpty } from "./settings-search-empty.js";
 
@@ -23,21 +24,32 @@ export function InferenceTab({
   const backend = settings.llm_backend || gatewayStatus?.llm_backend || "nearai";
   const model = settings.selected_model || gatewayStatus?.llm_model || "";
   const sections = filterSettingsSections(INFERENCE_FIELDS, settings, searchQuery, t);
-  const showProvider = matchesSearch(searchQuery, [
+  const showProviderSummary = matchesSearch(searchQuery, [
     t("inference.provider"),
     t("inference.backend"),
     backend,
     t("inference.model"),
     model,
   ]);
+  const showProviderManagement = matchesSearch(searchQuery, [
+    t("llm.providers"),
+    t("llm.providersDesc"),
+    t("llm.addProvider"),
+    "llm",
+    "provider",
+    "openai",
+    "anthropic",
+    "ollama",
+    "near",
+  ]);
 
-  if (!showProvider && sections.length === 0) {
+  if (!showProviderSummary && !showProviderManagement && sections.length === 0) {
     return html`<${SettingsSearchEmpty} query=${searchQuery} />`;
   }
 
   return html`
     <div className="space-y-5">
-      ${showProvider &&
+      ${showProviderSummary &&
       html`
       <${Card} padding="none" className="p-4 sm:p-5">
         <h3 className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--v2-accent-text)]">${t("inference.provider")}</h3>
@@ -57,6 +69,15 @@ export function InferenceTab({
           </div>
         </div>
       <//>
+      `}
+
+      ${showProviderManagement &&
+      html`
+        <${ProviderManagement}
+          settings=${settings}
+          gatewayStatus=${gatewayStatus}
+          searchQuery=${searchQuery}
+        />
       `}
 
       ${sections.map(

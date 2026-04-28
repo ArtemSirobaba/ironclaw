@@ -7,6 +7,12 @@ registerPack("en", {
 
   // Common
   "common.unknown": "Unknown",
+  "common.cancel": "Cancel",
+  "common.delete": "Delete",
+  "common.edit": "Edit",
+  "common.loading": "Loading...",
+  "common.save": "Save",
+  "common.saving": "Saving...",
 
   // Navigation
   "nav.chat": "Chat",
@@ -140,6 +146,46 @@ registerPack("en", {
 
   // Settings — restart banner
   "settings.restartRequired": "Some changes require a restart to take effect.",
+
+  // Settings — LLM providers
+  "llm.active": "Active",
+  "llm.addProvider": "Add provider",
+  "llm.adapter": "Adapter",
+  "llm.apiKey": "API key",
+  "llm.apiKeyPlaceholder": "Leave blank to keep the stored key",
+  "llm.baseUrl": "Base URL",
+  "llm.baseUrlRequired": "Base URL is required.",
+  "llm.builtin": "Built-in",
+  "llm.configure": "Configure",
+  "llm.configureProvider": "Configure {name}",
+  "llm.configureToUse": "Configure this provider before activating it.",
+  "llm.confirmDelete": "Delete provider \"{id}\"?",
+  "llm.defaultModel": "Default model",
+  "llm.editProvider": "Edit provider",
+  "llm.fetchModels": "Fetch models",
+  "llm.fetchingModels": "Fetching...",
+  "llm.fieldsRequired": "Display name and provider ID are required.",
+  "llm.idTaken": "Provider ID \"{id}\" is already used.",
+  "llm.invalidId": "Use lowercase letters, numbers, hyphens, or underscores.",
+  "llm.model": "Model",
+  "llm.modelRequired": "A model is required.",
+  "llm.modelsFetched": "{count} models found.",
+  "llm.modelsFetchFailed": "No models were returned.",
+  "llm.newProvider": "New provider",
+  "llm.none": "None",
+  "llm.notConfigured": "Not configured",
+  "llm.providerActivated": "Switched to {name}.",
+  "llm.providerAdded": "Added provider \"{name}\".",
+  "llm.providerConfigured": "Configured {name}.",
+  "llm.providerDeleted": "Provider deleted.",
+  "llm.providerId": "Provider ID",
+  "llm.providerName": "Display name",
+  "llm.providerUpdated": "Updated provider \"{name}\".",
+  "llm.providers": "LLM providers",
+  "llm.providersDesc": "Manage built-in and custom inference providers.",
+  "llm.testConnection": "Test connection",
+  "llm.testing": "Testing...",
+  "llm.use": "Use",
 
   // Settings — inference groups
   "settings.group.embeddings": "Embeddings",

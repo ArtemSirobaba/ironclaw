@@ -25,6 +25,24 @@ export function importSettings(payload) {
   });
 }
 
+export function fetchLlmProviders() {
+  return apiFetch("/api/llm/providers");
+}
+
+export function testLlmProviderConnection(payload) {
+  return apiFetch("/api/llm/test_connection", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function listLlmProviderModels(payload) {
+  return apiFetch("/api/llm/list_models", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function fetchTools() {
   return apiFetch("/api/settings/tools");
 }
