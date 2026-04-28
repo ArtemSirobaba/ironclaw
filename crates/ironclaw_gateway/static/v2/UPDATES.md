@@ -15,7 +15,6 @@ This tracks the remaining frontend work needed to bring `crates/ironclaw_gateway
 ### Auth Parity
 
 - OAuth provider discovery/buttons: Google, GitHub, Apple.
-- NEAR wallet login.
 - OIDC/reverse-proxy cookie auth auto-login.
 - URL `?token=` auto-login.
 - `/auth/logout` cookie cleanup.
